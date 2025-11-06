@@ -1,0 +1,13 @@
+syntax = "proto3";
+package sinaps.v1;
+
+message WSEnvelope {
+  string version = 1;
+  string msg_id = 2;
+  string type = 3;
+  string room_id = 4;
+  string sender_id = 5;
+  int64 ts = 6;
+  bytes payload = 7;
+}
+

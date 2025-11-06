@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_URL=postgres://postgres:password@postgres:5432/sinaps
+      - REDIS_URL=redis://redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+      - PROMETHEUS_URL=http://prometheus:9090
+      - API_URL=http://api:3000
+      - JWT_SECRET=${JWT_SECRET:-dev_secret}
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-admin_key}
+    depends_on:
+      - postgres
+      - redis
+      - prometheus
+    volumes:
+      - ./audit.log:/app/audit.log
+      - ./scripts:/app/scripts
+
+  optimizer:
+    build: .
+    command: node dist/optimizer/index.js
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - PROMETHEUS_URL=http://prometheus:9090
+      - API_URL=http://api:3000
+      - ADMIN_API_KEY=${ADMIN_API_KEY:-admin_key}
+    depends_on:
+      - api
+      - prometheus
+
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sinaps
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./rules.yml:/etc/prometheus/rules.yml
+
+volumes:
+  postgres_data:
+

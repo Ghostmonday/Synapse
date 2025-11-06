@@ -1,0 +1,12 @@
+groups:
+  - name: sinaps_alerts
+    rules:
+      - alert: HighRequestRate
+        expr: rate(http_requests_total[5m]) > 100
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High HTTP request rate detected"
+          description: "Request rate is above 100/s (current value: {{ $value }})"
+

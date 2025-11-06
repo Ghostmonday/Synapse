@@ -1,0 +1,102 @@
+openapi: 3.0.3
+info:
+  title: Sinaps MVP API
+  version: v1.0.0
+  description: API for Sinaps real-time communication platform
+paths:
+  /auth/apple:
+    post:
+      summary: Verify Apple ID token and issue JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jwt:
+                    type: string
+                  livekitToken:
+                    type: string
+
+  /auth/login:
+    post:
+      summary: Login with credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: OK
+
+  /files/upload:
+    post:
+      summary: Upload file to S3
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: OK
+
+  /files/{id}:
+    get:
+      summary: Get file URL
+    delete:
+      summary: Delete file
+
+  /presence/status:
+    get:
+      summary: Get presence status
+
+  /presence/update:
+    post:
+      summary: Update presence
+
+  /messaging/send:
+    post:
+      summary: Send message
+
+  /messaging/{roomId}:
+    get:
+      summary: Get messages for room
+
+  /config:
+    get:
+      summary: Get config
+    put:
+      summary: Update config
+
+  /telemetry/log:
+    post:
+      summary: Log telemetry event
+
+  /admin/apply-recommendation:
+    post:
+      summary: Apply optimizer recommendation
+
