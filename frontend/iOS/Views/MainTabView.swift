@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 17.0, *)
 struct MainTabView: View {
     var body: some View {
         TabView {
@@ -14,6 +15,10 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView()
+    if #available(iOS 17.0, *) {
+        MainTabView()
+    } else {
+        Text("iOS 17.0+ required")
+    }
 }
 
