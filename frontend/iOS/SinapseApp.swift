@@ -1,9 +1,10 @@
 import SwiftUI
 
 @main
+@available(iOS 17.0, *)
 struct SinapseApp: App {
     @StateObject private var presenceViewModel = PresenceViewModel()
-    @State private var hasOnboarded = false // Mock for onboarding status
+    @State private var hasOnboarded = false
     
     var body: some Scene {
         WindowGroup {
@@ -12,7 +13,7 @@ struct SinapseApp: App {
             } else {
                 MainTabView()
                     .environmentObject(presenceViewModel)
-                    .preferredColorScheme(.dark) // Dark-mode first
+                    .preferredColorScheme(.dark)
                     .task {
                         // Restore IAP on launch
                         await SubscriptionManager.shared.restorePurchases()
