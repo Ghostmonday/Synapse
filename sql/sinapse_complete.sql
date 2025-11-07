@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS audit_log (
   hash TEXT NOT NULL, -- SHA256 of canonical event
   prev_hash TEXT, -- Previous audit chain hash
   chain_hash TEXT NOT NULL, -- Chained SHA256
-  node_id TEXT NOT NULL DEFAULT current_setting('app.node_id', true, true) -- Node-specific for federation
+  node_id TEXT NOT NULL DEFAULT 'local' -- Node-specific for federation (set via app.node_id setting in application)
 );
 
 -- Raw logs: Transient intake before compression
