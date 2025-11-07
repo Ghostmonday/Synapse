@@ -464,8 +464,8 @@ $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = service, public;
 -- Edge Function compresses payload, this function stores it
 CREATE OR REPLACE FUNCTION encode_raw_to_compressed(
   raw_id UUID,
-  codec TEXT DEFAULT 'lz4',
-  compressed bytea
+  compressed bytea,
+  codec TEXT DEFAULT 'lz4'
 ) RETURNS UUID AS $$
 DECLARE
   raw_row RECORD;
