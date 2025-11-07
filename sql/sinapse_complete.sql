@@ -331,7 +331,7 @@ CREATE OR REPLACE FUNCTION sha256_hex(data bytea) RETURNS TEXT
 LANGUAGE SQL IMMUTABLE STRICT
 SET search_path = public
 AS $$
-  SELECT encode(digest($1, 'sha256'), 'hex');
+  SELECT encode(digest($1, 'sha256'::text), 'hex');
 $$;
 
 -- ===============================================
