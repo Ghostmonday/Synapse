@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS rooms (
   created_by UUID REFERENCES users(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   is_public BOOLEAN NOT NULL DEFAULT true,
-  partition_month TEXT GENERATED ALWAYS AS (to_char(created_at, 'YYYY_MM')) STORED,
+  partition_month TEXT GENERATED ALWAYS AS (to_char(date_trunc('month', created_at AT TIME ZONE 'UTC'), 'YYYY_MM')) STORED,
   metadata JSONB DEFAULT '{}'::jsonb,
   fed_node_id TEXT, -- Origin node for federated rooms
   retention_hot_days INT, -- Room-level override (NULL = use system default)
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS messages (
   flags JSONB DEFAULT '{}'::jsonb, -- {labels: [], scores: [], features: {}}
   is_flagged BOOLEAN NOT NULL DEFAULT FALSE,
   is_exported BOOLEAN NOT NULL DEFAULT FALSE,
-  partition_month TEXT NOT NULL GENERATED ALWAYS AS (to_char(created_at, 'YYYY_MM')) STORED,
+  partition_month TEXT NOT NULL GENERATED ALWAYS AS (to_char(date_trunc('month', created_at AT TIME ZONE 'UTC'), 'YYYY_MM')) STORED,
   fed_origin_hash TEXT -- For federated message verification
 );
 
