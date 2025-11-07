@@ -18,6 +18,29 @@ CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
 CREATE SCHEMA IF NOT EXISTS service;
 
 -- ===============================================
+-- DROP EXISTING TABLES (if they exist with wrong schema)
+-- ===============================================
+-- Drop tables in reverse dependency order to avoid foreign key conflicts
+
+DROP TABLE IF EXISTS service.moderation_queue CASCADE;
+DROP TABLE IF EXISTS service.encode_queue CASCADE;
+DROP TABLE IF EXISTS message_receipts CASCADE;
+DROP TABLE IF EXISTS messages CASCADE;
+DROP TABLE IF EXISTS logs_compressed CASCADE;
+DROP TABLE IF EXISTS logs_raw CASCADE;
+DROP TABLE IF EXISTS audit_log CASCADE;
+DROP TABLE IF EXISTS retention_schedule CASCADE;
+DROP TABLE IF EXISTS legal_holds CASCADE;
+DROP TABLE IF EXISTS telemetry CASCADE;
+DROP TABLE IF EXISTS room_memberships CASCADE;
+DROP TABLE IF EXISTS rooms CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS system_config CASCADE;
+
+-- Drop existing functions that will be recreated
+DROP FUNCTION IF EXISTS partition_month_from_timestamp(TIMESTAMPTZ) CASCADE;
+
+-- ===============================================
 -- IMMUTABLE HELPER FUNCTION FOR PARTITION MONTH
 -- ===============================================
 
