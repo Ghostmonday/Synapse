@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS logs_raw (
 -- Compressed logs: Declarative partitioning by partition_month
 -- Non-FK room_id for partition flexibility (validated via soft-reference jobs)
 CREATE TABLE IF NOT EXISTS logs_compressed (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  id UUID NOT NULL DEFAULT gen_random_uuid(),
   room_id UUID NOT NULL, -- Non-FK; validated via soft-reference jobs
   partition_month TEXT NOT NULL, -- 'YYYY_MM' format
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -164,7 +164,8 @@ CREATE TABLE IF NOT EXISTS logs_compressed (
   original_length INT NOT NULL,
   checksum TEXT NOT NULL, -- SHA256 of compressed payload
   cold_storage_uri TEXT, -- S3 URI when moved to cold storage
-  lifecycle_state TEXT NOT NULL DEFAULT 'hot' -- 'hot', 'cold', 'deleted'
+  lifecycle_state TEXT NOT NULL DEFAULT 'hot', -- 'hot', 'cold', 'deleted'
+  PRIMARY KEY (id, partition_month)
 ) PARTITION BY RANGE (partition_month);
 
 -- Default partition for overflow
