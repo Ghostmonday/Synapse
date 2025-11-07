@@ -326,9 +326,13 @@ SET search_path TO service, public;
 -- ===============================================
 
 -- SHA256 hex helper: Immutable hash function
-CREATE OR REPLACE FUNCTION sha256_hex(data bytea) RETURNS TEXT AS $$
-  SELECT encode(public.digest($1, 'sha256'), 'hex');
-$$ LANGUAGE SQL IMMUTABLE STRICT;
+-- Note: Ensure search_path includes public for pgcrypto functions
+CREATE OR REPLACE FUNCTION sha256_hex(data bytea) RETURNS TEXT 
+LANGUAGE SQL IMMUTABLE STRICT
+SET search_path = public
+AS $$
+  SELECT encode(digest($1, 'sha256'), 'hex');
+$$;
 
 -- ===============================================
 -- INTAKE STAGE
