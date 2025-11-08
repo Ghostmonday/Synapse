@@ -39,40 +39,42 @@ Sinapse Backend is built with Node.js, Express, TypeScript, and Supabase. It pro
 ### Project Structure
 
 ```
-sinapse-backend/
-├── src/
+Sinapse/
+├── src/                     # Source code
 │   ├── config/              # Database and Redis configuration
 │   ├── services/            # Business logic services
 │   │   ├── user-authentication-service.ts
 │   │   ├── message-service.ts
-│   │   ├── file-storage-service.ts
-│   │   ├── presence-service.ts
-│   │   ├── config-service.ts
-│   │   ├── optimizer-service.ts
+│   │   ├── subscription-service.ts
+│   │   ├── usage-service.ts
 │   │   └── telemetry-service.ts
 │   ├── routes/              # Express route handlers
 │   │   ├── user-authentication-routes.ts
 │   │   ├── message-routes.ts
-│   │   ├── file-storage-routes.ts
-│   │   ├── presence-routes.ts
-│   │   ├── config-routes.ts
-│   │   ├── admin-routes.ts
+│   │   ├── subscription-routes.ts
 │   │   └── telemetry-routes.ts
-│   ├── server/              # Server setup and middleware
-│   │   ├── middleware/      # Express middleware
-│   │   └── index.ts         # Main server entry point
+│   ├── middleware/          # Express middleware
+│   │   ├── auth.ts
+│   │   ├── file-upload-security.ts
+│   │   └── subscription-gate.ts
 │   ├── shared/              # Shared utilities
-│   │   ├── supabase-helpers.ts  # Database query helpers
-│   │   └── logger.ts            # Logging utilities
+│   │   ├── supabase-helpers.ts
+│   │   └── logger.ts
 │   ├── ws/                  # WebSocket handlers
-│   ├── telemetry/           # Telemetry hooks
 │   └── autonomy/            # Autonomous operations
-├── scripts/                 # Utility scripts
-├── sql/                     # Database schema
-├── specs/                   # API specifications
-├── server.js               # Entry point (for compatibility)
-├── package.json
-└── tsconfig.json
+├── scripts/                 # Organized scripts
+│   ├── dev/                # Development scripts
+│   └── ops/                # Operations scripts
+├── sql/                     # Database files
+│   ├── migrations/         # Migration scripts
+│   └── *.sql               # Core schema files
+├── config/                  # Configuration files
+│   ├── prometheus.yml
+│   └── rules.yml
+├── docs/                    # Documentation
+├── frontend/                # Frontend code
+│   └── iOS/                # iOS app
+└── specs/                   # API specifications
 ```
 
 ## Quick Start
@@ -280,15 +282,24 @@ This starts:
 
 The backend uses Supabase (PostgreSQL) with the following main tables:
 
-- `users` - User accounts
+- `users` - User accounts (with subscription and password_hash)
 - `rooms` - Chat rooms
-- `messages` - Message history
+- `messages` - Message history (with reactions, threads, edit history)
+- `threads` - Message threads
+- `edit_history` - Message edit history
 - `files` - File metadata
 - `config` - Application configuration
-- `recommendations` - Optimization recommendations
+- `usage_stats` - Usage tracking for subscriptions
 - `iap_receipts` - In-app purchase receipts
+- `bot_endpoints` - Bot API endpoints
 
-See `sql/init-db.sql` for the complete schema.
+**Schema Files:**
+- `sql/sinapse_complete.sql` - Complete schema (all-in-one)
+- `sql/01_sinapse_schema.sql` - Core schema
+- `sql/09_p0_features.sql` - P0 features (threads, reactions, search)
+- `sql/migrations/` - Migration scripts for updates
+
+See `sql/README.md` for migration order and usage.
 
 ## Code Organization
 
