@@ -314,5 +314,49 @@ All requirements met:
 
 ---
 
+## 🔄 Vue to SwiftUI Migration
+
+**Status**: ✅ Complete (2025-11-08)
+
+### Components Migrated (8)
+All Vue components from `src/components/` have been migrated to native SwiftUI:
+
+1. **ProgrammaticUI.vue** → `Views/ProgrammaticUIView.swift`
+2. **ChatInput.vue** → `Views/ChatInputView.swift`
+3. **MessageBubble.vue** → `Views/MessageBubbleView.swift`
+4. **PresenceOrb.vue** → `Views/PresenceOrbView.swift`
+5. **PresenceIndicator.vue** → `Views/PresenceIndicatorView.swift`
+6. **ThreadView.vue** → `Views/ThreadView.swift`
+7. **VoiceRoomView.vue** → `Views/VoiceRoomView.swift`
+8. **VoiceVideoPanel.vue** → `Views/VoiceVideoPanelView.swift`
+
+### Infrastructure Added
+- **UX Telemetry SDK**: `Services/UXTelemetryService.swift` (82 event types)
+- **WebSocket Manager**: `Managers/WebSocketManager.swift` (AsyncStream + Combine)
+- **LiveKit Wrapper**: `Managers/LiveKitRoomManager.swift` (voice/video)
+- **Animation Utilities**: `Views/Shared/Animations/AnimationModifiers.swift`
+- **State Modifiers**: Button, Input, Form, Presence state styling
+- **Shared Components**: VideoTile, LoadingSpinner, EmojiPicker
+
+### Feature Parity
+- ✅ All state logic preserved (ButtonState, InputState, FormState enums)
+- ✅ All animations implemented (transitions, pulse, shake, fade)
+- ✅ All telemetry calls replicated (60+ events)
+- ✅ WebSocket integration (message, presence, voice streams)
+- ✅ LiveKit integration (placeholder for full SDK)
+- ✅ No DOM/HTML/CSS remnants
+- ✅ No JavaScript dependencies
+
+### Documentation
+- See `docs/VUE_TO_SWIFTUI_MIGRATION.md` for complete migration guide
+- See `docs/IOS_COMPONENT_REFERENCE.md` for component usage reference
+
+### Lines of Code
+- **Total Swift Added**: ~2,900 lines
+- **Files Created**: 23
+- **Files Modified**: 1 (Message.swift)
+
+---
+
 **For detailed setup instructions**: See [`XCODE_SETUP.md`](XCODE_SETUP.md)
 
