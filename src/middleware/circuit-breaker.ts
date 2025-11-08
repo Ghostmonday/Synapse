@@ -43,69 +43,102 @@ export class CircuitBreaker {
 
   /**
    * Execute a function with circuit breaker protection
+   * 
+   * Implements three-state circuit breaker pattern:
+   * - CLOSED: Normal operation, requests pass through
+   * - OPEN: Service failing, requests rejected immediately
+   * - HALF_OPEN: Testing recovery, allow limited requests
    */
   async call<T>(serviceFn: () => Promise<T>): Promise<T> {
-    // Check if we should transition to half-open
+    // Check if circuit is OPEN (service is failing)
     if (this.state === CircuitState.OPEN) {
+      // Check if timeout period has elapsed (ready to test recovery)
       if (Date.now() < this.nextAttempt) {
+        // Still in timeout period - reject immediately (fast fail)
         throw new Error(`Circuit breaker ${this.name} is OPEN. Service unavailable.`);
       }
+      // Timeout elapsed - transition to HALF_OPEN to test if service recovered
       this.state = CircuitState.HALF_OPEN;
-      this.successCount = 0;
+      this.successCount = 0; // Reset success counter for half-open testing
       logInfo(`Circuit breaker ${this.name} transitioning to HALF_OPEN`);
     }
 
-    // Clean old failure times
+    // Clean old failure times outside monitoring window
+    // Only count failures within monitoringPeriod (e.g., last 60 seconds)
+    // This allows circuit to recover if failures stop
     const now = Date.now();
     this.failureTimes = this.failureTimes.filter(
       (time) => now - time < this.options.monitoringPeriod
     );
 
     try {
+      // Execute the service function (e.g., database query, API call)
       const result = await serviceFn();
+      // Success - update circuit breaker state
       this.onSuccess();
       return result;
     } catch (error: any) {
+      // Failure - record and potentially open circuit
       this.onFailure();
-      throw error;
+      throw error; // Re-throw original error to caller
     }
   }
 
+  /**
+   * Handle successful service call
+   * Resets failure tracking and manages state transitions
+   */
   private onSuccess(): void {
+    // Reset failure tracking (service is working now)
     this.failureCount = 0;
-    this.failureTimes = [];
+    this.failureTimes = []; // Clear failure history
 
     if (this.state === CircuitState.HALF_OPEN) {
+      // We're testing recovery - increment success counter
       this.successCount++;
-      // If we get enough successes in half-open, close the circuit
+      // Require 2 consecutive successes before closing circuit
+      // This prevents flapping (rapid open/close cycles) from intermittent issues
       if (this.successCount >= 2) {
-        this.state = CircuitState.CLOSED;
+        this.state = CircuitState.CLOSED; // Service recovered - resume normal operation
         logInfo(`Circuit breaker ${this.name} recovered and is now CLOSED`);
       }
     } else {
+      // Already CLOSED - ensure it stays closed (redundant but safe)
       this.state = CircuitState.CLOSED;
     }
   }
 
+  /**
+   * Handle failed service call
+   * Records failure and opens circuit if threshold exceeded
+   */
   private onFailure(): void {
     const now = Date.now();
+    
+    // Record this failure timestamp
     this.failureTimes.push(now);
     this.lastFailureTime = now;
+    
+    // Update failure count (only failures within monitoring window count)
     this.failureCount = this.failureTimes.length;
 
     if (this.state === CircuitState.HALF_OPEN) {
-      // If we fail in half-open, immediately open again
+      // Failed while testing recovery - service still broken
+      // Immediately reopen circuit (don't wait for more failures)
       this.state = CircuitState.OPEN;
-      this.nextAttempt = now + this.options.timeout;
+      this.nextAttempt = now + this.options.timeout; // Wait before testing again
       logWarning(`Circuit breaker ${this.name} failed in HALF_OPEN, reopening`);
-      return;
+      return; // Early return - don't check threshold
     }
 
+    // Check if failure threshold exceeded (e.g., 5 failures in monitoring window)
     if (this.failureCount >= this.options.failureThreshold) {
+      // Too many failures - open circuit to stop cascading failures
       this.state = CircuitState.OPEN;
-      this.nextAttempt = now + this.options.timeout;
+      this.nextAttempt = now + this.options.timeout; // Set timeout before retry
       logError(`Circuit breaker ${this.name} opened after ${this.failureCount} failures`);
     }
+    // If threshold not exceeded, stay CLOSED (allow requests to continue)
   }
 
   /**

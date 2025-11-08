@@ -47,44 +47,58 @@ export class MessagesController {
         return;
       }
 
+      // Get current reactions array from message (stored as JSONB in DB)
+      // Cast to MessageReaction[] type and provide empty array fallback
       const currentReactions: MessageReaction[] = (message.reactions as MessageReaction[]) || [];
+      
+      // Create mutable copy for updates (don't mutate original)
       let updatedReactions: MessageReaction[] = [...currentReactions];
+      
+      // Track action type for real-time broadcast (clients need to know if added/removed)
       let action: 'add' | 'remove' = 'add';
 
-      // Check if reaction already exists
+      // Check if this emoji reaction already exists on the message
+      // Returns index if found, -1 if not found
       const existingReactionIndex = currentReactions.findIndex(r => r.emoji === emoji);
 
       if (existingReactionIndex >= 0) {
-        // Reaction exists - toggle user
+        // Reaction exists - need to toggle this specific user's reaction
         const existingReaction = currentReactions[existingReactionIndex];
+        
+        // Check if this user already reacted with this emoji
         const userIndex = existingReaction.user_ids.indexOf(user_id);
 
         if (userIndex >= 0) {
-          // User already reacted - remove
+          // User already reacted - REMOVE their reaction (toggle off)
+          // Remove user from the user_ids array
           existingReaction.user_ids.splice(userIndex, 1);
+          // Decrement count (one less person reacted)
           existingReaction.count -= 1;
-          action = 'remove';
+          action = 'remove'; // Track that we're removing
 
-          // Remove reaction if no users left
+          // If no users left reacting, remove the entire reaction entry
+          // (clean up empty reactions to keep data tidy)
           if (existingReaction.count === 0) {
             updatedReactions = currentReactions.filter(r => r.emoji !== emoji);
           } else {
+            // Update the reaction with new user list and count
             updatedReactions[existingReactionIndex] = existingReaction;
           }
         } else {
-          // Add user to reaction
+          // User hasn't reacted yet - ADD their reaction (toggle on)
           existingReaction.user_ids.push(user_id);
-          existingReaction.count += 1;
+          existingReaction.count += 1; // Increment count
+          // Update the reaction in place
           updatedReactions[existingReactionIndex] = existingReaction;
         }
       } else {
-        // New reaction
+        // This emoji reaction doesn't exist yet - create new reaction entry
         const newReaction: MessageReaction = {
           emoji,
-          user_ids: [user_id],
-          count: 1,
+          user_ids: [user_id], // Start with this user as the first reactor
+          count: 1, // Initial count is 1
         };
-        updatedReactions.push(newReaction);
+        updatedReactions.push(newReaction); // Add to reactions array
       }
 
       // Update message
@@ -257,12 +271,13 @@ export class MessagesController {
 
       const offset = (page - 1) * limit;
 
-      // Get thread info
+      // Get thread info with parent message (Supabase foreign key join)
+      // 'parent_message:messages(*)' syntax joins messages table where id = parent_message_id
       const { data: thread, error: threadError } = await supabase
         .from('threads')
-        .select('*, parent_message:messages(*)')
+        .select('*, parent_message:messages(*)') // Join parent message via foreign key
         .eq('id', thread_id)
-        .single();
+        .single(); // Expect exactly one result (throw if 0 or 2+)
 
       if (threadError || !thread) {
         logError('Error fetching thread', threadError);
@@ -270,13 +285,16 @@ export class MessagesController {
         return;
       }
 
-      // Get thread messages with pagination
+      // Get thread messages with pagination and user info
+      // 'user:users(...)' syntax joins users table where id = sender_id
+      // ascending: true = oldest messages first (chronological order)
+      // range() = SQL LIMIT/OFFSET for pagination
       const { data: messages, error: messagesError } = await supabase
         .from('messages')
-        .select('*, user:users(handle, display_name)')
-        .eq('thread_id', thread_id)
-        .order('created_at', { ascending: true })
-        .range(offset, offset + limit - 1);
+        .select('*, user:users(handle, display_name)') // Join user info (only handle and display_name)
+        .eq('thread_id', thread_id) // Only messages in this thread
+        .order('created_at', { ascending: true }) // Oldest first (thread conversation order)
+        .range(offset, offset + limit - 1); // Pagination: skip offset, take limit
 
       if (messagesError) {
         logError('Error fetching thread messages', messagesError);
@@ -313,15 +331,19 @@ export class MessagesController {
         return;
       }
 
+      // Calculate pagination offset (how many records to skip)
+      // page 1 = offset 0, page 2 = offset limit, page 3 = offset 2*limit, etc.
       const offset = (page - 1) * limit;
 
+      // Query threads with parent message preview and total count
+      // count: 'exact' = get total count for pagination metadata (has_more calculation)
       const { data: threads, error, count } = await supabase
         .from('threads')
-        .select('*, parent_message:messages(content_preview)', { count: 'exact' })
-        .eq('room_id', room_id)
-        .eq('is_archived', false)
-        .order('updated_at', { ascending: false })
-        .range(offset, offset + limit - 1);
+        .select('*, parent_message:messages(content_preview)', { count: 'exact' }) // Join parent message, get total count
+        .eq('room_id', room_id) // Only threads in this room
+        .eq('is_archived', false) // Exclude archived threads
+        .order('updated_at', { ascending: false }) // Most recently updated first (active threads at top)
+        .range(offset, offset + limit - 1); // Pagination: skip offset rows, return limit rows
 
       if (error) {
         logError('Error fetching room threads', error);
@@ -385,30 +407,38 @@ export class MessagesController {
         return;
       }
 
-      // Check 24-hour edit window
+      // Check 24-hour edit window (Discord-like policy)
+      // Prevents editing very old messages which could confuse conversation context
       const { data: messageWithTime } = await supabase
         .from('messages')
-        .select('created_at')
+        .select('created_at') // Only need timestamp for age check
         .eq('id', message_id)
         .single();
 
       if (messageWithTime) {
-        const createdAt = new Date(messageWithTime.created_at);
+        // Calculate age of message in hours
+        const createdAt = new Date(messageWithTime.created_at); // Parse ISO timestamp
+        // Date.now() = current time in ms, createdAt.getTime() = message time in ms
+        // Difference in ms / (1000 ms/sec * 60 sec/min * 60 min/hr) = hours
         const hoursSinceCreation = (Date.now() - createdAt.getTime()) / (1000 * 60 * 60);
+        
+        // Reject edits after 24 hours (policy: prevent editing ancient history)
         if (hoursSinceCreation > 24) {
           res.status(400).json({ error: 'Message can only be edited within 24 hours' });
           return;
         }
       }
 
-      // Update message (trigger will handle edit_history)
+      // Update message content (database trigger will automatically create edit_history entry)
+      // content_preview is limited to 512 chars (database column constraint)
+      // substring(0, 512) ensures we don't exceed limit (truncates if longer)
       const { error: updateError } = await supabase
         .from('messages')
         .update({
-          content_preview: content.substring(0, 512),
-          updated_at: new Date().toISOString(),
+          content_preview: content.substring(0, 512), // Truncate to max length (database constraint)
+          updated_at: new Date().toISOString(), // Update timestamp (ISO format for Supabase)
         })
-        .eq('id', message_id);
+        .eq('id', message_id); // Only update this specific message
 
       if (updateError) {
         logError('Error updating message', updateError);
@@ -473,9 +503,13 @@ export class MessagesController {
         return;
       }
 
-      // Check 24-hour deletion window
+      // Check 24-hour deletion window (same policy as editing)
+      // Prevents deletion of old messages that might be referenced in conversation
       const createdAt = new Date(message.created_at);
+      // Calculate age: (current time - creation time) / milliseconds per hour
       const hoursSinceCreation = (Date.now() - createdAt.getTime()) / (1000 * 60 * 60);
+      
+      // Reject deletions after 24 hours (policy: preserve conversation history)
       if (hoursSinceCreation > 24) {
         res.status(400).json({ error: 'Message can only be deleted within 24 hours' });
         return;
@@ -529,27 +563,35 @@ export class MessagesController {
 
       const offset = (page - 1) * limit;
 
-      // Build query
+      // Build search query using PostgreSQL full-text search
+      // message_search_index is a materialized view with pre-computed search vectors
+      // textSearch uses PostgreSQL tsvector for fast full-text matching
       let query = supabase
         .from('message_search_index')
         .select('*')
         .textSearch('search_vector', q, {
-          type: 'websearch',
-          config: 'english',
+          type: 'websearch', // PostgreSQL websearch_to_tsquery (handles phrases, quotes, etc.)
+          config: 'english', // English language stemming (e.g., "running" matches "run")
         });
 
+      // Optionally filter by room (scoped search)
+      // If room_id provided, only search messages in that room
       if (room_id && typeof room_id === 'string') {
         query = query.eq('room_id', room_id);
       }
 
+      // Execute search with pagination
+      // Order by created_at DESC = newest matches first (most relevant)
       const { data: results, error, count } = await query
-        .order('created_at', { ascending: false })
-        .range(offset, offset + limit - 1);
+        .order('created_at', { ascending: false }) // Newest first
+        .range(offset, offset + limit - 1); // Pagination
 
-      // Get count separately
+      // Get total count separately (for pagination metadata)
+      // head: true = don't return data, only count (more efficient)
+      // This gives us total matching results across all pages
       const { count: totalCount } = await supabase
         .from('message_search_index')
-        .select('*', { count: 'exact', head: true })
+        .select('*', { count: 'exact', head: true }) // head = no data, just count
         .textSearch('search_vector', q, {
           type: 'websearch',
           config: 'english',
