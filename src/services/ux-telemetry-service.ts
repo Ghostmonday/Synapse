@@ -303,6 +303,309 @@ export async function getCategorySummary(): Promise<any[] | null> {
 }
 
 /**
+ * Get AI feedback events (suggestions, auto-fixes, help requests)
+ */
+export async function getAIFeedbackEvents(
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', 'ai_feedback')
+      .gte('event_time', since)
+      .order('event_time', { ascending: false })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching AI feedback events', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getAIFeedbackEvents', error);
+    return null;
+  }
+}
+
+/**
+ * Get emotional/cognitive state events (sentiment, emotion curves)
+ */
+export async function getEmotionalEvents(
+  sessionId?: string,
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    let query = supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', 'cognitive_state')
+      .gte('event_time', since);
+    
+    if (sessionId) {
+      query = query.eq('session_id', sessionId);
+    }
+    
+    const { data, error } = await query
+      .order('event_time', { ascending: true })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching emotional events', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getEmotionalEvents', error);
+    return null;
+  }
+}
+
+/**
+ * Get journey analytics events (funnels, dropoffs, sequences)
+ */
+export async function getJourneyEvents(
+  sessionId?: string,
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    let query = supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', 'journey_analytics')
+      .gte('event_time', since);
+    
+    if (sessionId) {
+      query = query.eq('session_id', sessionId);
+    }
+    
+    const { data, error } = await query
+      .order('event_time', { ascending: true })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching journey events', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getJourneyEvents', error);
+    return null;
+  }
+}
+
+/**
+ * Get performance events (load times, latency, stutters)
+ */
+export async function getPerformanceEvents(
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', 'performance')
+      .gte('event_time', since)
+      .order('event_time', { ascending: false })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching performance events', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getPerformanceEvents', error);
+    return null;
+  }
+}
+
+/**
+ * Get behavior modeling events (bursts, stalls, retries)
+ */
+export async function getBehaviorEvents(
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', 'behavior_modeling')
+      .gte('event_time', since)
+      .order('event_time', { ascending: false })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching behavior events', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getBehaviorEvents', error);
+    return null;
+  }
+}
+
+/**
+ * Aggregate AI suggestion metrics
+ */
+export async function getAISuggestionMetrics(hours: number = 168): Promise<{
+  totalSuggestions: number;
+  accepted: number;
+  rejected: number;
+  acceptanceRate: number;
+} | null> {
+  try {
+    const events = await getAIFeedbackEvents(hours);
+    if (!events) return null;
+    
+    const accepted = events.filter(e => e.eventType === 'ai_suggestion_accepted').length;
+    const rejected = events.filter(e => e.eventType === 'ai_suggestion_rejected').length;
+    const totalSuggestions = accepted + rejected;
+    
+    return {
+      totalSuggestions,
+      accepted,
+      rejected,
+      acceptanceRate: totalSuggestions > 0 ? accepted / totalSuggestions : 0,
+    };
+  } catch (error) {
+    logError('[UX Telemetry] Error in getAISuggestionMetrics', error);
+    return null;
+  }
+}
+
+/**
+ * Aggregate sentiment metrics
+ */
+export async function getSentimentMetrics(hours: number = 168): Promise<{
+  avgSentiment: number;
+  volatility: number;
+  positiveTrend: boolean;
+} | null> {
+  try {
+    const events = await getEmotionalEvents(undefined, hours);
+    if (!events) return null;
+    
+    const sentimentEvents = events.filter(
+      e => e.eventType === 'message_sentiment_before' || e.eventType === 'message_sentiment_after'
+    );
+    
+    const scores = sentimentEvents
+      .map(e => (e.metadata as any).sentimentScore)
+      .filter(s => typeof s === 'number');
+    
+    if (scores.length === 0) return null;
+    
+    const avgSentiment = scores.reduce((a, b) => a + b, 0) / scores.length;
+    const variance = scores.reduce((sum, score) => sum + Math.pow(score - avgSentiment, 2), 0) / scores.length;
+    const volatility = Math.sqrt(variance);
+    
+    // Check if trend is positive (last 25% vs first 25%)
+    const quarterSize = Math.floor(scores.length / 4);
+    const firstQuarter = scores.slice(0, quarterSize);
+    const lastQuarter = scores.slice(-quarterSize);
+    const positiveTrend = 
+      lastQuarter.reduce((a, b) => a + b, 0) / lastQuarter.length > 
+      firstQuarter.reduce((a, b) => a + b, 0) / firstQuarter.length;
+    
+    return {
+      avgSentiment,
+      volatility,
+      positiveTrend,
+    };
+  } catch (error) {
+    logError('[UX Telemetry] Error in getSentimentMetrics', error);
+    return null;
+  }
+}
+
+/**
+ * Aggregate funnel completion metrics
+ */
+export async function getFunnelMetrics(hours: number = 168): Promise<{
+  totalCheckpoints: number;
+  totalDropoffs: number;
+  completionRate: number;
+} | null> {
+  try {
+    const events = await getJourneyEvents(undefined, hours);
+    if (!events) return null;
+    
+    const checkpoints = events.filter(e => e.eventType === 'funnel_checkpoint_hit').length;
+    const dropoffs = events.filter(e => e.eventType === 'dropoff_point_detected').length;
+    const total = checkpoints + dropoffs;
+    
+    return {
+      totalCheckpoints: checkpoints,
+      totalDropoffs: dropoffs,
+      completionRate: total > 0 ? checkpoints / total : 0,
+    };
+  } catch (error) {
+    logError('[UX Telemetry] Error in getFunnelMetrics', error);
+    return null;
+  }
+}
+
+/**
+ * Aggregate performance metrics
+ */
+export async function getPerformanceMetrics(hours: number = 24): Promise<{
+  avgLoadTime: number;
+  avgInteractionLatency: number;
+  stutterRate: number;
+  longStateCount: number;
+} | null> {
+  try {
+    const events = await getPerformanceEvents(hours);
+    if (!events) return null;
+    
+    const loadTimeEvents = events.filter(e => e.eventType === 'load_time_perceived_vs_actual');
+    const latencyEvents = events.filter(e => e.eventType === 'interaction_latency_ms');
+    const stutterEvents = events.filter(e => e.eventType === 'stuttered_input');
+    const longStateEvents = events.filter(e => e.eventType === 'long_state_without_progress');
+    
+    const avgLoadTime = loadTimeEvents.length > 0
+      ? loadTimeEvents.reduce((sum, e) => sum + ((e.metadata as any).actualMs || 0), 0) / loadTimeEvents.length
+      : 0;
+    
+    const avgInteractionLatency = latencyEvents.length > 0
+      ? latencyEvents.reduce((sum, e) => sum + ((e.metadata as any).duration || 0), 0) / latencyEvents.length
+      : 0;
+    
+    return {
+      avgLoadTime,
+      avgInteractionLatency,
+      stutterRate: stutterEvents.length / events.length,
+      longStateCount: longStateEvents.length,
+    };
+  } catch (error) {
+    logError('[UX Telemetry] Error in getPerformanceMetrics', error);
+    return null;
+  }
+}
+
+/**
  * Delete user's UX telemetry (GDPR compliance)
  */
 export async function deleteUserTelemetry(userId: string): Promise<number> {

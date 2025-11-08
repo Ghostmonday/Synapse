@@ -152,6 +152,59 @@ await sdk.flush();
 - `ai_disagreement_signal` - User rejects AI suggestion
 - `context_overload` - Too many threads/DMs
 
+### Phase 2-3 Extensions (23 New Events + 4 Categories)
+
+#### AI Feedback & Trust Signals (6 events)
+- `ai_suggestion_accepted` - User applies LLM suggestion
+- `ai_suggestion_rejected` - User dismisses LLM suggestion
+- `ai_auto_fix_applied` - User accepts agent auto-fix
+- `ai_edit_undone` - User undoes LLM change
+- `ai_help_requested` - User invokes AI help
+- `agent_handoff_failed` - User aborts agent takeover
+
+#### Emotional & Cognitive State (5 events)
+- `message_sentiment_before` / `message_sentiment_after` - Sentiment tracking
+- `session_emotion_curve` - Per-session sentiment aggregate
+- `message_emotion_contradiction` - Tone vs. intent mismatch
+- `validation_react_irritation_score` - Repeated validation errors (3+)
+
+#### Sequence & Journey Analytics (4 events)
+- `event_sequence_path` - Periodically logged event sequences
+- `funnel_checkpoint_hit` - Key journey milestones
+- `dropoff_point_detected` - Session end without completion
+- `repeated_state_loop_detected` - Cycles in state transitions
+
+#### Performance-to-UX Linking (4 events)
+- `load_time_perceived_vs_actual` - Perceived vs. actual load time
+- `interaction_latency_ms` - Input to response latency
+- `stuttered_input` - Retries before response
+- `long_state_without_progress` - Loading > 10s threshold
+
+#### User Archetype / Behavior Modeling (5 events)
+- `user_action_burst` - Rapid interactions (>5 in 10s)
+- `session_idle_then_retry` - Idle then active again
+- `first_session_stall_point` - New user dropoff
+- `retry_after_error_interval` - Post-error reattempt
+- `feature_toggle_hover_no_use` - Hover without click
+
+#### New SDK Features
+- **Sequence Tracking**: Auto-tracks last 100 events per session
+- **Burst Detection**: Automatically detects rapid user actions
+- **Idle Detection**: Tracks 30s+ idle periods
+- **State Loop Detection**: Detects repeated state cycles
+- **Performance Timing**: `markPerformanceStart()` / `markPerformanceEnd()` helpers
+
+#### Watchdog Derivable Metrics
+The watchdog now calculates 6 derivable metrics from aggregated events:
+1. **confidence_score_per_agent_suggestion** - AI suggestion acceptance ratio
+2. **UX_fragility_index** - Abandon rate post-failure
+3. **emotional_volatility_index** - Sentiment variance
+4. **path_predictability_score** - Navigation entropy (0-1)
+5. **UX_completion_rate_by_segment** - Funnel success by user type
+6. **perceived_ai_accuracy_by_outcome** - Successful AI actions ratio
+
+See `docs/UX_TELEMETRY_SCHEMA.md` for complete event reference.
+
 ## PII Handling
 
 ### Client-Side Scrubbing

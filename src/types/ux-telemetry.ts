@@ -25,6 +25,10 @@ export enum UXEventCategory {
   THREADING = 'threading',
   TYPING = 'typing',
   FEATURE_USE = 'feature_use',
+  AI_FEEDBACK = 'ai_feedback',
+  COGNITIVE_STATE = 'cognitive_state',
+  JOURNEY_ANALYTICS = 'journey_analytics',
+  BEHAVIOR_MODELING = 'behavior_modeling',
 }
 
 /**
@@ -79,6 +83,40 @@ export enum UXEventType {
   USER_FLOW_ABANDONMENT = 'user_flow_abandonment',
   AI_DISAGREEMENT_SIGNAL = 'ai_disagreement_signal',
   CONTEXT_OVERLOAD = 'context_overload',
+  
+  // AI Feedback & Trust Signals
+  AI_SUGGESTION_ACCEPTED = 'ai_suggestion_accepted',
+  AI_SUGGESTION_REJECTED = 'ai_suggestion_rejected',
+  AI_AUTO_FIX_APPLIED = 'ai_auto_fix_applied',
+  AI_EDIT_UNDONE = 'ai_edit_undone',
+  AI_HELP_REQUESTED = 'ai_help_requested',
+  AGENT_HANDOFF_FAILED = 'agent_handoff_failed',
+  
+  // Emotional & Cognitive State Signals
+  MESSAGE_SENTIMENT_BEFORE = 'message_sentiment_before',
+  MESSAGE_SENTIMENT_AFTER = 'message_sentiment_after',
+  SESSION_EMOTION_CURVE = 'session_emotion_curve',
+  MESSAGE_EMOTION_CONTRADICTION = 'message_emotion_contradiction',
+  VALIDATION_REACT_IRRITATION_SCORE = 'validation_react_irritation_score',
+  
+  // Sequence & Journey Analytics
+  EVENT_SEQUENCE_PATH = 'event_sequence_path',
+  FUNNEL_CHECKPOINT_HIT = 'funnel_checkpoint_hit',
+  DROPOFF_POINT_DETECTED = 'dropoff_point_detected',
+  REPEATED_STATE_LOOP_DETECTED = 'repeated_state_loop_detected',
+  
+  // Performance-to-UX Linking
+  LOAD_TIME_PERCEIVED_VS_ACTUAL = 'load_time_perceived_vs_actual',
+  INTERACTION_LATENCY_MS = 'interaction_latency_ms',
+  STUTTERED_INPUT = 'stuttered_input',
+  LONG_STATE_WITHOUT_PROGRESS = 'long_state_without_progress',
+  
+  // User Archetype / Behavior Modeling
+  USER_ACTION_BURST = 'user_action_burst',
+  SESSION_IDLE_THEN_RETRY = 'session_idle_then_retry',
+  FIRST_SESSION_STALL_POINT = 'first_session_stall_point',
+  RETRY_AFTER_ERROR_INTERVAL = 'retry_after_error_interval',
+  FEATURE_TOGGLE_HOVER_NO_USE = 'feature_toggle_hover_no_use',
 }
 
 /**
@@ -201,12 +239,20 @@ export const DEFAULT_SAMPLING_CONFIG: SamplingConfig = {
     UXEventType.CLIENT_CRASH,
     UXEventType.MESSAGE_SEND_FAILED,
     UXEventType.VOICE_CAPTURE_FAILED,
+    UXEventType.AGENT_HANDOFF_FAILED,
+    UXEventType.DROPOFF_POINT_DETECTED,
+    UXEventType.FIRST_SESSION_STALL_POINT,
+    UXEventType.VALIDATION_REACT_IRRITATION_SCORE,
   ],
   highFrequencyEvents: [
     UXEventType.UI_CLICK,
     UXEventType.TYPING_START,
     UXEventType.TYPING_STOP,
     UXEventType.PRESENCE_PING,
+    UXEventType.USER_ACTION_BURST,
+    UXEventType.EVENT_SEQUENCE_PATH,
+    UXEventType.INTERACTION_LATENCY_MS,
+    UXEventType.STUTTERED_INPUT,
   ],
 };
 
