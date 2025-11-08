@@ -1,0 +1,44 @@
+{
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/Room.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/ViewModels/PresenceViewModel.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/PresenceOrbView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ProfileView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ProgrammaticUIView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/PresenceModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.swiftdeps"
+  }
+}

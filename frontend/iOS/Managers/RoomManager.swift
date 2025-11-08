@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class RoomManager {
     static let shared = RoomManager()
     

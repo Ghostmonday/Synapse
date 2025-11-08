@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class AuthService {
     static func login(username: String, password: String) async throws -> User {
         struct LoginRequest: Codable {

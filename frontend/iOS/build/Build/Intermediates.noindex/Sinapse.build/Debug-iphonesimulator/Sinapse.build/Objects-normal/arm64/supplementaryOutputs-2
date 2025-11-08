@@ -1,0 +1,44 @@
+{
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Extensions/Color+Extensions.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/AuthService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ChatInputView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ChatView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/DashboardView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/ButtonStateModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.dia",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.swiftdeps"
+  }
+}

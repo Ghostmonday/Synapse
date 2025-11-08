@@ -3,6 +3,7 @@ import Speech
 
 /// Apple ASR wrapper for voice transcription
 @available(iOS 17.0, *)
+@MainActor
 class SpeechManager {
     static let shared = SpeechManager()
     

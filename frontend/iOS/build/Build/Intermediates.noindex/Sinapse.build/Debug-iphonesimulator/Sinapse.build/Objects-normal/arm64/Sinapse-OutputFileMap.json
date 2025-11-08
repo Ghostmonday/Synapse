@@ -1,0 +1,579 @@
+{
+  "" : {
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Sinapse-primary.dia",
+    "emit-module-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Sinapse-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Sinapse-primary-emit-module.dia",
+    "pch" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Sinapse-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Sinapse-primary.swiftdeps"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Components/AmbientParticles.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AmbientParticles~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Components/MoodGradient.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MoodGradient~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Components/VoiceOrb.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceOrb~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Extensions/Color+Extensions.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Color+Extensions~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Extensions/View+Extensions.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/View+Extensions~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/AIReasoner.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIReasoner~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/APIClient.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/APIClient~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/DeepSeekClient.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DeepSeekClient~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/LiveKitRoomManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LiveKitRoomManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/MessageManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/RoomManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/SpeechManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SpeechManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/SubscriptionManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SubscriptionManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/SystemMonitor.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemMonitor~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Managers/WebSocketManager.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/WebSocketManager~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/AILog.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AILog~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/IAPReceipt.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPReceipt~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/Message.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Message~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/Room.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/Room~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/TelemetryMetric.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/TelemetryMetric~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/UXEventType.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXEventType~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Models/User.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/User~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/AIService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AIService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/AuthService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AuthService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/IAPService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/IAPService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/MessageService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/RoomService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/SystemService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SystemService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Services/UXTelemetryService.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/UXTelemetryService~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/SinapseApp.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/SinapseApp~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/ViewModels/EmotionalAIViewModel.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmotionalAIViewModel~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/ViewModels/PresenceViewModel.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceViewModel~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/ViewModels/RoomViewModel.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomViewModel~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ChatInputView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatInputView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ChatView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ChatView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/DashboardView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/DashboardView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/LaunchView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LaunchView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/MainTabView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MainTabView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/MessageBubbleView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/MessageBubbleView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/OnboardingView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/OnboardingView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/PresenceIndicatorView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceIndicatorView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/PresenceOrbView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceOrbView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ProfileView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProfileView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ProgrammaticUIView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ProgrammaticUIView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/RoomListView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/RoomListView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Animations/AnimationModifiers.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/AnimationModifiers~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Components/EmojiPickerView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/EmojiPickerView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Components/LoadingSpinner.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/LoadingSpinner~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Components/VideoTileView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VideoTileView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/ButtonStateModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ButtonStateModifier~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/FormStateModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/FormStateModifier~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/InputStateModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/InputStateModifier~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/Shared/Modifiers/PresenceModifier.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/PresenceModifier~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/ThreadView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/ThreadView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/VoiceRoomView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceRoomView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/VoiceVideoPanelView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceVideoPanelView~partial.swiftmodule"
+  },
+  "/Users/rentamac/Desktop/Sinapse/frontend/iOS/Views/VoiceView.swift" : {
+    "const-values" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.swiftconstvalues",
+    "dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.d",
+    "diagnostics" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.dia",
+    "index-unit-output-path" : "/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.o",
+    "llvm-bc" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.bc",
+    "object" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.o",
+    "swift-dependencies" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView.swiftdeps",
+    "swiftmodule" : "/Users/rentamac/Desktop/Sinapse/frontend/iOS/build/Build/Intermediates.noindex/Sinapse.build/Debug-iphonesimulator/Sinapse.build/Objects-normal/arm64/VoiceView~partial.swiftmodule"
+  }
+}

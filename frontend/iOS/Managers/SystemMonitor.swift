@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class SystemMonitor {
     static let shared = SystemMonitor()
     

@@ -7,6 +7,7 @@ import Combine
 /// LiveKit Room Manager
 /// Wraps LiveKit Swift SDK for voice/video functionality
 /// Provides high-level API matching Vue VideoRoomManager
+@MainActor
 class LiveKitRoomManager: ObservableObject {
     @Published var isConnected: Bool = false
     @Published var participants: [ParticipantInfo] = []
@@ -52,7 +53,7 @@ class LiveKitRoomManager: ObservableObject {
         print("[LiveKit] Joined room: \(config.roomName)")
         
         // Log telemetry
-        UXTelemetryService.logRoomEntry(roomId: config.roomName, metadata: [
+        await UXTelemetryService.logRoomEntry(roomId: config.roomName, metadata: [
             "audioEnabled": config.audioEnabled,
             "videoEnabled": config.videoEnabled,
             "pushToTalk": config.pushToTalk
@@ -77,7 +78,7 @@ class LiveKitRoomManager: ObservableObject {
         // TODO: Implement LiveKit audio toggle
         // await room?.localParticipant?.setMicrophoneEnabled(localAudioEnabled)
         
-        UXTelemetryService.logStateTransition(
+        await UXTelemetryService.logStateTransition(
             componentId: "AudioControl",
             stateBefore: localAudioEnabled ? "muted" : "enabled",
             stateAfter: localAudioEnabled ? "enabled" : "muted",
@@ -103,7 +104,7 @@ class LiveKitRoomManager: ObservableObject {
             localAudioEnabled = true
         }
         
-        UXTelemetryService.logStateTransition(
+        await UXTelemetryService.logStateTransition(
             componentId: "PushToTalk",
             stateBefore: isPushToTalkMode ? "disabled" : "enabled",
             stateAfter: enabled ? "enabled" : "disabled",
@@ -131,7 +132,7 @@ class LiveKitRoomManager: ObservableObject {
         // TODO: Implement LiveKit video toggle
         // await room?.localParticipant?.setCameraEnabled(localVideoEnabled)
         
-        UXTelemetryService.logStateTransition(
+        await UXTelemetryService.logStateTransition(
             componentId: "VideoControl",
             stateBefore: localVideoEnabled ? "disabled" : "enabled",
             stateAfter: localVideoEnabled ? "enabled" : "disabled",

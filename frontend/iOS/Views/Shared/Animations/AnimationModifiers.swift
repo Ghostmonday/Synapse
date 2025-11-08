@@ -60,9 +60,9 @@ struct PulseModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .scaleEffect(isActive ? scale : 1.0)
-            .onChange(of: isActive) { newValue in
+            .onChange(of: isActive) { _, newValue in
                 if newValue {
-                    withAnimation(.easeInOut(duration: 1.0).repeatForever()) {
+                    withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
                         scale = 1.2
                     }
                 } else {
@@ -88,13 +88,27 @@ struct ShakeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .offset(x: offset)
-            .onChange(of: shake) { shouldShake in
+            .onChange(of: shake) { _, shouldShake in
                 if shouldShake {
-                    withAnimation(.easeInOut(duration: 0.1).repeat(count: 3)) {
+                    // Create repeating animation manually
+                    let animation = Animation.easeInOut(duration: 0.1)
+                    withAnimation(animation) {
                         offset = 10
                     }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation(animation) {
+                            offset = -10
+                        }
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        withAnimation(animation) {
+                            offset = 10
+                        }
+                    }
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        offset = 0
+                        withAnimation(animation) {
+                            offset = 0
+                        }
                     }
                 }
             }

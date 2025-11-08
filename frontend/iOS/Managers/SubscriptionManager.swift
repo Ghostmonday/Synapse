@@ -2,6 +2,7 @@ import StoreKit
 
 /// StoreKit 2 subscription manager
 @available(iOS 15.0, *)
+@MainActor
 class SubscriptionManager: ObservableObject {
     static let shared = SubscriptionManager()
     
@@ -64,7 +65,7 @@ class SubscriptionManager: ObservableObject {
         let statuses = try? await subscription.status
         guard let statuses = statuses else { return }
         
-        for (_, status) in statuses {
+        for status in statuses {
             switch status.state {
             case .subscribed, .inGracePeriod:
                 isPro = true
