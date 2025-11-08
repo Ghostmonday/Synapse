@@ -1485,16 +1485,6 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = service, public;
 
 -- ===============================================
--- TABLE SIZE UTILITY FUNCTION
--- ===============================================
-
--- Get table size: Returns total size of a table including indexes
-CREATE OR REPLACE FUNCTION get_table_size(table_name text)
-RETURNS bigint AS $$
-  SELECT pg_total_relation_size(table_name);
-$$ LANGUAGE sql SECURITY DEFINER;
-
--- ===============================================
 -- COMPLETE
 -- ===============================================
 -- All 6 SQL modules have been successfully combined.
@@ -1505,6 +1495,5 @@ $$ LANGUAGE sql SECURITY DEFINER;
 --   4. Moderation governance functions
 --   5. Row-Level Security policies
 --   6. Partition management functions
---   7. Table size utility function
 -- ===============================================
 
