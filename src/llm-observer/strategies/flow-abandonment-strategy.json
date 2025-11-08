@@ -1,0 +1,9 @@
+{
+  "pattern": "high user flow abandonment",
+  "threshold": 0.25,
+  "action": "simplify_flow_or_offer_help",
+  "target": "src/components/OnboardingFlow.vue",
+  "priority": "high",
+  "autonomyRole": "LLM rewrites flow or offers help"
+}
+

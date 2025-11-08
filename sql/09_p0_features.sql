@@ -135,7 +135,6 @@ DROP TRIGGER IF EXISTS trigger_thread_metadata_update ON messages;
 CREATE TRIGGER trigger_thread_metadata_update
   AFTER INSERT OR DELETE ON messages
   FOR EACH ROW
-  WHEN (NEW.thread_id IS NOT NULL OR OLD.thread_id IS NOT NULL)
   EXECUTE FUNCTION update_thread_metadata();
 
 -- Function to refresh search index (deferred to avoid performance impact)

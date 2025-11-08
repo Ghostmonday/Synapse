@@ -1,0 +1,9 @@
+{
+  "pattern": "high validation error rate",
+  "threshold": 0.2,
+  "action": "improve_labels_and_validation",
+  "target": "src/components/ProgrammaticUI.vue",
+  "priority": "medium",
+  "autonomyRole": "LLM rewrites label or validation logic"
+}
+

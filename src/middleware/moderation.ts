@@ -1,0 +1,68 @@
+import { Request, Response, NextFunction } from 'express';
+import { logAudit } from '../shared/logger.js';
+
+export const moderateContent = async (req: Request, res: Response, next: NextFunction) => {
+  const content = req.body?.content || req.body?.prompt || '';
+  if (!content) {
+    return next();
+  }
+  
+  try {
+    // Input validation
+    if (typeof content !== 'string') {
+      return res.status(400).json({ error: 'Content must be a string' });
+    }
+
+    // Length check
+    if (content.length > 50000) {
+      return res.status(400).json({ error: 'Content exceeds maximum length' });
+    }
+
+    // Basic moderation - check for blocked words
+    const blockedWords = process.env.BLOCKED_WORDS?.split(',').map(w => w.trim()).filter(Boolean) || [];
+    const contentLower = content.toLowerCase();
+    
+    const hasBlockedContent = blockedWords.some(word => {
+      if (!word) return false;
+      // Check for whole word matches (basic)
+      const regex = new RegExp(`\\b${word.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      return regex.test(contentLower);
+    });
+    
+    if (hasBlockedContent) {
+      const userId = (req as any).user?.id || 'anonymous';
+      await logAudit('content_moderated', userId, { 
+        reason: 'blocked_word',
+        content_length: content.length 
+      });
+      return res.status(400).json({ error: 'Content violates community guidelines' });
+    }
+
+    // Check for excessive repetition (spam detection)
+    const words = content.split(/\s+/);
+    const wordCounts: Record<string, number> = {};
+    for (const word of words) {
+      const normalized = word.toLowerCase();
+      wordCounts[normalized] = (wordCounts[normalized] || 0) + 1;
+    }
+    
+    const maxRepetition = Math.max(...Object.values(wordCounts));
+    if (maxRepetition > 20 && words.length > 50) {
+      const userId = (req as any).user?.id || 'anonymous';
+      await logAudit('content_moderated', userId, { 
+        reason: 'excessive_repetition',
+        max_repetition: maxRepetition 
+      });
+      return res.status(400).json({ error: 'Content appears to be spam' });
+    }
+    
+    next();
+  } catch (error: any) {
+    // Log moderation errors but don't block the request
+    await logAudit('moderation_error', (req as any).user?.id || 'anonymous', { 
+      error: error.message 
+    });
+    next(error);
+  }
+};
+
