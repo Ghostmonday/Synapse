@@ -1,0 +1,9 @@
+{
+  "pattern": "conversation flow of replies and branches",
+  "threshold": 0.7,
+  "action": "suggest_compression_or_summary",
+  "target": "src/components/ConversationView.vue",
+  "priority": "low",
+  "autonomyRole": "LLM suggests compression or summary"
+}
+

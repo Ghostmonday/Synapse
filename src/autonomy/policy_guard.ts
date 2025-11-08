@@ -18,37 +18,94 @@ export class PolicyGuard {
    * 
    * Returns true if action is safe to execute, false otherwise.
    * 
+   * Supports both string commands and AI automation actions (with reasoning)
+   * 
    * Current validation rules:
    * - BLOCK: Commands containing dangerous patterns (rm -rf, shutdown, format)
+   * - BLOCK: AI actions that modify critical data (delete user data, change security settings)
    * - ALLOW: Docker commands, bash scripts, script paths
+   * - ALLOW: Safe AI automations (rate limits, cache TTL, moderation thresholds)
    * - DEFAULT: Allow (but should be more restrictive in production)
-   * 
-   * TODO: Enhance with:
-   * - Whitelist of allowed commands/scripts
-   * - Blacklist of dangerous patterns (more comprehensive)
-   * - Policy-based validation (check against policies array)
-   * - Rate limiting (prevent same action from running too frequently)
-   * - Resource limits (prevent actions that could exhaust resources)
    */
-  validate(action: string): boolean {
+  validate(action: string | { action: string; reasoning?: string; [key: string]: any }): boolean {
+    // Handle both string commands and AI action objects
+    const actionStr = typeof action === 'string' ? action : action.action;
+    const reasoning = typeof action === 'object' ? action.reasoning : undefined;
+    const actionType = typeof action === 'object' ? action.action : action;
+
     // Block obviously dangerous commands
     // These patterns are red flags that should never be executed autonomously
-    if (action.includes('rm -rf') || // Delete everything recursively
-        action.includes('shutdown') || // System shutdown
-        action.includes('format')) { // Disk formatting
+    if (actionStr.includes('rm -rf') || // Delete everything recursively
+        actionStr.includes('shutdown') || // System shutdown
+        actionStr.includes('format') || // Disk formatting
+        actionStr.includes('drop table') || // Database table deletion
+        actionStr.includes('delete from') && actionStr.includes('users')) { // User data deletion
       return false; // Reject dangerous actions
+    }
+
+    // AI Automation Actions - Whitelist of safe actions
+    const safeAIActions = [
+      'adjust_rate_limit',
+      'deactivate_bot',
+      'enable_auto_moderation',
+      'adjust_cache_ttl',
+      'create_index',
+      'adjust_moderation_threshold',
+      'optimize_query',
+      'scale_resource'
+    ];
+
+    // Check if this is a whitelisted AI action
+    if (typeof action === 'object' && safeAIActions.includes(actionType)) {
+      // Additional validation based on action type
+      switch (actionType) {
+        case 'adjust_rate_limit':
+          // Allow rate limit adjustments (safe)
+          return true;
+        case 'deactivate_bot':
+          // Allow bot deactivation if reasoning is provided
+          return !!reasoning;
+        case 'enable_auto_moderation':
+          // Allow auto-moderation enablement (safe)
+          return true;
+        case 'adjust_cache_ttl':
+          // Allow cache TTL adjustments (safe)
+          return true;
+        case 'create_index':
+          // Allow index creation (safe, improves performance)
+          return true;
+        case 'adjust_moderation_threshold':
+          // Allow moderation threshold adjustments (safe)
+          return true;
+        default:
+          // Unknown AI action - require explicit approval
+          return false;
+      }
+    }
+    
+    // Block dangerous AI actions
+    const dangerousAIActions = [
+      'delete_user_data',
+      'change_security_settings',
+      'modify_rls_policies',
+      'grant_admin_access',
+      'change_billing_settings'
+    ];
+
+    if (typeof action === 'object' && dangerousAIActions.includes(actionType)) {
+      return false; // Always reject dangerous AI actions
     }
     
     // Allow safe operation types
     // Docker commands are generally safe (restart, scale, etc.)
     // Scripts in scripts/ directory are reviewed and version-controlled
-    if (action.includes('docker') || // Docker commands
-        action.includes('bash') || // Bash script execution
-        action.includes('scripts/')) { // Scripts from our repo
+    if (actionStr.includes('docker') || // Docker commands
+        actionStr.includes('bash') || // Bash script execution
+        actionStr.includes('scripts/')) { // Scripts from our repo
       return true; // Allow safe operations
     }
     
-    // Default: Allow (should be more restrictive in production)
+    // Default: Allow (but should be more restrictive in production)
     // TODO: Change to false by default and require explicit whitelist
     return true;
   }

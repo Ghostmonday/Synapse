@@ -1,0 +1,9 @@
+{
+  "pattern": "high message_rollback rate",
+  "threshold": 0.3,
+  "action": "show_draft_recovery_banner",
+  "target": "src/components/DraftManager.vue",
+  "priority": "high",
+  "autonomyRole": "LLM proposes auto-save or undo button"
+}
+

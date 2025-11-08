@@ -1,0 +1,374 @@
+/**
+ * UX Telemetry Service
+ * 
+ * Service layer for storing and querying UX telemetry events.
+ * Completely separate from system/infra telemetry.
+ * 
+ * @module ux-telemetry-service
+ */
+
+import { supabase } from '../config/db.js';
+import { logError, logInfo } from '../shared/logger.js';
+import type { UXTelemetryEvent, UXEventCategory } from '../types/ux-telemetry.js';
+import { redactUXTelemetryEvent, redactUXTelemetryBatch } from './ux-telemetry-redaction.js';
+
+/**
+ * Insert a single UX telemetry event
+ */
+export async function insertUXTelemetryEvent(
+  event: UXTelemetryEvent
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    // Redact PII (server-side safety net)
+    const { event: redactedEvent, stats } = redactUXTelemetryEvent(event);
+    
+    // Insert into database
+    const { error } = await supabase.from('ux_telemetry').insert({
+      trace_id: redactedEvent.traceId,
+      session_id: redactedEvent.sessionId,
+      event_type: redactedEvent.eventType,
+      category: redactedEvent.category,
+      component_id: redactedEvent.componentId || null,
+      state_before: redactedEvent.stateBefore || null,
+      state_after: redactedEvent.stateAfter || null,
+      metadata: redactedEvent.metadata,
+      device_context: redactedEvent.deviceContext || null,
+      sampling_flag: redactedEvent.samplingFlag,
+      user_id: redactedEvent.userId || null,
+      room_id: redactedEvent.roomId || null,
+      event_time: redactedEvent.timestamp,
+    });
+    
+    if (error) {
+      logError('[UX Telemetry] Failed to insert event', error);
+      return { success: false, error: error.message };
+    }
+    
+    if (stats.wasModified) {
+      logInfo(`[UX Telemetry] Event inserted with PII redaction: ${redactedEvent.eventType}`);
+    }
+    
+    return { success: true };
+  } catch (error: any) {
+    logError('[UX Telemetry] Error inserting event', error);
+    return { success: false, error: error.message || 'Unknown error' };
+  }
+}
+
+/**
+ * Insert a batch of UX telemetry events
+ */
+export async function insertUXTelemetryBatch(
+  events: UXTelemetryEvent[]
+): Promise<{
+  success: boolean;
+  inserted: number;
+  failed: number;
+  errors: string[];
+}> {
+  try {
+    // Redact PII from batch
+    const { events: redactedEvents, stats } = redactUXTelemetryBatch(events);
+    
+    if (stats.wasModified) {
+      logInfo(
+        `[UX Telemetry] Batch redaction: ${stats.fieldsRedacted} fields, ` +
+        `${stats.totalPiiInstances} PII instances removed`
+      );
+    }
+    
+    // Transform events for database
+    const dbEvents = redactedEvents.map(event => ({
+      trace_id: event.traceId,
+      session_id: event.sessionId,
+      event_type: event.eventType,
+      category: event.category,
+      component_id: event.componentId || null,
+      state_before: event.stateBefore || null,
+      state_after: event.stateAfter || null,
+      metadata: event.metadata,
+      device_context: event.deviceContext || null,
+      sampling_flag: event.samplingFlag,
+      user_id: event.userId || null,
+      room_id: event.roomId || null,
+      event_time: event.timestamp,
+    }));
+    
+    // Batch insert
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .insert(dbEvents)
+      .select('id');
+    
+    if (error) {
+      logError('[UX Telemetry] Failed to insert batch', error);
+      return {
+        success: false,
+        inserted: 0,
+        failed: events.length,
+        errors: [error.message],
+      };
+    }
+    
+    const inserted = data?.length || 0;
+    const failed = events.length - inserted;
+    
+    logInfo(`[UX Telemetry] Batch inserted: ${inserted} events, ${failed} failed`);
+    
+    return {
+      success: failed === 0,
+      inserted,
+      failed,
+      errors: failed > 0 ? ['Some events failed to insert'] : [],
+    };
+  } catch (error: any) {
+    logError('[UX Telemetry] Error inserting batch', error);
+    return {
+      success: false,
+      inserted: 0,
+      failed: events.length,
+      errors: [error.message || 'Unknown error'],
+    };
+  }
+}
+
+/**
+ * Get events by session ID (for user journey analysis)
+ */
+export async function getEventsBySession(
+  sessionId: string,
+  limit: number = 100
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('session_id', sessionId)
+      .order('event_time', { ascending: true })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching events by session', error);
+      return null;
+    }
+    
+    // Transform database records to UXTelemetryEvent format
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getEventsBySession', error);
+    return null;
+  }
+}
+
+/**
+ * Get events by category (for LLM observer pattern detection)
+ */
+export async function getEventsByCategory(
+  category: UXEventCategory,
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('category', category)
+      .gte('event_time', since)
+      .order('event_time', { ascending: false })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching events by category', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getEventsByCategory', error);
+    return null;
+  }
+}
+
+/**
+ * Get events by trace ID (for correlating with backend traces)
+ */
+export async function getEventsByTrace(
+  traceId: string,
+  limit: number = 100
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('trace_id', traceId)
+      .order('event_time', { ascending: true })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching events by trace', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getEventsByTrace', error);
+    return null;
+  }
+}
+
+/**
+ * Get events by user ID
+ */
+export async function getEventsByUser(
+  userId: string,
+  hours: number = 24,
+  limit: number = 1000
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('user_id', userId)
+      .gte('event_time', since)
+      .order('event_time', { ascending: false })
+      .limit(limit);
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching events by user', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in getEventsByUser', error);
+    return null;
+  }
+}
+
+/**
+ * Get recent events summary
+ */
+export async function getRecentSummary(hours: number = 24): Promise<any[] | null> {
+  try {
+    const since = new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+    
+    const { data, error } = await supabase.rpc('get_ux_recent_summary', {
+      p_hours: hours,
+    });
+    
+    if (error) {
+      // Fallback to manual query if RPC doesn't exist
+      const { data: viewData, error: viewError } = await supabase
+        .from('ux_telemetry_recent_summary')
+        .select('*');
+      
+      if (viewError) {
+        logError('[UX Telemetry] Error fetching recent summary', viewError);
+        return null;
+      }
+      
+      return viewData;
+    }
+    
+    return data;
+  } catch (error) {
+    logError('[UX Telemetry] Error in getRecentSummary', error);
+    return null;
+  }
+}
+
+/**
+ * Get category summary (for LLM observer)
+ */
+export async function getCategorySummary(): Promise<any[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('ux_telemetry_category_summary')
+      .select('*');
+    
+    if (error) {
+      logError('[UX Telemetry] Error fetching category summary', error);
+      return null;
+    }
+    
+    return data;
+  } catch (error) {
+    logError('[UX Telemetry] Error in getCategorySummary', error);
+    return null;
+  }
+}
+
+/**
+ * Delete user's UX telemetry (GDPR compliance)
+ */
+export async function deleteUserTelemetry(userId: string): Promise<number> {
+  try {
+    const { data, error } = await supabase.rpc('delete_user_ux_telemetry', {
+      p_user_id: userId,
+    });
+    
+    if (error) {
+      logError('[UX Telemetry] Error deleting user telemetry', error);
+      return 0;
+    }
+    
+    const deletedCount = data || 0;
+    logInfo(`[UX Telemetry] Deleted ${deletedCount} events for user ${userId}`);
+    
+    return deletedCount;
+  } catch (error) {
+    logError('[UX Telemetry] Error in deleteUserTelemetry', error);
+    return 0;
+  }
+}
+
+/**
+ * Export user's UX telemetry (GDPR compliance)
+ */
+export async function exportUserTelemetry(
+  userId: string
+): Promise<UXTelemetryEvent[] | null> {
+  try {
+    const { data, error } = await supabase
+      .from('ux_telemetry')
+      .select('*')
+      .eq('user_id', userId)
+      .order('event_time', { ascending: true });
+    
+    if (error) {
+      logError('[UX Telemetry] Error exporting user telemetry', error);
+      return null;
+    }
+    
+    return (data || []).map(transformDbToEvent);
+  } catch (error) {
+    logError('[UX Telemetry] Error in exportUserTelemetry', error);
+    return null;
+  }
+}
+
+/**
+ * Transform database record to UXTelemetryEvent
+ */
+function transformDbToEvent(dbRecord: any): UXTelemetryEvent {
+  return {
+    traceId: dbRecord.trace_id,
+    sessionId: dbRecord.session_id,
+    eventType: dbRecord.event_type,
+    category: dbRecord.category,
+    timestamp: dbRecord.event_time,
+    componentId: dbRecord.component_id,
+    stateBefore: dbRecord.state_before,
+    stateAfter: dbRecord.state_after,
+    metadata: dbRecord.metadata || {},
+    deviceContext: dbRecord.device_context,
+    samplingFlag: dbRecord.sampling_flag,
+    userId: dbRecord.user_id,
+    roomId: dbRecord.room_id,
+  };
+}
+

@@ -185,5 +185,91 @@ export class LLMReasoner {
       throw error; // Re-throw (caller must handle)
     }
   }
+
+  /**
+   * Analyze method for AI automation
+   * More flexible than reason() - accepts context and prompt, returns structured analysis
+   * 
+   * Used by AI automation services for:
+   * - Rate limit optimization
+   * - Cache TTL optimization
+   * - Index recommendations
+   * - Moderation adjustments
+   * 
+   * Includes safeguards: rate limiting, timeout, error handling
+   */
+  async analyze(options: {
+    context: any;
+    prompt: string;
+  }): Promise<{
+    action?: string;
+    reasoning?: string;
+    confidence?: number;
+    recommendedLimits?: { global?: number; ip?: number; user?: number };
+    recommendedTTLs?: { l1?: number; l2?: number };
+    index?: { table_name: string; columns: string[]; index_name: string; index_type: string };
+    [key: string]: any;
+  }> {
+    try {
+      // Import safeguards dynamically to avoid circular dependency
+      const { checkLLMRateLimit, trackTokenSpend, withTimeout } = await import('../services/ai-safeguards.js');
+      
+      // Check rate limit before making call
+      if (!(await checkLLMRateLimit())) {
+        logError('LLM rate limit exceeded - aborting analyze call');
+        throw new Error('LLM rate limit exceeded');
+      }
+
+      const fullPrompt = `${options.prompt}\n\nContext: ${JSON.stringify(options.context)}`;
+      
+      // Wrap API call with timeout (30 seconds)
+      const response = await withTimeout(async () => {
+        return await this.client.chat.completions.create({
+          model: process.env.DEEPSEEK_API_KEY ? 'deepseek-chat' : 'gpt-4',
+          messages: [
+            {
+              role: 'system',
+              content: 'You are an AI operations agent. Analyze the context and prompt, then return valid JSON with your analysis. Include: action (string), reasoning (string), and any relevant recommendations as structured data.'
+            },
+            { role: 'user', content: fullPrompt }
+          ],
+          response_format: { type: 'json_object' },
+          temperature: 0.3, // Slight creativity for better analysis
+          max_tokens: 1000
+        });
+      }, 30000, 'LLM analyze');
+
+      const content = response.choices[0]?.message?.content || '{}';
+      const parsed = JSON.parse(content);
+
+      // Track token usage (approximate)
+      const tokensUsed = response.usage?.total_tokens || 1000; // Fallback estimate
+      await trackTokenSpend(tokensUsed);
+
+      return {
+        action: parsed.action || 'no_action',
+        reasoning: parsed.reasoning || 'No reasoning provided',
+        confidence: parsed.confidence || 0.5,
+        recommendedLimits: parsed.recommendedLimits,
+        recommendedTTLs: parsed.recommendedTTLs,
+        index: parsed.index,
+        ...parsed // Include any other fields
+      };
+    } catch (error: any) {
+      logError('LLM analyze error', error);
+      
+      // Check if it's a rate limit or timeout error
+      if (error.message?.includes('rate limit') || error.message?.includes('timed out')) {
+        // Re-throw so caller can handle backoff
+        throw error;
+      }
+      
+      return {
+        action: 'no_action',
+        reasoning: `Error during analysis: ${error.message}`,
+        confidence: 0
+      };
+    }
+  }
 }
 
