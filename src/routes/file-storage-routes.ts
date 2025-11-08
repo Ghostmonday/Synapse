@@ -7,15 +7,16 @@ import { Router } from 'express';
 import multer from 'multer';
 import * as fileStorageService from '../services/file-storage-service.js';
 import { telemetryHook } from '../telemetry/index.js';
+import { fileUploadSecurity } from '../middleware/file-upload-security.js';
 
-const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // 50MB max
+const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max (enforced by middleware)
 const router = Router();
 
 /**
  * POST /files/upload
  * Upload a file to S3 and store metadata
  */
-router.post('/upload', upload.single('file'), async (req, res, next) => {
+router.post('/upload', fileUploadSecurity, upload.single('file'), async (req, res, next) => {
   try {
     telemetryHook('files_upload_start');
     const result = await fileStorageService.uploadFileToStorage(req.file); // Error branch: S3 upload can hang, no timeout

@@ -12,8 +12,14 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   if (!header) return res.status(401).json({ error: 'Unauthorized' });
   const token = header.split(' ')[1];
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
+  
+  const jwtSecret = process.env.JWT_SECRET;
+  if (!jwtSecret) {
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+  
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'dev_secret');
+    const decoded = jwt.verify(token, jwtSecret);
     (req as any).user = decoded;
     next();
   } catch (err) {

@@ -1,6 +1,14 @@
-# Sinapse Backend
+# Sinapse
 
-A production-ready backend API for the Sinapse platform, providing real-time messaging, file storage, user authentication, and autonomous operations management.
+A production-ready communication platform with real-time messaging, voice/video calls, file storage, AI integration, and autonomous operations management.
+
+## 🚀 Status
+
+✅ **Schema Ready** - Database fully migrated and tested  
+✅ **Core Features** - Messaging, threads, reactions, search  
+✅ **Monetization** - Subscription system with usage tracking  
+✅ **Security** - Password hashing, file upload validation  
+✅ **Voice/Video** - LiveKit integration with quality enhancement
 
 ## Overview
 
@@ -119,7 +127,18 @@ DEEPSEEK_API_KEY=your_deepseek_key
 
 3. **Initialize database:**
 
-Run the SQL schema from `sql/init-db.sql` in your Supabase SQL editor.
+Run the complete schema in Supabase SQL Editor:
+```sql
+-- Option 1: Run complete schema (recommended)
+\i sql/sinapse_complete.sql
+
+-- Option 2: Run migrations in order
+\i sql/01_sinapse_schema.sql
+\i sql/09_p0_features.sql
+\i sql/migrations/migrate-remaining-tables.sql
+```
+
+Or use the migration scripts in `sql/migrations/` for incremental updates.
 
 4. **Start the server:**
 
@@ -200,6 +219,18 @@ The server will start on `http://localhost:3000` (or your configured PORT).
 - `GET /metrics` - Prometheus metrics endpoint
 
 ## Development
+
+### Scripts
+
+Development scripts are organized in `scripts/dev/`:
+- `setup.sh` - Initial project setup
+- `seed.sh` - Database seeding
+- `test-endpoints.sh` - API endpoint testing
+- `validate-openapi.ts` - OpenAPI schema validation
+
+Operations scripts are in `scripts/ops/`:
+- `repair_high_cpu.sh` - CPU issue remediation
+- `repair_high_latency.sh` - Latency issue remediation
 
 ### Building
 

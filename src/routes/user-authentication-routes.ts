@@ -42,5 +42,26 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
+/**
+ * POST /auth/register
+ * Register a new user with username and password
+ */
+router.post('/register', async (req, res, next) => {
+  try {
+    telemetryHook('auth_register_start');
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const result = await authenticationService.registerUser(username, password);
+    telemetryHook('auth_register_end');
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
 
