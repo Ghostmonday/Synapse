@@ -38,46 +38,61 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
 
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
+      // Generate unique key for this client (IP or user ID)
+      // Format: "rate_limit:{identifier}" - used as Redis sorted set key
       const key = `rate_limit:${opts.keyGenerator!(req)}`;
-      const now = Date.now();
+      const now = Date.now(); // Current timestamp in milliseconds
 
-      // Use sliding window log algorithm
+      // Use Redis pipeline for atomic operations (all succeed or all fail)
+      // Sliding window log algorithm: track each request with timestamp
       const pipeline = redis.pipeline();
       
-      // Remove old entries
+      // Step 1: Remove old entries outside the time window
+      // zremrangebyscore removes entries with scores (timestamps) < (now - windowMs)
+      // This keeps only requests within the current window
       pipeline.zremrangebyscore(key, 0, now - windowMs);
       
-      // Count current requests
+      // Step 2: Count remaining requests in the window
+      // zcard returns count of entries in sorted set (requests in current window)
       pipeline.zcard(key);
       
-      // Add current request
+      // Step 3: Add current request to the window
+      // Score = timestamp (for sorting/expiration)
+      // Value = unique identifier (timestamp + random to prevent collisions)
       pipeline.zadd(key, now, `${now}-${Math.random()}`);
       
-      // Set expiration
+      // Step 4: Set expiration on the key (cleanup if no requests for a while)
+      // Expire after windowMs (convert to seconds for Redis EXPIRE command)
       pipeline.expire(key, Math.ceil(windowMs / 1000));
       
+      // Execute all pipeline commands atomically
       const results = await pipeline.exec();
+      // Extract count from pipeline results: results[1] is zcard result, [1] is the count value
       const count = results?.[1]?.[1] as number || 0;
 
-      // Set rate limit headers
-      res.setHeader('X-RateLimit-Limit', max.toString());
-      res.setHeader('X-RateLimit-Remaining', Math.max(0, max - count - 1).toString());
-      res.setHeader('X-RateLimit-Reset', new Date(now + windowMs).toISOString());
+      // Set standard rate limit headers (RFC 6585 compliant)
+      res.setHeader('X-RateLimit-Limit', max.toString()); // Max requests allowed
+      res.setHeader('X-RateLimit-Remaining', Math.max(0, max - count - 1).toString()); // Requests left (max - current - 1)
+      res.setHeader('X-RateLimit-Reset', new Date(now + windowMs).toISOString()); // When window resets
 
+      // Check if limit exceeded
       if (count >= max) {
         logWarning(`Rate limit exceeded for ${opts.keyGenerator!(req)}`);
-        return res.status(429).json({
+        return res.status(429).json({ // 429 = Too Many Requests
           error: 'Rate limit exceeded',
           message: opts.message,
-          retryAfter: Math.ceil(windowMs / 1000),
+          retryAfter: Math.ceil(windowMs / 1000), // Seconds until retry allowed
         });
       }
 
+      // Request allowed - continue to next middleware/route handler
       next();
     } catch (error: any) {
-      // If Redis fails, allow request but log error
+      // If Redis fails, fail open (allow request) rather than fail closed (block all)
+      // This prevents Redis outages from taking down the entire API
+      // Log error for monitoring but don't block legitimate users
       logWarning('Rate limiter Redis error, allowing request', error);
-      next();
+      next(); // Allow request to proceed
     }
   };
 }

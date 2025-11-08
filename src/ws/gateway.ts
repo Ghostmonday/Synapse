@@ -10,36 +10,78 @@ import path from 'path';
 import { handlePresence } from './handlers/presence.js';
 import { handleMessaging } from './handlers/messaging.js';
 
+// Protobuf schema root (loaded from .proto file)
+// Null until schema is loaded
 let root: protobuf.Root | null = null;
 
+/**
+ * Load protobuf schema definition
+ * 
+ * Protobuf provides efficient binary serialization for WebSocket messages.
+ * Schema defines message structure (type, payload, etc.)
+ */
 async function loadProto() {
   if (!root) {
-    // Use process.cwd() to get project root, works in both dev and production
+    // Load .proto file from specs directory
+    // process.cwd() = project root (works in both dev and production builds)
+    // Path is relative to project root: specs/proto/ws_envelope.proto
     root = await protobuf.load(path.join(process.cwd(), 'specs/proto/ws_envelope.proto'));
   }
 }
+// Load schema on module init (non-blocking - errors are warnings)
 loadProto().catch(err => console.warn('proto load failed', err));
 
+/**
+ * Setup WebSocket gateway with protobuf message handling
+ * 
+ * Handles incoming WebSocket connections and routes messages based on type.
+ * Uses protobuf for efficient binary message encoding/decoding.
+ */
 export function setupWebSocketGateway(wss: WebSocketServer) {
+  // Listen for new WebSocket connections
   wss.on('connection', (ws: WebSocket) => {
+    // Handle incoming messages on this connection
     ws.on('message', (data: Buffer) => {
+      // Check if protobuf schema is loaded
       if (!root) {
+        // Schema not loaded yet - reject message with error
         ws.send(JSON.stringify({ type: 'error', msg: 'proto not loaded' }));
         return;
       }
+      
+      // Look up the WSEnvelope type from loaded schema
+      // 'sinaps.v1.WSEnvelope' is the fully qualified type name from .proto file
       const WSEnvelope = root!.lookupType('sinaps.v1.WSEnvelope');
+      
       let envelope;
       try {
+        // Decode binary protobuf message to JavaScript object
+        // data is Buffer containing protobuf-encoded bytes
         envelope = WSEnvelope.decode(data);
       } catch (err) {
+        // Decode failed - malformed message or wrong schema version
         ws.send(JSON.stringify({ type: 'error', msg: 'invalid envelope' }));
         return;
       }
+      
+      // Extract message type from decoded envelope
+      // Type determines which handler to route to
       const t = (envelope as any).type;
+      
+      // Route message to appropriate handler based on type
       switch (t) {
-        case 'presence': handlePresence(ws, envelope); break;
-        case 'messaging': handleMessaging(ws, envelope); break;
-        default: ws.send(JSON.stringify({ type: 'error', msg: 'unknown type' })); break;
+        case 'presence': 
+          // Presence updates (online/offline status)
+          handlePresence(ws, envelope); 
+          break;
+        case 'messaging': 
+          // Chat messages
+          handleMessaging(ws, envelope); 
+          break;
+        default: 
+          // Unknown message type - send error back to client
+          ws.send(JSON.stringify({ type: 'error', msg: 'unknown type' })); 
+          break;
       }
     });
   });

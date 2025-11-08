@@ -92,16 +92,34 @@ router.post('/demo-seed', async (_req: Request, res: Response) => {
 /**
  * Rate limiter function for room actions
  * Allows up to 5 actions per room_id per minute
+ * 
+ * Uses Redis INCR pattern:
+ * - First call: INCR creates key with value 1, then EXPIRE sets 60s TTL
+ * - Subsequent calls: INCR increments counter, EXPIRE is no-op (key already has TTL)
+ * - After 60s: Key expires, counter resets to 0
  */
 async function rateLimitRoomActions(roomId: string): Promise<boolean> {
+  // Dynamic import to avoid circular dependency
   const { getRedisClient } = await import('../config/db.js');
   const redisClient = getRedisClient();
+  
+  // Redis key format: "healing_action:{roomId}"
+  // Each room gets its own counter
   const key = `healing_action:${roomId}`;
+  
+  // Increment counter atomically (INCR is atomic in Redis)
+  // Returns new count value
   const count = await redisClient.incr(key);
+  
+  // Set expiration only on first increment (count === 1)
+  // This creates a 60-second sliding window
+  // If key already exists, EXPIRE is no-op (doesn't reset TTL)
   if (count === 1) {
-    await redisClient.expire(key, 60); // 1-minute window
+    await redisClient.expire(key, 60); // 60 seconds = 1 minute window
   }
-  return count <= 5; // Allow up to 5 actions per minute
+  
+  // Return true if under limit (5 actions), false if exceeded
+  return count <= 5; // Allow up to 5 actions per minute per room
 }
 
 /**
@@ -111,28 +129,36 @@ async function rateLimitRoomActions(roomId: string): Promise<boolean> {
  */
 router.post('/apply-recommendation', authMiddleware, async (req: Request, res: Response, next) => {
   try {
+    // Dynamic import to reduce initial bundle size (Zod is only used here)
     const { z } = await import('zod');
     
     // Define Zod schema for input validation with strict typing
+    // .strict() prevents extra fields (security: reject unexpected data)
     const RecommendationSchema = z.object({
-      room_id: z.string().uuid('Invalid room_id format').optional(),
+      room_id: z.string().uuid('Invalid room_id format').optional(), // Must be valid UUID if provided
       recommendation: z.union([
-        z.record(z.string(), z.unknown()),
-        z.string().min(1, 'Recommendation cannot be empty')
-      ]),
-    }).strict(); // Reject unknown fields
+        z.record(z.string(), z.unknown()), // Object: { key: value } format
+        z.string().min(1, 'Recommendation cannot be empty') // Or string (min 1 char)
+      ]), // Union allows either object or string
+    }).strict(); // Reject unknown fields (prevents injection of extra data)
 
+    // Validate request body against schema
+    // safeParse returns { success: boolean, data?: T, error?: ZodError }
     const validation = RecommendationSchema.safeParse(req.body);
     if (!validation.success) {
+      // Validation failed - return 400 with error details
       return res.status(400).json({ error: validation.error.message });
     }
 
+    // Extract validated data (TypeScript knows types are correct)
     const { room_id, recommendation } = validation.data;
 
-    // Rate limit if room_id is provided
+    // Rate limit if room_id is provided (per-room rate limiting)
+    // Prevents abuse: max 5 recommendations per room per minute
     if (room_id) {
       const allowed = await rateLimitRoomActions(room_id);
       if (!allowed) {
+        // Rate limit exceeded - return 429 Too Many Requests
         return res.status(429).json({ error: 'Rate limit exceeded for this room' });
       }
     }
