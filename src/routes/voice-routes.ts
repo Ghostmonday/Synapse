@@ -1,0 +1,122 @@
+/**
+ * Voice/Video Routes
+ * SIN-101: LiveKit integration for voice channels
+ */
+
+import { Router, Request, Response, NextFunction } from 'express';
+import { liveKitService } from '../services/livekit-service.js';
+import { authMiddleware } from '../server/middleware/auth.js';
+import { logError } from '../shared/logger.js';
+
+const router = Router();
+
+// Apply auth middleware
+router.use(authMiddleware);
+
+/**
+ * POST /voice/rooms/:room_name/join
+ * Create or join voice room
+ */
+router.post('/rooms/:room_name/join', async (req, res, next) => {
+  try {
+    const { room_name } = req.params;
+    const user = (req as any).user;
+
+    if (!user || !user.id) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    if (!room_name || typeof room_name !== 'string') {
+      return res.status(400).json({ error: 'Invalid room_name' });
+    }
+
+    // Create or get voice room
+    const voiceRoomName = `voice_${room_name}`;
+    await liveKitService.createVoiceRoom(voiceRoomName);
+
+    // Generate participant token
+    const token = await liveKitService.generateParticipantToken(
+      voiceRoomName,
+      user.id,
+      user.username || user.handle || ''
+    );
+
+    res.json({
+      token,
+      room_name: voiceRoomName,
+      ws_url: process.env.LIVEKIT_WS_URL || process.env.LIVEKIT_HOST,
+    });
+  } catch (error: any) {
+    logError('Voice join error', error);
+    res.status(500).json({ error: 'Failed to join voice channel' });
+  }
+});
+
+/**
+ * GET /voice/rooms/:room_name
+ * Get voice room info
+ */
+router.get('/rooms/:room_name', async (req, res, next) => {
+  try {
+    const { room_name } = req.params;
+
+    if (!room_name || typeof room_name !== 'string') {
+      return res.status(400).json({ error: 'Invalid room_name' });
+    }
+
+    const session = await liveKitService.getVoiceSession(room_name);
+
+    if (!session) {
+      return res.status(404).json({ error: 'Voice room not found' });
+    }
+
+    res.json(session);
+  } catch (error: any) {
+    logError('Get voice room error', error);
+    res.status(500).json({ error: 'Failed to get voice room info' });
+  }
+});
+
+/**
+ * GET /voice/rooms/:room_name/stats
+ * Get voice performance stats
+ */
+router.get('/rooms/:room_name/stats', async (req, res, next) => {
+  try {
+    const { room_name } = req.params;
+
+    if (!room_name || typeof room_name !== 'string') {
+      return res.status(400).json({ error: 'Invalid room_name' });
+    }
+
+    const stats = liveKitService.getPerformanceStats(room_name);
+    res.json(stats || {});
+  } catch (error: any) {
+    logError('Get voice stats error', error);
+    res.status(500).json({ error: 'Failed to get voice stats' });
+  }
+});
+
+/**
+ * POST /voice/rooms/:room_name/stats
+ * Log voice performance stats
+ */
+router.post('/rooms/:room_name/stats', async (req, res, next) => {
+  try {
+    const { room_name } = req.params;
+    const stats = req.body;
+
+    if (!room_name || typeof room_name !== 'string') {
+      return res.status(400).json({ error: 'Invalid room_name' });
+    }
+
+    await liveKitService.logVoiceStats(room_name, stats);
+    res.json({ success: true });
+  } catch (error: any) {
+    logError('Log voice stats error', error);
+    res.status(500).json({ error: 'Failed to log voice stats' });
+  }
+});
+
+export default router;
+

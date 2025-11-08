@@ -21,13 +21,54 @@ if (!supabaseKey) {
   throw new Error('SUPABASE_SERVICE_ROLE_KEY is required');
 }
 
-// Initialize Supabase client
+// Initialize Supabase client with enhanced configuration
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     persistSession: false, // Backend doesn't need session persistence
     autoRefreshToken: false,
   },
+  db: {
+    schema: 'public',
+  },
+  global: {
+    headers: { 'x-application-name': 'sinapse-backend' },
+  },
 });
+
+// Connection health check
+let lastHealthCheck = Date.now();
+let healthCheckInterval: NodeJS.Timeout | null = null;
+
+export async function checkSupabaseHealth(): Promise<boolean> {
+  try {
+    const { error } = await supabase
+      .from('users')
+      .select('id')
+      .limit(1);
+    
+    if (error) {
+      logError('Supabase health check failed', error);
+      return false;
+    }
+    
+    lastHealthCheck = Date.now();
+    return true;
+  } catch (error: any) {
+    logError('Supabase health check error', error);
+    return false;
+  }
+}
+
+// Periodic health check every 30 seconds
+if (!healthCheckInterval) {
+  healthCheckInterval = setInterval(async () => {
+    const healthy = await checkSupabaseHealth();
+    if (!healthy) {
+      logError('Supabase connection unhealthy, triggering circuit breaker');
+      // Circuit breaker will be triggered by failed requests
+    }
+  }, 30000);
+}
 
 let redisClient = null;
 

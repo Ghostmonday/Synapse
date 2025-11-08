@@ -1,0 +1,261 @@
+/**
+ * LiveKit Service
+ * Complete voice/video session lifecycle management
+ */
+
+import { RoomServiceClient, AccessToken } from 'livekit-server-sdk';
+import { recordTelemetryEvent } from './telemetry-service.js';
+import { logError, logInfo } from '../shared/logger.js';
+import type { VoiceSession, VoiceStats } from '../types/message.types.js';
+
+export class LiveKitService {
+  private roomService: RoomServiceClient;
+  private performanceStats: Map<string, VoiceStats> = new Map();
+
+  constructor() {
+    const livekitHost = process.env.LIVEKIT_HOST || process.env.LIVEKIT_URL;
+    const livekitApiKey = process.env.LIVEKIT_API_KEY;
+    const livekitApiSecret = process.env.LIVEKIT_API_SECRET;
+
+    if (!livekitHost || !livekitApiKey || !livekitApiSecret) {
+      logError('LiveKit configuration missing', new Error('LIVEKIT_HOST, LIVEKIT_API_KEY, and LIVEKIT_API_SECRET required'));
+      throw new Error('LiveKit not configured');
+    }
+
+    this.roomService = new RoomServiceClient(livekitHost, livekitApiKey, livekitApiSecret);
+  }
+
+  /**
+   * SIN-101: Create voice room
+   */
+  async createVoiceRoom(roomName: string, maxParticipants: number = 50): Promise<string> {
+    try {
+      if (!roomName || typeof roomName !== 'string') {
+        throw new Error('Invalid roomName');
+      }
+
+      if (typeof maxParticipants !== 'number' || maxParticipants < 1) {
+        maxParticipants = 50;
+      }
+
+      const room = await this.roomService.createRoom({
+        name: roomName,
+        emptyTimeout: 300, // 5 minutes
+        maxParticipants,
+      });
+
+      try {
+        await recordTelemetryEvent('voice_room_created', {
+          room_id: roomName,
+        });
+      } catch (telemetryError) {
+        logError('Failed to log telemetry for room creation', telemetryError);
+      }
+
+      return room.name || roomName;
+    } catch (error: any) {
+      logError('Failed to create voice room', error);
+      throw new Error('Could not create voice room');
+    }
+  }
+
+  /**
+   * SIN-101: Generate participant token
+   */
+  generateParticipantToken(
+    roomName: string,
+    participantIdentity: string,
+    userName: string = ''
+  ): Promise<string> {
+    if (!roomName || typeof roomName !== 'string') {
+      throw new Error('Invalid roomName');
+    }
+
+    if (!participantIdentity || typeof participantIdentity !== 'string') {
+      throw new Error('Invalid participantIdentity');
+    }
+
+    const livekitApiKey = process.env.LIVEKIT_API_KEY;
+    const livekitApiSecret = process.env.LIVEKIT_API_SECRET;
+
+    if (!livekitApiKey || !livekitApiSecret) {
+      throw new Error('LiveKit API credentials not configured');
+    }
+
+    const token = new AccessToken(livekitApiKey, livekitApiSecret, {
+      identity: participantIdentity,
+      name: userName,
+    });
+
+    token.addGrant({
+      roomJoin: true,
+      room: roomName,
+      canPublish: true,
+      canSubscribe: true,
+      canPublishData: true,
+    });
+
+    return Promise.resolve(token.toJwt());
+  }
+
+  /**
+   * SIN-101: Get room session info
+   */
+  async getVoiceSession(roomName: string): Promise<VoiceSession | null> {
+    try {
+      if (!roomName || typeof roomName !== 'string') {
+        throw new Error('Invalid roomName');
+      }
+
+      const rooms = await this.roomService.listRooms([roomName]);
+      const room = rooms.find(r => r.name === roomName);
+
+      if (!room) {
+        return null;
+      }
+
+      const participants = await this.roomService.listParticipants(roomName);
+
+      return {
+        room_name: roomName,
+        participant_count: participants.length,
+        participants: participants.map(p => ({
+          id: p.sid,
+          user_id: p.identity,
+          identity: p.identity,
+          is_speaking: false, // Would need active subscription to track
+          audio_level: 0, // Would need active subscription
+          connection_quality: (p as any).connectionQuality || 0,
+        })),
+      };
+    } catch (error: any) {
+      logError('Failed to get voice session', error);
+      return null;
+    }
+  }
+
+  /**
+   * SIN-101: Disconnect participant
+   */
+  async disconnectParticipant(roomName: string, participantIdentity: string): Promise<void> {
+    try {
+      if (!roomName || typeof roomName !== 'string') {
+        throw new Error('Invalid roomName');
+      }
+
+      if (!participantIdentity || typeof participantIdentity !== 'string') {
+        throw new Error('Invalid participantIdentity');
+      }
+
+      await this.roomService.removeParticipant(roomName, participantIdentity);
+
+      try {
+        await recordTelemetryEvent('voice_participant_disconnected', {
+          room_id: roomName,
+        });
+      } catch (telemetryError) {
+        logError('Failed to log telemetry for disconnection', telemetryError);
+      }
+    } catch (error: any) {
+      logError('Failed to disconnect participant', error);
+    }
+  }
+
+  /**
+   * SIN-104: Log voice performance stats
+   */
+  async logVoiceStats(roomName: string, stats: VoiceStats): Promise<void> {
+    if (!roomName || typeof roomName !== 'string') {
+      logError('Invalid roomName for stats', new Error('Invalid roomName'));
+      return;
+    }
+
+    if (!stats || typeof stats !== 'object') {
+      logError('Invalid stats object', new Error('Invalid stats'));
+      return;
+    }
+
+    this.performanceStats.set(roomName, stats);
+
+    try {
+      await recordTelemetryEvent('voice_stats', {
+        room_id: roomName,
+        latency_ms: stats.latency,
+        features: {
+          packet_loss: stats.packet_loss,
+          jitter: stats.jitter,
+          bitrate: stats.bitrate,
+        },
+      });
+    } catch (telemetryError) {
+      logError('Failed to log voice stats telemetry', telemetryError);
+    }
+
+    // Alert on poor performance
+    if (stats.packet_loss > 0.1 || stats.latency > 300) {
+      try {
+        await recordTelemetryEvent('voice_quality_degraded', {
+          room_id: roomName,
+          features: {
+            packet_loss: stats.packet_loss,
+            latency: stats.latency,
+            jitter: stats.jitter,
+          },
+        });
+      } catch (telemetryError) {
+        logError('Failed to log degraded quality', telemetryError);
+      }
+    }
+  }
+
+  /**
+   * SIN-104: Get performance stats
+   */
+  getPerformanceStats(roomName: string): VoiceStats | undefined {
+    if (!roomName || typeof roomName !== 'string') {
+      return undefined;
+    }
+    return this.performanceStats.get(roomName);
+  }
+
+  /**
+   * Cleanup empty rooms
+   */
+  async cleanupEmptyRooms(): Promise<void> {
+    try {
+      const rooms = await this.roomService.listRooms();
+      const now = Date.now();
+
+      for (const room of rooms) {
+        // Delete rooms empty for more than 1 hour
+        if (room.numParticipants === 0) {
+          const creationTime = typeof room.creationTime === 'string' 
+            ? new Date(room.creationTime).getTime()
+            : (room.creationTime as any).getTime?.() || now;
+          if (now - creationTime > 3600000) {
+            await this.roomService.deleteRoom(room.name);
+            try {
+              await recordTelemetryEvent('voice_room_cleaned', {
+                room_id: room.name,
+              });
+            } catch (telemetryError) {
+              logError('Failed to log room cleanup', telemetryError);
+            }
+          }
+        }
+      }
+    } catch (error: any) {
+      logError('Failed to cleanup rooms', error);
+    }
+  }
+}
+
+export const liveKitService = new LiveKitService();
+
+// Periodic cleanup (every hour)
+setInterval(() => {
+  liveKitService.cleanupEmptyRooms().catch(err => {
+    logError('Error in periodic room cleanup', err);
+  });
+}, 3600000);
+
