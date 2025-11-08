@@ -22,6 +22,7 @@ import telemetryRoutes from '../routes/telemetry-routes.js';
 import adminRoutes from '../routes/admin-routes.js';
 import voiceRoutes from '../routes/voice-routes.js';
 import aiopsRoutes from './routes/aiops.js';
+import subscriptionRoutes from '../routes/subscription-routes.js';
 import { telemetryMiddleware } from './middleware/telemetry.js';
 import { errorMiddleware } from './middleware/error.js';
 import { rateLimit, ipRateLimit } from '../middleware/rate-limiter.js';
@@ -67,6 +68,7 @@ app.use('/config', configRoutes);
 app.use('/telemetry', telemetryRoutes);
 app.use('/admin', adminRoutes);
 app.use('/voice', voiceRoutes);
+app.use('/subscription', subscriptionRoutes);
 app.use('/api', adminRoutes); // Also mount admin routes at /api for health and demo-seed
 app.use('/api/aiops', aiopsRoutes);
 

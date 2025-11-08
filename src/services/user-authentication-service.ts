@@ -5,7 +5,8 @@
 
 import appleSignin from 'apple-signin-auth';
 import jwt from 'jsonwebtoken';
-import { findOne, upsert } from '../shared/supabase-helpers.js';
+import bcrypt from 'bcrypt';
+import { findOne, upsert, create } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
 
 // LiveKit token generation helper (optional - requires @livekit/server-sdk package)
@@ -49,9 +50,14 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
     }
 
     // Generate application JWT token
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is required');
+    }
+
     const applicationToken = jwt.sign(
       { userId: appleUserId },
-      process.env.JWT_SECRET || 'dev_secret',
+      jwtSecret,
       { expiresIn: '7d' } // JWT renewal: no refresh token, user must re-auth after 7 days
     );
 
@@ -77,18 +83,44 @@ export async function authenticateWithCredentials(
   password: string
 ): Promise<{ jwt: string }> {
   try {
-    const user = await findOne<{ id: string }>('users', {
-      username,
-      password // Note: In production, use password_hash with bcrypt // Silent fail: password comparison timing leak
+    const user = await findOne<{ id: string; password_hash?: string; password?: string }>('users', {
+      username
     });
 
     if (!user) {
       throw new Error('Invalid username or password');
     }
 
+    // Check if user has password_hash (new system) or password (legacy)
+    let isValid = false;
+    if (user.password_hash) {
+      // New system: verify bcrypt hash
+      isValid = await bcrypt.compare(password, user.password_hash);
+    } else if (user.password) {
+      // Legacy system: migrate to hash
+      isValid = password === user.password;
+      if (isValid) {
+        // Migrate to hashed password
+        const password_hash = await bcrypt.hash(password, 10);
+        await upsert('users', { id: user.id, password_hash }, 'id');
+        logInfo('User password migrated to hash', user.id);
+      }
+    } else {
+      throw new Error('Invalid username or password');
+    }
+
+    if (!isValid) {
+      throw new Error('Invalid username or password');
+    }
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is required');
+    }
+
     const applicationToken = jwt.sign(
       { userId: user.id },
-      process.env.JWT_SECRET || 'dev_secret',
+      jwtSecret,
       { expiresIn: '7d' }
     );
 
@@ -96,6 +128,49 @@ export async function authenticateWithCredentials(
   } catch (error: unknown) {
     logError('Credential authentication failed', error instanceof Error ? error : new Error(String(error)));
     throw new Error(error instanceof Error ? error.message : 'Login failed');
+  }
+}
+
+/**
+ * Register a new user with username and password
+ * Returns JWT token for the new user
+ */
+export async function registerUser(
+  username: string,
+  password: string
+): Promise<{ jwt: string }> {
+  try {
+    // Check if user already exists
+    const existingUser = await findOne('users', { username });
+    if (existingUser) {
+      throw new Error('Username already exists');
+    }
+
+    // Hash password
+    const password_hash = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await create('users', {
+      username,
+      password_hash,
+      subscription: 'free'
+    });
+
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      throw new Error('JWT_SECRET environment variable is required');
+    }
+
+    const applicationToken = jwt.sign(
+      { userId: user.id },
+      jwtSecret,
+      { expiresIn: '7d' }
+    );
+
+    return { jwt: applicationToken };
+  } catch (error: unknown) {
+    logError('Registration failed', error instanceof Error ? error : new Error(String(error)));
+    throw new Error(error instanceof Error ? error.message : 'Registration failed');
   }
 }
 
