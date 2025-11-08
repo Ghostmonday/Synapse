@@ -9,3 +9,15 @@ audit.log
 .vscode/
 .idea/
 
+# Build artifacts
+*.zip
+*.tar.gz
+*.tgz
+
+# Archive and temporary files
+docs/archive/
+Sinapse_Heavy_Patch_v2/
+
+# Logs directory
+logs/
+
