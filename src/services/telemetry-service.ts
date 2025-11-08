@@ -44,7 +44,7 @@ export async function recordTelemetryEvent(
   // Persist to Supabase telemetry table (async, can fail)
   // This provides persistent storage for historical analysis and autonomy system
   try {
-    await supabase.from('telemetry').insert({
+    await supabase.from('telemetry').insert({ // Silent fail: timeout not handled, insert hangs indefinitely
       event: eventName, // Event type identifier (e.g., 'message_sent', 'reaction_added')
       event_time: new Date().toISOString(), // ISO 8601 timestamp (PostgreSQL TIMESTAMPTZ)
       room_id: metadata?.room_id || null, // Optional: which room (if applicable)
@@ -58,7 +58,7 @@ export async function recordTelemetryEvent(
     // Log error but don't throw (fail gracefully)
     // Prometheus counter already incremented, so we have partial telemetry
     // This prevents telemetry failures from breaking application flow
-    logError('Failed to persist telemetry to Supabase', error);
+    logError('Failed to persist telemetry to Supabase', error); // Silent fail: telemetry lost, no retry
   }
 }
 

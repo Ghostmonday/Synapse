@@ -53,7 +53,7 @@ messageQueue.process('send-message', async (job) => {
   try {
     // Call the actual message service to persist and broadcast
     // This is where the real work happens (DB insert + Redis pub/sub)
-    await messageService.sendMessageToRoom({
+    await messageService.sendMessageToRoom({ // Retry: Bull retries 3x, but DB insert may succeed on retry = duplicate message
       roomId,
       senderId,
       content,
@@ -66,7 +66,7 @@ messageQueue.process('send-message', async (job) => {
     logError(`Message job ${job.id} failed`, error);
     // Re-throw error to trigger Bull's retry mechanism
     // Bull will automatically retry based on defaultJobOptions.attempts
-    throw error; // Will trigger retry
+    throw error; // Will trigger retry // After 3 retries, message permanently lost
   }
 });
 
@@ -76,11 +76,11 @@ messageQueue.on('completed', (job) => {
 });
 
 messageQueue.on('failed', (job, err) => {
-  logError(`Message job ${job.id} failed after ${job.attemptsMade} attempts`, err);
+  logError(`Message job ${job.id} failed after ${job.attemptsMade} attempts`, err); // Message permanently lost - no retry
 });
 
 messageQueue.on('stalled', (job) => {
-  logError(`Message job ${job.id} stalled`);
+  logError(`Message job ${job.id} stalled`); // Worker crashed mid-processing - job may be duplicated
 });
 
 messageQueue.on('error', (error) => {
@@ -102,18 +102,18 @@ export async function queueMessage(data: {
   content: string;
 }): Promise<{ jobId: string; status: string }> {
   try {
-    // Check queue depth before adding (back-pressure mechanism)
-    // waiting = jobs queued but not yet started
-    // active = jobs currently being processed
-    const waiting = await messageQueue.getWaitingCount();
-    const active = await messageQueue.getActiveCount();
-    
-    // If total pending jobs exceeds 10,000, reject new messages
-    // This prevents queue from growing unbounded and exhausting memory
-    // Threshold chosen based on: ~10K jobs * ~1KB/job = ~10MB memory
-    if (waiting + active > 10000) {
-      throw new Error('Message queue is overloaded. Please try again later.');
-    }
+      // Check queue depth before adding (back-pressure mechanism)
+      // waiting = jobs queued but not yet started
+      // active = jobs currently being processed
+      const waiting = await messageQueue.getWaitingCount(); // Race: count can change between check and add
+      const active = await messageQueue.getActiveCount();
+      
+      // If total pending jobs exceeds 10,000, reject new messages
+      // This prevents queue from growing unbounded and exhausting memory
+      // Threshold chosen based on: ~10K jobs * ~1KB/job = ~10MB memory
+      if (waiting + active > 10000) {
+        throw new Error('Message queue is overloaded. Please try again later.'); // Load spike: legitimate users rejected
+      }
     
     // Add job to queue with job type 'send-message'
     // Priority 1 = normal priority (higher numbers = higher priority)

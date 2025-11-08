@@ -128,7 +128,7 @@ export class MessagesController {
       };
 
       try {
-        await redisPublisher.publish(
+        await redisPublisher.publish( // Silent fail: if Redis down, reaction saved but clients don't see it
           'reaction_updates',
           JSON.stringify({
             type: 'reaction_update',
@@ -137,7 +137,7 @@ export class MessagesController {
           })
         );
       } catch (publishError) {
-        logError('Failed to publish reaction update', publishError);
+        logError('Failed to publish reaction update', publishError); // Silent fail: reaction saved but not broadcast
         // Continue without failing
       }
 
@@ -441,13 +441,13 @@ export class MessagesController {
         .eq('id', message_id); // Only update this specific message
 
       if (updateError) {
-        logError('Error updating message', updateError);
+        logError('Error updating message', updateError); // Silent fail: edit_history trigger may have fired before update failed
         throw updateError;
       }
 
       // Broadcast edit
       try {
-        await redisPublisher.publish(
+        await redisPublisher.publish( // Silent fail: edit saved but not broadcast if Redis down
           'message_updates',
           JSON.stringify({
             type: 'message_edited',
@@ -528,7 +528,7 @@ export class MessagesController {
 
       // Broadcast deletion
       try {
-        await redisPublisher.publish(
+        await redisPublisher.publish( // Silent fail: deletion saved but not broadcast if Redis down
           'message_updates',
           JSON.stringify({
             type: 'message_deleted',
@@ -537,7 +537,7 @@ export class MessagesController {
           })
         );
       } catch (publishError) {
-        logError('Failed to publish message deletion', publishError);
+        logError('Failed to publish message deletion', publishError); // Silent fail: deletion saved but clients don't see it
       }
 
       res.json({ success: true, message_id });

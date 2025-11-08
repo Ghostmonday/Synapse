@@ -34,11 +34,11 @@ export async function uploadFileToStorage(
       Body: file.buffer
     };
     
-    const uploadResult = await s3Client.upload(uploadParams).promise();
+    const uploadResult = await s3Client.upload(uploadParams).promise(); // No timeout - can hang indefinitely
     const fileUrl = (uploadResult as any).Location;
 
     // Store file metadata in database
-    const fileRecord = await create('files', { url: fileUrl });
+    const fileRecord = await create('files', { url: fileUrl }); // Race: S3 upload succeeds but DB insert fails = orphaned file
 
     return {
       url: fileUrl,
@@ -91,11 +91,11 @@ export async function deleteFileById(fileId: string): Promise<void> {
           Bucket: process.env.AWS_S3_BUCKET || '',
           Key: s3Key
         })
-        .promise();
+        .promise(); // Silent fail: S3 delete fails but DB delete proceeds = inconsistent state
     }
 
     // Delete metadata from database
-    await deleteOne('files', fileId);
+    await deleteOne('files', fileId); // Race: DB delete succeeds but S3 delete fails = metadata lost, file remains
   } catch (error: any) {
     logError('File deletion failed', error);
     throw new Error(error.message || 'Failed to delete file');

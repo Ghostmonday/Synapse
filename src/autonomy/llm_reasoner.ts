@@ -53,7 +53,7 @@ export class LLMReasoner {
     
     try {
       // Call LLM API with structured request
-      const response = await this.client.chat.completions.create({
+      const response = await this.client.chat.completions.create({ // No timeout - can hang if LLM API slow
         model: 'gpt-4', // Can be changed to 'deepseek-chat' for DeepSeek
         messages: [
           // System message sets LLM's role and output format expectations
@@ -63,16 +63,16 @@ export class LLMReasoner {
         ],
         response_format: { type: 'json_object' }, // Force JSON output (OpenAI feature)
         temperature: 0.0, // Deterministic output (no randomness)
-        max_tokens: 800 // Limit response length to control costs
+        max_tokens: 800 // Limit response length to control costs // Load spike: LLM calls expensive, can spike costs under load
       });
       
       // Extract content from response
       // Fallback to empty JSON if response is malformed
-      const content = response.choices[0]?.message?.content || '{}';
+      const content = response.choices[0]?.message?.content || '{}'; // Silent fail: empty response treated as valid
       
       try {
         // Parse JSON string to object
-        const parsed = JSON.parse(content);
+        const parsed = JSON.parse(content); // Silent fail: malformed JSON throws, no retry
         
         // Validate structure with Zod schema
         // Catches missing fields, wrong types, etc.
@@ -80,7 +80,7 @@ export class LLMReasoner {
 
         if (!validated.success) {
           // Schema validation failed - LLM returned wrong structure
-          throw new Error(`Validation failed: ${validated.error.message}`);
+          throw new Error(`Validation failed: ${validated.error.message}`); // Retry: p-retry will retry, but LLM may return same invalid format
         }
 
         // Return validated data with safe defaults
