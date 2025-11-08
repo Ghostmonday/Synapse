@@ -6,7 +6,6 @@
 import { Router, type Request, type Response } from 'express';
 import { supabase } from '../config/db.js';
 import * as optimizerService from '../services/optimizer-service.js';
-import * as adminService from '../server/services/admin.js';
 import { telemetryHook } from '../telemetry/index.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { logError } from '../shared/logger.js';
@@ -91,58 +90,54 @@ router.post('/demo-seed', async (_req: Request, res: Response) => {
 });
 
 /**
+ * Rate limiter function for room actions
+ * Allows up to 5 actions per room_id per minute
+ */
+async function rateLimitRoomActions(roomId: string): Promise<boolean> {
+  const { getRedisClient } = await import('../config/db.js');
+  const redisClient = getRedisClient();
+  const key = `healing_action:${roomId}`;
+  const count = await redisClient.incr(key);
+  if (count === 1) {
+    await redisClient.expire(key, 60); // 1-minute window
+  }
+  return count <= 5; // Allow up to 5 actions per minute
+}
+
+/**
  * POST /admin/apply-recommendation
  * Store optimization recommendation (requires authentication)
+ * Enhanced with input validation, rate limiting, and security
  */
 router.post('/apply-recommendation', authMiddleware, async (req: Request, res: Response, next) => {
   try {
-    telemetryHook('admin_apply_start');
-    await optimizerService.storeOptimizationRecommendation(req.body.recommendation);
-    telemetryHook('admin_apply_end');
-    res.status(200).send();
-  } catch (error) {
-    next(error);
-  }
-});
+    const { z } = await import('zod');
+    
+    // Define Zod schema for input validation
+    const RecommendationSchema = z.object({
+      room_id: z.string().uuid().optional(),
+      recommendation: z.record(z.unknown()).or(z.string().min(1)),
+    });
 
-/**
- * GET /admin/partitions
- * Get partition metadata including sizes
- */
-router.get('/partitions', authMiddleware, async (req: Request, res: Response, next) => {
-  try {
-    const metadata = await adminService.loadPartitionMetadata();
-    res.json({ partitions: metadata });
-  } catch (error) {
-    next(error);
-  }
-});
-
-/**
- * POST /admin/rotate-partition
- * Rotate partition: Create new partition for current month
- */
-router.post('/rotate-partition', authMiddleware, async (req: Request, res: Response, next) => {
-  try {
-    const result = await adminService.rotatePartition();
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
-});
-
-/**
- * POST /admin/cleanup-partitions
- * Clean up old partitions (requires oldestPartitionName in body)
- */
-router.post('/cleanup-partitions', authMiddleware, async (req: Request, res: Response, next) => {
-  try {
-    const { oldestPartitionName } = req.body;
-    if (!oldestPartitionName) {
-      return res.status(400).json({ error: 'oldestPartitionName is required' });
+    const validation = RecommendationSchema.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({ error: validation.error.message });
     }
-    const result = await adminService.runAllCleanup(oldestPartitionName);
-    res.json(result);
+
+    const { room_id, recommendation } = validation.data;
+
+    // Rate limit if room_id is provided
+    if (room_id) {
+      const allowed = await rateLimitRoomActions(room_id);
+      if (!allowed) {
+        return res.status(429).json({ error: 'Rate limit exceeded for this room' });
+      }
+    }
+
+    telemetryHook('admin_apply_start');
+    await optimizerService.storeOptimizationRecommendation(recommendation);
+    telemetryHook('admin_apply_end');
+    res.status(200).json({ success: true });
   } catch (error) {
     next(error);
   }

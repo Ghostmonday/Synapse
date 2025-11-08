@@ -20,7 +20,13 @@ async function queryPrometheus() {
   return await res.json();
 }
 
-async function analyzeWithOpenAI(metrics: any) {
+type RecommendationConfig = {
+  config?: Record<string, unknown>;
+  reason?: string;
+  [key: string]: unknown;
+};
+
+async function analyzeWithOpenAI(metrics: Record<string, unknown>): Promise<RecommendationConfig> {
   // Ask the model to return strict JSON recommendation, e.g. {"config": {"max_conn": 200}, "reason": "..."}
   const system = 'You are an optimizer agent. Read metrics JSON and return a non-empty JSON recommendation object. Only output JSON.';
   const result = await client.chat.completions.create({
@@ -34,7 +40,7 @@ async function analyzeWithOpenAI(metrics: any) {
   });
   const content = (result as any).choices?.[0]?.message?.content || '{}';
   try {
-    const parsed = JSON.parse(content);
+    const parsed = JSON.parse(content) as RecommendationConfig;
     if (Object.keys(parsed).length === 0) throw new Error('Empty recommendation');
     return parsed;
   } catch (err) {
@@ -42,7 +48,7 @@ async function analyzeWithOpenAI(metrics: any) {
   }
 }
 
-async function postRecommendation(recommendation: any) {
+async function postRecommendation(recommendation: RecommendationConfig): Promise<void> {
   await fetch(`${process.env.API_URL}/admin/apply-recommendation`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${process.env.ADMIN_API_KEY || ''}` },
