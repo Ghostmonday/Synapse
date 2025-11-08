@@ -2,17 +2,22 @@ import Foundation
 
 /// API Client for Sinapse backend
 /// Handles all HTTP requests to Express/Node backend
+@MainActor
 class APIClient {
     static let shared = APIClient()
     
     // Base URL - configure based on environment
-    private let baseURL: String = {
+    static var baseURL: String {
         #if DEBUG
         return "http://localhost:3000"
         #else
         return ProcessInfo.processInfo.environment["API_BASE_URL"] ?? "https://your-production-url.com"
         #endif
-    }()
+    }
+    
+    static var wsBaseURL: String {
+        return baseURL.replacingOccurrences(of: "http://", with: "ws://").replacingOccurrences(of: "https://", with: "wss://")
+    }
     
     // Endpoint constants aligned with backend routes
     enum Endpoint {
@@ -58,7 +63,7 @@ class APIClient {
         body: Encodable? = nil,
         queryParams: [String: String]? = nil
     ) async throws -> T {
-        var urlString = baseURL + endpoint
+        var urlString = APIClient.baseURL + endpoint
         
         // Add query parameters
         if let queryParams = queryParams, !queryParams.isEmpty {
@@ -110,7 +115,7 @@ class APIClient {
         body: Encodable? = nil,
         queryParams: [String: String]? = nil
     ) async throws {
-        var urlString = baseURL + endpoint
+        var urlString = APIClient.baseURL + endpoint
         
         if let queryParams = queryParams, !queryParams.isEmpty {
             let queryItems = queryParams.map { URLQueryItem(name: $0.key, value: $0.value) }
@@ -157,6 +162,7 @@ enum APIError: Error {
 }
 
 /// Simple token manager for authentication
+@MainActor
 class AuthTokenManager {
     static let shared = AuthTokenManager()
     private let keychainKey = "sinapse_auth_token"

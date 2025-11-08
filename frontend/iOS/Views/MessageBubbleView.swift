@@ -72,7 +72,9 @@ struct MessageBubbleView: View {
             content: "Hello, this is a test message!",
             type: "text",
             timestamp: Date(),
-            emotion: "neutral"
+            emotion: "neutral",
+            renderedHTML: nil,
+            reactions: nil
         ))
         
         MessageBubbleView(message: Message(
@@ -82,7 +84,8 @@ struct MessageBubbleView: View {
             type: "text",
             timestamp: Date(),
             emotion: "neutral",
-            renderedHTML: "Message with <span class=\"mention\">@username</span>"
+            renderedHTML: "Message with <span class=\"mention\">@username</span>",
+            reactions: nil
         ))
     }
     .padding()

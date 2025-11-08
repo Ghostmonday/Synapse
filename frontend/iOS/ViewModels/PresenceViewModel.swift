@@ -1,13 +1,14 @@
 import Foundation
 import Combine
 
+@MainActor
 class PresenceViewModel: ObservableObject {
     @Published var users: [User] = []
     @Published var currentMood: String = "calm" /// UX: Emotional attunement
     
     init() {
         // Load initial presence data
-        Task {
+        Task { @MainActor in
             await loadPresence()
         }
     }
@@ -26,7 +27,7 @@ class PresenceViewModel: ObservableObject {
             }
             
             // Get current user ID (should be stored after auth)
-            let userId = AuthTokenManager.shared.token ?? UUID().uuidString
+            let userId = await AuthTokenManager.shared.token ?? UUID().uuidString
             
             let request = PresenceUpdateRequest(userId: userId, status: "online")
             try await APIClient.shared.request(

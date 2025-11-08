@@ -181,65 +181,55 @@ struct VoiceRoomView: View {
         // TODO: Implement RPScreenRecorder for screen sharing
         print("[VoiceRoom] Starting screen share")
         
-        UXTelemetryService.logEvent(
-            eventType: .screenShareStart,
-            category: .featureUse,
-            metadata: ["roomId": roomName]
-        )
+        Task {
+            await UXTelemetryService.shared.logEvent(
+                eventType: .screenShareStart,
+                category: .featureUse,
+                metadata: ["roomId": roomName],
+                componentId: "VoiceRoom"
+            )
+        }
     }
     
     private func startLatencyMonitoring() {
         Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
-            let rtt = roomManager.getRoundTripTime()
-            latency = rtt
+            let rtt = self.roomManager.getRoundTripTime()
+            self.latency = rtt
             
             // Log latency telemetry
-            Task {
+            Task { @MainActor in
                 do {
-                    guard let url = URL(string: "\(APIClient.baseURL)/api/voice/log-latency") else { return }
+                    let baseURL = await APIClient.baseURL
+                    guard let url = URL(string: "\(baseURL)/api/voice/log-latency") else { return }
                     
                     var request = URLRequest(url: url)
                     request.httpMethod = "POST"
                     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                     
-                    let body = ["room": roomName, "latency": latency]
+                    struct LatencyLog: Codable {
+                        let room: String
+                        let latency: Double
+                    }
+                    let body = LatencyLog(room: self.roomName, latency: Double(rtt))
                     request.httpBody = try JSONEncoder().encode(body)
                     
                     _ = try await URLSession.shared.data(for: request)
                 } catch {
                     print("[VoiceRoom] Latency log error: \(error)")
                 }
+                
+                await UXTelemetryService.logPerformance(
+                    perceivedMs: rtt,
+                    actualMs: rtt,
+                    componentId: "VoiceRoom",
+                    metadata: ["type": "round_trip_time"]
+                )
             }
-            
-            UXTelemetryService.logPerformance(
-                perceivedMs: rtt,
-                actualMs: rtt,
-                componentId: "VoiceRoom",
-                metadata: ["type": "round_trip_time"]
-            )
         }
     }
 }
 
-// Extension for UXTelemetryService to support direct event logging
-extension UXTelemetryService {
-    static func logEvent(
-        eventType: UXEventType,
-        category: UXEventCategory,
-        metadata: [String: Any] = [:]
-    ) {
-        shared.logEvent(
-            eventType: eventType,
-            category: category,
-            metadata: metadata,
-            componentId: nil,
-            stateBefore: nil,
-            stateAfter: nil,
-            userId: nil,
-            roomId: nil
-        )
-    }
-}
+// Extension removed - use UXTelemetryService.shared.logEvent directly
 
 #Preview {
     VoiceRoomView(

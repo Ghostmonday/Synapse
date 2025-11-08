@@ -33,7 +33,7 @@ struct ThreadView: View {
         .task {
             await loadThread()
         }
-        .onChange(of: threadId) { _ in
+        .onChange(of: threadId) { _, _ in
             Task {
                 await loadThread()
             }

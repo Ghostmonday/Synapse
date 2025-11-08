@@ -1,5 +1,6 @@
 import Foundation
 
+@MainActor
 class MessageManager {
     static let shared = MessageManager()
     
@@ -11,7 +12,9 @@ class MessageManager {
             content: transcript,
             type: "voice",
             timestamp: Date(),
-            emotion: "neutral"
+            emotion: "neutral",
+            renderedHTML: nil,
+            reactions: nil
         )
         try? await MessageService.sendMessage(message, to: room)
     }

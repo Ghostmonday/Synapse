@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 
+@MainActor
 class RoomViewModel: ObservableObject {
     @Published var room: Room?
     @Published var messages: [Message] = []
@@ -9,7 +10,7 @@ class RoomViewModel: ObservableObject {
     private var silenceTimer: Timer?
     
     func loadRoom(id: UUID) {
-        Task {
+        Task { @MainActor in
             do {
                 // Load room details
                 let rooms = try await RoomService.fetchRooms()
@@ -27,10 +28,11 @@ class RoomViewModel: ObservableObject {
     
     private func startSilenceDetection() {
         silenceTimer?.invalidate()
-        silenceTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { _ in
-            self.isSilent = true
-            // UX: Re-engage with empathy
-            Task {
+        silenceTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] _ in
+            guard let self = self else { return }
+            Task { @MainActor in
+                self.isSilent = true
+                // UX: Re-engage with empathy
                 if let roomId = self.room?.id.uuidString {
                     _ = try? await AIService.reply(with: "Still here? Let's vibe.", roomId: roomId)
                 }
@@ -38,8 +40,8 @@ class RoomViewModel: ObservableObject {
         }
     }
     
-    deinit {
-        silenceTimer?.invalidate()
+    nonisolated deinit {
+        // Timer cleanup handled by @MainActor context
     }
 }
 

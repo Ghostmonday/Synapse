@@ -1,9 +1,11 @@
 import Foundation
 import Combine
+import UIKit
 
 /// WebSocket Manager for Real-Time Communication
 /// Replaces Vue socket listeners with URLSessionWebSocketTask
 /// Provides AsyncStream and Combine publishers for events
+@MainActor
 class WebSocketManager: ObservableObject {
     static let shared = WebSocketManager()
     
@@ -256,8 +258,9 @@ class WebSocketManager: ObservableObject {
         print("[WebSocket] App entering foreground")
     }
     
-    deinit {
-        disconnect()
+    nonisolated deinit {
+        // Disconnect handled by @MainActor context
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

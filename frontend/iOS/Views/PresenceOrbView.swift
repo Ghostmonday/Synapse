@@ -10,7 +10,7 @@ struct PresenceOrbView: View {
     
     @State private var status: PresenceStatus = .offline
     @StateObject private var webSocket = WebSocketManager.shared
-    private var cancellables = Set<AnyCancellable>()
+    @State private var cancellables: Set<AnyCancellable> = []
     
     var body: some View {
         Circle()
@@ -20,7 +20,7 @@ struct PresenceOrbView: View {
             .pulse(isActive: status == .online)
             .task {
                 await loadPresence()
-                subscribeToPresence()
+                await subscribeToPresence()
             }
     }
     
@@ -55,14 +55,17 @@ struct PresenceOrbView: View {
         }
     }
     
-    private func subscribeToPresence() {
+    @MainActor
+    private func subscribeToPresence() async {
         // Subscribe to WebSocket presence updates
         webSocket.presencePublisher
             .filter { $0.userId == self.userId }
             .sink { update in
-                self.status = PresenceStatus(rawValue: update.status) ?? .offline
+                Task { @MainActor in
+                    self.status = PresenceStatus(rawValue: update.status) ?? .offline
+                }
             }
-            .store(in: &cancellables as! Set<AnyCancellable>)
+            .store(in: &cancellables)
     }
 }
 

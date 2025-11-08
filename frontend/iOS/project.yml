@@ -17,6 +17,17 @@ targets:
           - "Package.swift"
           - "project.yml"
           - "XCODE_SETUP.md"
+          - "README_BUILD.md"
+          - "validate_swift.sh"
+          - "package_final.sh"
+          - "create_xcode_project*.sh"
+    frameworks:
+      - Foundation
+      - SwiftUI
+      - Combine
+      - AVFoundation
+      - AVKit
+      - UIKit
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.sinapse.app
       SWIFT_VERSION: "6.0"
@@ -28,8 +39,9 @@ targets:
       INFOPLIST_KEY_UILaunchScreen_Generation: YES
       INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad: "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
       INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone: "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight"
-      INFOPLIST_KEY_NSMicrophoneUsageDescription: "Sinapse needs microphone access for voice messages"
-      INFOPLIST_KEY_NSCameraUsageDescription: "Sinapse needs camera access for avatar photos"
+      INFOPLIST_KEY_NSMicrophoneUsageDescription: "Sinapse needs microphone access for voice messages and voice chat"
+      INFOPLIST_KEY_NSCameraUsageDescription: "Sinapse needs camera access for video chat and avatar photos"
+      INFOPLIST_KEY_NSPhotoLibraryUsageDescription: "Sinapse needs photo library access to share images"
     info:
       path: Info.plist
       properties:

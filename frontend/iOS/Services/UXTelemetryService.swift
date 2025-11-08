@@ -4,6 +4,7 @@ import UIKit
 /// UX Telemetry Service
 /// Wraps SystemService with UX telemetry event types
 /// Maintains session/trace IDs, batches events, and integrates with rate limiter
+@MainActor
 class UXTelemetryService {
     static let shared = UXTelemetryService()
     
@@ -204,7 +205,7 @@ class UXTelemetryService {
     
     // MARK: - Core Logging
     
-    private func logEvent(
+    func logEvent(
         eventType: UXEventType,
         category: UXEventCategory,
         metadata: [String: Any] = [:],
@@ -504,7 +505,7 @@ class UXTelemetryService {
         actualMs: Int,
         componentId: String? = nil,
         metadata: [String: Any] = [:]
-    ) {
+    ) async {
         var meta = metadata
         meta["perceivedMs"] = perceivedMs
         meta["actualMs"] = actualMs
@@ -710,9 +711,9 @@ class UXTelemetryService {
         )
     }
     
-    deinit {
-        flushTimer?.invalidate()
-        flush()
+    nonisolated deinit {
+        // Timer cleanup handled by @MainActor context
+        // Flush handled by timer and explicit calls
     }
 }
 
