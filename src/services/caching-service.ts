@@ -117,23 +117,23 @@ export async function getCached<T>(
   // === L2 CACHE CHECK (Redis, fast, shared) ===
   if (!opts.skipL2) {
     try {
-      const l2Data = await redis.get(key);
+      const l2Data = await redis.get(key); // No timeout - can hang if Redis slow
       if (l2Data) {
         // Cache hit in Redis - parse JSON and return
         logInfo(`Cache HIT L2: ${key}`);
-        const parsed = JSON.parse(l2Data);
+        const parsed = JSON.parse(l2Data); // Silent fail: malformed JSON throws, breaks cache cascade
         
         // Populate L1 cache for even faster next access
         // This is called "cache warming" - populate faster cache from slower cache
         if (!opts.skipL1) {
-          l1Cache.set(key, parsed, opts.l1Ttl!);
+          l1Cache.set(key, parsed, opts.l1Ttl!); // Race: L1 can expire before L2, causing cache miss
         }
         
         return parsed as T;
       }
     } catch (error) {
       // Redis error - log but continue to L3 (graceful degradation)
-      logError(`L2 cache error for ${key}`, error);
+      logError(`L2 cache error for ${key}`, error); // Silent fail: Redis timeout treated as cache miss
       // Continue to L3 if L2 fails (don't block on cache errors)
     }
   }
@@ -150,17 +150,17 @@ export async function getCached<T>(
     if (!opts.skipL2) {
       // Store in Redis with expiration (setex = set with expiration)
       // opts.l2Ttl is in seconds (Redis uses seconds, not milliseconds)
-      await redis.setex(key, opts.l2Ttl!, JSON.stringify(data));
+      await redis.setex(key, opts.l2Ttl!, JSON.stringify(data)); // Silent fail: Redis down = no cache, but request succeeds
     }
     if (!opts.skipL1) {
       // Store in memory cache with expiration
       // opts.l1Ttl is in milliseconds (in-memory uses ms)
-      l1Cache.set(key, data, opts.l1Ttl!);
+      l1Cache.set(key, data, opts.l1Ttl!); // Race: L1/L2 TTL mismatch can cause stale reads
     }
   } catch (error) {
     // Cache set failures shouldn't break the request
     // Log error but return data anyway (cache is optimization, not requirement)
-    logError(`Cache set error for ${key}`, error);
+    logError(`Cache set error for ${key}`, error); // Silent fail: cache miss on next request, but no error
     // Don't fail if cache set fails - data is still returned to caller
   }
 

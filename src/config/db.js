@@ -58,16 +58,16 @@ export async function checkSupabaseHealth(): Promise<boolean> {
       .limit(1); // Only need 1 row to verify connectivity
     
     if (error) {
-      logError('Supabase health check failed', error);
+      logError('Supabase health check failed', error); // Silent fail: timeout not caught here, returns true
       return false; // Database error indicates unhealthy state
     }
     
     // Update last successful check timestamp
-    lastHealthCheck = Date.now();
+    lastHealthCheck = Date.now(); // Race: concurrent health checks can overwrite timestamp
     return true; // Query succeeded = healthy
   } catch (error: any) {
     // Network errors, timeouts, etc.
-    logError('Supabase health check error', error);
+    logError('Supabase health check error', error); // Unhandled timeout: Supabase client timeout not configured
     return false; // Any exception = unhealthy
   }
 }
@@ -76,9 +76,9 @@ export async function checkSupabaseHealth(): Promise<boolean> {
 // Proactively detects database issues before they cause user-facing errors
 if (!healthCheckInterval) {
   healthCheckInterval = setInterval(async () => {
-    const healthy = await checkSupabaseHealth();
+    const healthy = await checkSupabaseHealth(); // Async handoff: interval doesn't await, errors swallowed
     if (!healthy) {
-      logError('Supabase connection unhealthy, triggering circuit breaker');
+      logError('Supabase connection unhealthy, triggering circuit breaker'); // Silent fail: circuit breaker not actually triggered here
       // Note: Circuit breaker will be triggered by actual failed requests
       // This health check just provides early warning/logging
     }

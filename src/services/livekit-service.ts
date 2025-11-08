@@ -38,7 +38,7 @@ export class LiveKitService {
         maxParticipants = 50;
       }
 
-      const room = await this.roomService.createRoom({
+      const room = await this.roomService.createRoom({ // Race: concurrent creates can conflict, room may already exist
         name: roomName,
         emptyTimeout: 300, // 5 minutes
         maxParticipants,
@@ -95,7 +95,7 @@ export class LiveKitService {
       canPublishData: true,
     });
 
-    return Promise.resolve(token.toJwt());
+    return Promise.resolve(token.toJwt()); // Silent fail: JWT encoding can throw if secret invalid, no error handling
   }
 
   /**
@@ -107,14 +107,14 @@ export class LiveKitService {
         throw new Error('Invalid roomName');
       }
 
-      const rooms = await this.roomService.listRooms([roomName]);
+      const rooms = await this.roomService.listRooms([roomName]); // No timeout - can hang if LiveKit API slow
       const room = rooms.find(r => r.name === roomName);
 
       if (!room) {
-        return null;
+        return null; // Silent fail: room exists but not found in list = race condition
       }
 
-      const participants = await this.roomService.listParticipants(roomName);
+      const participants = await this.roomService.listParticipants(roomName); // Async handoff: participants can join/leave between listRooms and listParticipants
 
       return {
         room_name: roomName,
@@ -147,17 +147,17 @@ export class LiveKitService {
         throw new Error('Invalid participantIdentity');
       }
 
-      await this.roomService.removeParticipant(roomName, participantIdentity);
+      await this.roomService.removeParticipant(roomName, participantIdentity); // Silent fail: participant already disconnected, no error thrown
 
       try {
         await recordTelemetryEvent('voice_participant_disconnected', {
           room_id: roomName,
         });
       } catch (telemetryError) {
-        logError('Failed to log telemetry for disconnection', telemetryError);
+        logError('Failed to log telemetry for disconnection', telemetryError); // Silent fail: disconnection succeeded but not logged
       }
     } catch (error: any) {
-      logError('Failed to disconnect participant', error);
+      logError('Failed to disconnect participant', error); // Silent fail: error swallowed, no retry
     }
   }
 
@@ -175,10 +175,10 @@ export class LiveKitService {
       return;
     }
 
-    this.performanceStats.set(roomName, stats);
+    this.performanceStats.set(roomName, stats); // Race: concurrent stats updates can overwrite each other
 
     try {
-      await recordTelemetryEvent('voice_stats', {
+      await recordTelemetryEvent('voice_stats', { // Silent fail: stats lost if telemetry fails
         room_id: roomName,
         latency_ms: stats.latency,
         features: {
@@ -188,7 +188,7 @@ export class LiveKitService {
         },
       });
     } catch (telemetryError) {
-      logError('Failed to log voice stats telemetry', telemetryError);
+      logError('Failed to log voice stats telemetry', telemetryError); // Silent fail: stats not persisted
     }
 
     // Alert on poor performance
@@ -223,7 +223,7 @@ export class LiveKitService {
    */
   async cleanupEmptyRooms(): Promise<void> {
     try {
-      const rooms = await this.roomService.listRooms();
+      const rooms = await this.roomService.listRooms(); // No timeout - can hang if LiveKit API slow
       const now = Date.now();
 
       for (const room of rooms) {
@@ -233,19 +233,19 @@ export class LiveKitService {
             ? new Date(room.creationTime).getTime()
             : (room.creationTime as any).getTime?.() || now;
           if (now - creationTime > 3600000) {
-            await this.roomService.deleteRoom(room.name);
+            await this.roomService.deleteRoom(room.name); // Race: participants can join between listRooms and deleteRoom
             try {
               await recordTelemetryEvent('voice_room_cleaned', {
                 room_id: room.name,
               });
             } catch (telemetryError) {
-              logError('Failed to log room cleanup', telemetryError);
+              logError('Failed to log room cleanup', telemetryError); // Silent fail: room deleted but not logged
             }
           }
         }
       }
     } catch (error: any) {
-      logError('Failed to cleanup rooms', error);
+      logError('Failed to cleanup rooms', error); // Silent fail: cleanup errors swallowed, rooms not cleaned
     }
   }
 }
@@ -254,8 +254,8 @@ export const liveKitService = new LiveKitService();
 
 // Periodic cleanup (every hour)
 setInterval(() => {
-  liveKitService.cleanupEmptyRooms().catch(err => {
-    logError('Error in periodic room cleanup', err);
+  liveKitService.cleanupEmptyRooms().catch(err => { // Async handoff: interval doesn't await, errors swallowed
+    logError('Error in periodic room cleanup', err); // Silent fail: cleanup fails but interval continues
   });
 }, 3600000);
 

@@ -24,7 +24,7 @@ export async function storeOptimizationRecommendation(recommendation: Record<str
     async () => {
       // Attempt to store recommendation in database
       // 'rec' column stores the recommendation (JSONB in database)
-      await create('recommendations', { rec: recommendation });
+      await create('recommendations', { rec: recommendation }); // Retry: 5 attempts with exponential backoff, but no timeout = can hang
       logInfo('Optimization recommendation stored:', JSON.stringify(recommendation));
       // Note: Actual application of recommendations is handled manually or via admin endpoints
     },

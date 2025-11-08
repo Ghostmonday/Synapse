@@ -11,7 +11,7 @@ const redis = getRedisClient();
  * Get the current presence status of a user
  */
 export async function getUserPresenceStatus(userId: string): Promise<{ status: string }> {
-  const status = await redis.get(`presence:${userId}`);
+  const status = await redis.get(`presence:${userId}`); // Silent fail: if Redis down, returns 'offline' (may be wrong)
   return { status: status || 'offline' };
 }
 
@@ -20,10 +20,10 @@ export async function getUserPresenceStatus(userId: string): Promise<{ status: s
  */
 export async function updateUserPresenceStatus(userId: string, status: string): Promise<void> {
   // Store presence with 1 hour expiration
-  await redis.set(`presence:${userId}`, status, 'EX', 3600);
+  await redis.set(`presence:${userId}`, status, 'EX', 3600); // Race: concurrent updates can overwrite each other
   
   // Broadcast presence change to all subscribers
-  await redis.publish(
+  await redis.publish( // Silent fail: if Redis down, presence update lost but no error thrown
     'presence_updates',
     JSON.stringify({
       userId,

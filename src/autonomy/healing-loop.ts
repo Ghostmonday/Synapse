@@ -58,13 +58,13 @@ async function scanTelemetry(): Promise<TelemetryEvent[]> {
 
       // Only update last scan time AFTER successful query
       // This ensures we don't skip events if processing fails
-      await redisClient.set('last_scan_time', new Date().toISOString());
+      await redisClient.set('last_scan_time', new Date().toISOString()); // Race: concurrent scans can overwrite timestamp = duplicate processing
 
       // Process events if any were found
       // This triggers LLM analysis and action execution
       if (telemetryData && telemetryData.length > 0) {
         events = telemetryData as TelemetryEvent[];
-        await processTelemetryEvents(events);
+        await processTelemetryEvents(events); // Async handoff: errors here don't trigger retry, events lost
       }
 
       // Reset failure counter on successful scan
@@ -84,7 +84,7 @@ async function scanTelemetry(): Promise<TelemetryEvent[]> {
 
     // Log failure to healing_logs table for audit trail
     // Helps diagnose why autonomy stopped working
-    await supabase.from('healing_logs').insert({
+    await supabase.from('healing_logs').insert({ // Silent fail: if Supabase down, failure not logged, loop stops silently
       type: 'loop_failure',
       details: error.message || String(error),
       timestamp: new Date().toISOString(),

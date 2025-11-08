@@ -34,7 +34,7 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
     }
 
     // Verify Apple ID token
-    const payload = await appleSignin.verifyIdToken(token, {
+    const payload = await appleSignin.verifyIdToken(token, { // No timeout - can hang if Apple API slow
       audience: process.env.APPLE_APP_BUNDLE || 'com.your.app'
     });
     
@@ -42,17 +42,17 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
 
     // Create or update user record
     try {
-      await upsert('users', { id: appleUserId }, 'id');
+      await upsert('users', { id: appleUserId }, 'id'); // Race: concurrent sign-ins can conflict
     } catch (upsertError: unknown) {
       // Non-critical: user might already exist
-      logInfo('User record update (non-critical):', upsertError instanceof Error ? upsertError.message : String(upsertError));
+      logInfo('User record update (non-critical):', upsertError instanceof Error ? upsertError.message : String(upsertError)); // Silent fail: user creation fails but JWT still issued
     }
 
     // Generate application JWT token
     const applicationToken = jwt.sign(
       { userId: appleUserId },
       process.env.JWT_SECRET || 'dev_secret',
-      { expiresIn: '7d' }
+      { expiresIn: '7d' } // JWT renewal: no refresh token, user must re-auth after 7 days
     );
 
     // Generate LiveKit room token for video calls (if available)
@@ -79,7 +79,7 @@ export async function authenticateWithCredentials(
   try {
     const user = await findOne<{ id: string }>('users', {
       username,
-      password // Note: In production, use password_hash with bcrypt
+      password // Note: In production, use password_hash with bcrypt // Silent fail: password comparison timing leak
     });
 
     if (!user) {

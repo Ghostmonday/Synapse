@@ -68,7 +68,7 @@ export class CircuitBreaker {
     // This allows circuit to recover if failures stop
     const now = Date.now();
     this.failureTimes = this.failureTimes.filter(
-      (time) => now - time < this.options.monitoringPeriod
+      (time) => now - time < this.options.monitoringPeriod // Race: failures can occur during filter = miscount
     );
 
     try {
@@ -95,7 +95,7 @@ export class CircuitBreaker {
 
     if (this.state === CircuitState.HALF_OPEN) {
       // We're testing recovery - increment success counter
-      this.successCount++;
+      this.successCount++; // Race: concurrent requests can increment simultaneously = double-count
       // Require 2 consecutive successes before closing circuit
       // This prevents flapping (rapid open/close cycles) from intermittent issues
       if (this.successCount >= 2) {

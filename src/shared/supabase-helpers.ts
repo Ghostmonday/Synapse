@@ -120,11 +120,11 @@ export async function create<T = any>(
     // .single() = expect exactly one row (throw if 0 or 2+)
     const { data, error } = await supabase
       .from(table)
-      .insert([record]) // Array format (allows batch inserts, but we insert one)
+      .insert([record]) // Array format (allows batch inserts, but we insert one) // Race: concurrent inserts can cause unique constraint violation
       .select() // Return inserted row(s)
       .single(); // Expect exactly one result
     
-    if (error) throw error;
+    if (error) throw error; // Silent fail: Supabase timeout not caught, hangs indefinitely
     
     // Return created record (includes id, timestamps, etc.)
     return data as T;
@@ -146,11 +146,11 @@ export async function updateOne<T = any>(
     const { data, error } = await supabase
       .from(table)
       .update(updates)
-      .eq('id', id)
+      .eq('id', id) // Race: concurrent updates can overwrite each other
       .select()
       .single();
     
-    if (error) throw error;
+    if (error) throw error; // Silent fail: timeout not handled
     
     return data as T;
   } catch (error: any) {

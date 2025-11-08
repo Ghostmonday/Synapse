@@ -18,11 +18,11 @@ const router = Router();
 router.post('/upload', upload.single('file'), async (req, res, next) => {
   try {
     telemetryHook('files_upload_start');
-    const result = await fileStorageService.uploadFileToStorage(req.file);
+    const result = await fileStorageService.uploadFileToStorage(req.file); // Error branch: S3 upload can hang, no timeout
     telemetryHook('files_upload_end');
     res.json(result);
   } catch (error) {
-    next(error);
+    next(error); // Error branch: partial failure (S3 succeeded but DB failed) not distinguished
   }
 });
 

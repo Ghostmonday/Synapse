@@ -50,7 +50,7 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
       // Step 1: Remove old entries outside the time window
       // zremrangebyscore removes entries with scores (timestamps) < (now - windowMs)
       // This keeps only requests within the current window
-      pipeline.zremrangebyscore(key, 0, now - windowMs);
+      pipeline.zremrangebyscore(key, 0, now - windowMs); // Race: entries can expire between zrem and zcard
       
       // Step 2: Count remaining requests in the window
       // zcard returns count of entries in sorted set (requests in current window)
@@ -59,14 +59,14 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
       // Step 3: Add current request to the window
       // Score = timestamp (for sorting/expiration)
       // Value = unique identifier (timestamp + random to prevent collisions)
-      pipeline.zadd(key, now, `${now}-${Math.random()}`);
+      pipeline.zadd(key, now, `${now}-${Math.random()}`); // Collision risk: Math.random() not cryptographically secure
       
       // Step 4: Set expiration on the key (cleanup if no requests for a while)
       // Expire after windowMs (convert to seconds for Redis EXPIRE command)
-      pipeline.expire(key, Math.ceil(windowMs / 1000));
+      pipeline.expire(key, Math.ceil(windowMs / 1000)); // Gotcha: EXPIRE resets TTL even if key already exists
       
       // Execute all pipeline commands atomically
-      const results = await pipeline.exec();
+      const results = await pipeline.exec(); // Silent fail: if Redis down, pipeline fails but request allowed (fail-open)
       // Extract count from pipeline results: results[1] is zcard result, [1] is the count value
       const count = results?.[1]?.[1] as number || 0;
 

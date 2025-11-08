@@ -73,7 +73,7 @@ app.use('/api/aiops', aiopsRoutes);
 // Metrics endpoint
 app.get('/metrics', async (req, res) => {
   res.setHeader('Content-Type', client.register.contentType);
-  res.send(await client.register.metrics());
+  res.send(await client.register.metrics()); // No timeout - can hang if metrics collection slow
 });
 
 // Websocket gateway

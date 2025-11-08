@@ -17,6 +17,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     (req as any).user = decoded;
     next();
   } catch (err) {
+    // JWT expired/invalid - no renewal attempt, client must re-auth
     res.status(401).json({ error: 'Invalid token' });
   }
 };

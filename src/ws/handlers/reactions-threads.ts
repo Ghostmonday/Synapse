@@ -47,7 +47,7 @@ export function setupReactionThreadSubscriptions(io: any) {
   // Handle Redis messages
   redisSubscriber.on('message', (channel: string, message: string) => {
     try {
-      const data = JSON.parse(message);
+      const data = JSON.parse(message); // Silent fail: malformed JSON throws, message lost
 
       switch (channel) {
         case 'reaction_updates':

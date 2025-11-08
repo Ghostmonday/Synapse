@@ -35,7 +35,7 @@ export async function sendMessageToRoom(data: {
     // Broadcast message via Redis pub/sub for real-time delivery to connected clients
     // Channel format: "room:{roomId}" - all clients subscribed to this room receive the message
     // Includes timestamp for client-side ordering/display
-    await redis.publish(
+    await redis.publish( // Silent fail: if Redis down, message saved but not broadcast
       `room:${data.roomId}`,
       JSON.stringify({
         ...data,
@@ -45,7 +45,7 @@ export async function sendMessageToRoom(data: {
   } catch (error: any) {
     logError('Failed to send message', error);
     // Preserve original error message if available, otherwise use generic message
-    throw new Error(error.message || 'Failed to send message');
+    throw new Error(error.message || 'Failed to send message'); // DB insert may have succeeded - partial failure
   }
 }
 

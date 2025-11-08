@@ -35,7 +35,7 @@ router.post('/rooms/:room_name/join', async (req, res, next) => {
     await liveKitService.createVoiceRoom(voiceRoomName);
 
     // Generate participant token
-    const token = await liveKitService.generateParticipantToken(
+    const token = await liveKitService.generateParticipantToken( // Silent fail: token generation can throw, no retry
       voiceRoomName,
       user.id,
       user.username || user.handle || ''

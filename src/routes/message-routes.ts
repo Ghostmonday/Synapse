@@ -23,7 +23,7 @@ router.post('/send', async (req, res, next) => {
     
     // Queue message instead of processing directly
     const { queueMessage } = await import('../services/message-queue.js');
-    const result = await queueMessage(req.body);
+    const result = await queueMessage(req.body); // Async handoff: message queued but not guaranteed to process
     
     telemetryHook('messaging_send_end');
     res.status(202).json({
@@ -32,7 +32,7 @@ router.post('/send', async (req, res, next) => {
       message: 'Message queued for processing',
     });
   } catch (error) {
-    next(error);
+    next(error); // Error branch: queue full or Redis down, but client gets generic error
   }
 });
 
@@ -43,11 +43,11 @@ router.post('/send', async (req, res, next) => {
 router.get('/:roomId', async (req, res, next) => {
   try {
     telemetryHook('messaging_get_start');
-    const messages = await messageService.getRoomMessages(req.params.roomId);
+    const messages = await messageService.getRoomMessages(req.params.roomId); // No timeout - can hang if DB slow
     telemetryHook('messaging_get_end');
     res.json(messages);
   } catch (error) {
-    next(error);
+    next(error); // Error branch: DB timeout not caught, hangs indefinitely
   }
 });
 

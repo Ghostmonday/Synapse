@@ -107,16 +107,16 @@ async function rateLimitRoomActions(roomId: string): Promise<boolean> {
   // Each room gets its own counter
   const key = `healing_action:${roomId}`;
   
-  // Increment counter atomically (INCR is atomic in Redis)
-  // Returns new count value
-  const count = await redisClient.incr(key);
-  
-  // Set expiration only on first increment (count === 1)
-  // This creates a 60-second sliding window
-  // If key already exists, EXPIRE is no-op (doesn't reset TTL)
-  if (count === 1) {
-    await redisClient.expire(key, 60); // 60 seconds = 1 minute window
-  }
+    // Increment counter atomically (INCR is atomic in Redis)
+    // Returns new count value
+    const count = await redisClient.incr(key); // Race: INCR and EXPIRE not atomic together
+    
+    // Set expiration only on first increment (count === 1)
+    // This creates a 60-second sliding window
+    // If key already exists, EXPIRE is no-op (doesn't reset TTL)
+    if (count === 1) {
+      await redisClient.expire(key, 60); // Gotcha: if Redis down between INCR and EXPIRE, key never expires
+    }
   
   // Return true if under limit (5 actions), false if exceeded
   return count <= 5; // Allow up to 5 actions per minute per room
