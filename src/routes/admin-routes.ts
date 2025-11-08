@@ -113,11 +113,14 @@ router.post('/apply-recommendation', authMiddleware, async (req: Request, res: R
   try {
     const { z } = await import('zod');
     
-    // Define Zod schema for input validation
+    // Define Zod schema for input validation with strict typing
     const RecommendationSchema = z.object({
-      room_id: z.string().uuid().optional(),
-      recommendation: z.record(z.unknown()).or(z.string().min(1)),
-    });
+      room_id: z.string().uuid('Invalid room_id format').optional(),
+      recommendation: z.union([
+        z.record(z.string(), z.unknown()),
+        z.string().min(1, 'Recommendation cannot be empty')
+      ]),
+    }).strict(); // Reject unknown fields
 
     const validation = RecommendationSchema.safeParse(req.body);
     if (!validation.success) {
