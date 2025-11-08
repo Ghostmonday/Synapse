@@ -7,6 +7,8 @@ struct Message: Codable, Identifiable {
     let type: String // "voice" or "text"
     let timestamp: Date
     let emotion: String? /// UX: For resonance layers
+    let renderedHTML: String? /// Rendered HTML/Markdown for mentions and formatting
+    let reactions: [MessageReaction]? /// Emoji reactions
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -15,6 +17,22 @@ struct Message: Codable, Identifiable {
         case type
         case timestamp
         case emotion
+        case renderedHTML = "rendered_html"
+        case reactions
+    }
+}
+
+struct MessageReaction: Codable, Identifiable {
+    let id: UUID
+    let emoji: String
+    let count: Int
+    let userIds: [UUID]?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case emoji
+        case count
+        case userIds = "user_ids"
     }
 }
 
