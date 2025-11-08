@@ -1,0 +1,304 @@
+/* 🔧 Upgraded: src/styles/voice.css */
+
+/* Voice/Video Call Enhanced Styles */
+
+.voice-video-call {
+
+  --primary-color: #10b981;
+
+  --danger-color: #ef4444;
+
+  --warning-color: #f59e0b;
+
+  --muted-color: #6b7280;
+
+  --background-dark: #1a1a1a;
+
+  --background-card: #2d2d2d;
+
+  --text-primary: #ffffff;
+
+  --text-secondary: #9ca3af;
+
+}
+
+/* Video grid animations */
+
+.video-tile {
+
+  transition: all 0.3s ease;
+
+  border: 2px solid transparent;
+
+}
+
+.video-tile.is-speaking {
+
+  border-color: var(--primary-color);
+
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+
+}
+
+.video-tile.video-muted {
+
+  opacity: 0.7;
+
+}
+
+/* Connection quality indicators */
+
+.connection-quality {
+
+  position: absolute;
+
+  top: 8px;
+
+  right: 8px;
+
+  display: flex;
+
+  gap: 2px;
+
+}
+
+.quality-bar {
+
+  width: 3px;
+
+  height: 12px;
+
+  background: var(--muted-color);
+
+  border-radius: 1px;
+
+  transition: background-color 0.3s ease;
+
+}
+
+.quality-bar.active {
+
+  background: var(--primary-color);
+
+}
+
+.quality-bar:nth-child(1) { height: 4px; }
+
+.quality-bar:nth-child(2) { height: 8px; }
+
+.quality-bar:nth-child(3) { height: 12px; }
+
+/* Network status */
+
+.network-status {
+
+  position: absolute;
+
+  top: 8px;
+
+  left: 8px;
+
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+}
+
+.network-status.excellent {
+
+  background: var(--primary-color);
+
+  color: white;
+
+}
+
+.network-status.good {
+
+  background: var(--warning-color);
+
+  color: black;
+
+}
+
+.network-status.poor {
+
+  background: var(--danger-color);
+
+  color: white;
+
+}
+
+/* Screen share indicator */
+
+.screen-share-indicator {
+
+  position: absolute;
+
+  top: 50%;
+
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+  background: rgba(0, 0, 0, 0.8);
+
+  color: white;
+
+  padding: 16px 24px;
+
+  border-radius: 8px;
+
+  text-align: center;
+
+  z-index: 10;
+
+}
+
+/* Loading states */
+
+.video-loading {
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background: var(--background-card);
+
+}
+
+.loading-spinner {
+
+  width: 32px;
+
+  height: 32px;
+
+  border: 3px solid var(--muted-color);
+
+  border-top: 3px solid var(--primary-color);
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+
+  0% { transform: rotate(0deg); }
+
+  100% { transform: rotate(360deg); }
+
+}
+
+/* Responsive design */
+
+@media (max-width: 768px) {
+
+  .video-grid {
+
+    grid-template-columns: 1fr;
+
+    gap: 4px;
+
+    padding: 8px;
+
+  }
+
+ 
+
+  .controls-panel {
+
+    padding: 8px;
+
+    gap: 4px;
+
+  }
+
+ 
+
+  .control-btn {
+
+    min-width: 60px;
+
+    padding: 8px;
+
+  }
+
+ 
+
+  .btn-icon {
+
+    font-size: 16px;
+
+  }
+
+ 
+
+  .btn-label {
+
+    font-size: 10px;
+
+  }
+
+}
+
+/* High contrast mode support */
+
+@media (prefers-contrast: high) {
+
+  .voice-video-panel {
+
+    border: 2px solid white;
+
+  }
+
+ 
+
+  .control-btn {
+
+    border: 1px solid white;
+
+  }
+
+}
+
+/* Reduced motion support */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .video-tile {
+
+    transition: none;
+
+  }
+
+ 
+
+  .audio-indicator.is-speaking {
+
+    animation: none;
+
+    opacity: 1;
+
+  }
+
+}
+
