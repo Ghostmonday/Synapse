@@ -1,0 +1,9 @@
+{
+  "pattern": "high first session stall rate",
+  "threshold": 0.3,
+  "action": "improve_first_run_experience",
+  "target": "First-time user onboarding",
+  "priority": "high",
+  "description": "Detects when more than 30% of first-time users stall or abandon during their first session, indicating poor initial UX."
+}
+

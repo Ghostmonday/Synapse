@@ -87,8 +87,16 @@ function scrubPII(value: unknown): unknown {
       // Don't include raw message content or similar sensitive fields
       if (key.toLowerCase().includes('message') || 
           key.toLowerCase().includes('content') ||
-          key.toLowerCase().includes('body')) {
+          key.toLowerCase().includes('body') ||
+          key.toLowerCase().includes('query') ||
+          key.toLowerCase().includes('text')) {
         scrubbed[key] = '[REDACTED]';
+      } else if (key === 'contextQuery') {
+        // For contextQuery, redact fully as it may contain user input
+        scrubbed[key] = '[REDACTED_QUERY]';
+      } else if (key === 'sentimentScore') {
+        // Sentiment score is numeric and safe to keep
+        scrubbed[key] = val;
       } else {
         scrubbed[key] = scrubPII(val);
       }
@@ -161,6 +169,26 @@ export class UXTelemetrySDK {
   private eventQueue: UXTelemetryEvent[] = [];
   private flushTimer: ReturnType<typeof setTimeout> | null = null;
   private retryQueue: { batch: UXTelemetryBatch; attempts: number }[] = [];
+  
+  // Sequence tracking
+  private eventSequencePath: Array<{ eventType: string; timestamp: number }> = [];
+  
+  // Burst detection
+  private recentActions: number[] = [];
+  private readonly BURST_THRESHOLD = 5;
+  private readonly BURST_WINDOW_MS = 10000; // 10 seconds
+  
+  // Idle detection
+  private lastActivityTime: number = Date.now();
+  private idleThresholdMs: number = 30000; // 30 seconds
+  private wasIdle: boolean = false;
+  
+  // State loop detection
+  private stateHistory: Array<{ state: string; timestamp: number }> = [];
+  private readonly STATE_HISTORY_LIMIT = 20;
+  
+  // Performance timing
+  private performanceMarks: Map<string, number> = new Map();
   
   constructor(config?: Partial<UXTelemetrySDKConfig>) {
     this.config = { ...DEFAULT_SDK_CONFIG, ...config } as UXTelemetrySDKConfig;
@@ -243,6 +271,22 @@ export class UXTelemetrySDK {
       }
       return;
     }
+    
+    // Track activity for idle detection
+    this.trackActivity();
+    
+    // Detect bursts for user actions
+    if (category === UXEventCategory.CLICKSTREAM || category === UXEventCategory.UI_STATE) {
+      this.detectBurst();
+    }
+    
+    // Detect state loops
+    if (options.stateBefore && options.stateAfter) {
+      this.detectStateLoop(options.stateBefore, options.stateAfter);
+    }
+    
+    // Track sequence
+    this.trackSequence(eventType);
     
     // Check sampling
     const samplingFlag = this.shouldSample(eventType);
@@ -465,6 +509,507 @@ export class UXTelemetrySDK {
     if (this.config.debug) {
       console.log('[UX Telemetry] Session reset:', this.sessionId);
     }
+  }
+  
+  /**
+   * Track activity for idle detection
+   */
+  private trackActivity(): void {
+    const now = Date.now();
+    const timeSinceLastActivity = now - this.lastActivityTime;
+    
+    // Check if user was idle and is now active again
+    if (this.wasIdle && timeSinceLastActivity < this.idleThresholdMs) {
+      this.logEvent(
+        EventType.SESSION_IDLE_THEN_RETRY,
+        UXEventCategory.BEHAVIOR_MODELING,
+        {
+          idleDuration: timeSinceLastActivity,
+        }
+      );
+      this.wasIdle = false;
+    }
+    
+    // Update idle status
+    if (timeSinceLastActivity > this.idleThresholdMs) {
+      this.wasIdle = true;
+    }
+    
+    this.lastActivityTime = now;
+  }
+  
+  /**
+   * Detect and log action bursts
+   */
+  private detectBurst(): void {
+    const now = Date.now();
+    
+    // Add current action
+    this.recentActions.push(now);
+    
+    // Remove actions outside the window
+    this.recentActions = this.recentActions.filter(
+      time => now - time < this.BURST_WINDOW_MS
+    );
+    
+    // Detect burst
+    if (this.recentActions.length >= this.BURST_THRESHOLD) {
+      const burstDuration = now - this.recentActions[0];
+      this.logEvent(
+        EventType.USER_ACTION_BURST,
+        UXEventCategory.BEHAVIOR_MODELING,
+        {
+          burstCount: this.recentActions.length,
+          duration: burstDuration,
+        }
+      );
+      // Reset to avoid duplicate burst events
+      this.recentActions = [];
+    }
+  }
+  
+  /**
+   * Detect state loops (repeated state transitions)
+   */
+  private detectStateLoop(stateBefore?: string, stateAfter?: string): void {
+    if (!stateBefore || !stateAfter) return;
+    
+    const now = Date.now();
+    const stateKey = `${stateBefore}->${stateAfter}`;
+    
+    // Add to state history
+    this.stateHistory.push({ state: stateKey, timestamp: now });
+    
+    // Keep history limited
+    if (this.stateHistory.length > this.STATE_HISTORY_LIMIT) {
+      this.stateHistory.shift();
+    }
+    
+    // Detect loops (same transition occurring 3+ times in short succession)
+    const recentWindow = now - 30000; // 30 seconds
+    const recentTransitions = this.stateHistory.filter(
+      h => h.timestamp > recentWindow && h.state === stateKey
+    );
+    
+    if (recentTransitions.length >= 3) {
+      const states = this.stateHistory
+        .filter(h => h.timestamp > recentWindow)
+        .map(h => h.state);
+      
+      this.logEvent(
+        EventType.REPEATED_STATE_LOOP_DETECTED,
+        UXEventCategory.JOURNEY_ANALYTICS,
+        {
+          loopCount: recentTransitions.length,
+          statesInLoop: [...new Set(states)],
+          pattern: stateKey,
+        }
+      );
+      
+      // Clear history to avoid duplicate detections
+      this.stateHistory = [];
+    }
+  }
+  
+  /**
+   * Start performance measurement
+   */
+  public markPerformanceStart(markId: string): void {
+    this.performanceMarks.set(markId, Date.now());
+  }
+  
+  /**
+   * End performance measurement and log
+   */
+  public markPerformanceEnd(
+    markId: string,
+    metadata: Record<string, unknown> = {}
+  ): number | null {
+    const startTime = this.performanceMarks.get(markId);
+    if (!startTime) return null;
+    
+    const duration = Date.now() - startTime;
+    this.performanceMarks.delete(markId);
+    
+    this.logEvent(
+      EventType.INTERACTION_LATENCY_MS,
+      UXEventCategory.PERFORMANCE,
+      {
+        markId,
+        duration,
+        ...metadata,
+      }
+    );
+    
+    return duration;
+  }
+  
+  /**
+   * Log AI suggestion accepted
+   */
+  public logAISuggestionAccepted(
+    suggestionId: string,
+    acceptanceMethod: 'click' | 'copy' | 'keyboard',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AI_SUGGESTION_ACCEPTED,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        suggestionId,
+        acceptanceMethod,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log AI suggestion rejected
+   */
+  public logAISuggestionRejected(
+    suggestionId: string,
+    rejectionReason?: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AI_SUGGESTION_REJECTED,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        suggestionId,
+        rejectionReason,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log AI auto-fix applied
+   */
+  public logAIAutoFixApplied(
+    fixType: string,
+    outcome: 'success' | 'fail',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AI_AUTO_FIX_APPLIED,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        fixType,
+        outcome,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log AI edit undone
+   */
+  public logAIEditUndone(
+    undoLatency: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AI_EDIT_UNDONE,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        undoLatency,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log AI help requested
+   */
+  public logAIHelpRequested(
+    contextQuery: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AI_HELP_REQUESTED,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        contextQuery, // Will be scrubbed by PII detector
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log agent handoff failed
+   */
+  public logAgentHandoffFailed(
+    failureStage: 'init' | 'partial' | 'complete',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.AGENT_HANDOFF_FAILED,
+      UXEventCategory.AI_FEEDBACK,
+      {
+        failureStage,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log message sentiment
+   */
+  public logMessageSentiment(
+    sentimentScore: number,
+    beforeAfter: 'before' | 'after',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    const eventType = beforeAfter === 'before' 
+      ? EventType.MESSAGE_SENTIMENT_BEFORE 
+      : EventType.MESSAGE_SENTIMENT_AFTER;
+    
+    this.logEvent(
+      eventType,
+      UXEventCategory.COGNITIVE_STATE,
+      {
+        sentimentScore,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log session emotion curve
+   */
+  public logSessionEmotionCurve(
+    emotionCurve: Array<{ timestamp: string; score: number }>,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.SESSION_EMOTION_CURVE,
+      UXEventCategory.COGNITIVE_STATE,
+      {
+        emotionCurve,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log message emotion contradiction
+   */
+  public logMessageEmotionContradiction(
+    detectedTone: string,
+    inferredIntent: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.MESSAGE_EMOTION_CONTRADICTION,
+      UXEventCategory.COGNITIVE_STATE,
+      {
+        detectedTone,
+        inferredIntent,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log validation irritation score
+   */
+  public logValidationIrritationScore(
+    errorCount: number,
+    retryInterval: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.VALIDATION_REACT_IRRITATION_SCORE,
+      UXEventCategory.COGNITIVE_STATE,
+      {
+        errorCount,
+        retryInterval,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log funnel checkpoint hit
+   */
+  public logFunnelCheckpoint(
+    checkpointId: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.FUNNEL_CHECKPOINT_HIT,
+      UXEventCategory.JOURNEY_ANALYTICS,
+      {
+        checkpointId,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log dropoff point detected
+   */
+  public logDropoffPoint(
+    lastEvent: string,
+    sessionDuration: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.DROPOFF_POINT_DETECTED,
+      UXEventCategory.JOURNEY_ANALYTICS,
+      {
+        lastEvent,
+        sessionDuration,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log perceived vs actual load time
+   */
+  public logLoadTimeComparison(
+    perceivedMs: number,
+    actualMs: number,
+    componentId?: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.LOAD_TIME_PERCEIVED_VS_ACTUAL,
+      UXEventCategory.PERFORMANCE,
+      {
+        perceivedMs,
+        actualMs,
+        delta: Math.abs(perceivedMs - actualMs),
+        ...metadata,
+      },
+      { componentId }
+    );
+  }
+  
+  /**
+   * Log stuttered input
+   */
+  public logStutteredInput(
+    retryCount: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.STUTTERED_INPUT,
+      UXEventCategory.PERFORMANCE,
+      {
+        retryCount,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log long state without progress
+   */
+  public logLongStateWithoutProgress(
+    stateDuration: number,
+    state: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.LONG_STATE_WITHOUT_PROGRESS,
+      UXEventCategory.PERFORMANCE,
+      {
+        stateDuration,
+        state,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log first session stall point
+   */
+  public logFirstSessionStallPoint(
+    stallEvent: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.FIRST_SESSION_STALL_POINT,
+      UXEventCategory.BEHAVIOR_MODELING,
+      {
+        stallEvent,
+        isFirstSession: true,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log retry after error interval
+   */
+  public logRetryAfterError(
+    intervalMs: number,
+    errorType: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.RETRY_AFTER_ERROR_INTERVAL,
+      UXEventCategory.BEHAVIOR_MODELING,
+      {
+        intervalMs,
+        errorType,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Log feature toggle hover without use
+   */
+  public logFeatureToggleHoverNoUse(
+    featureId: string,
+    hoverDuration: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    this.logEvent(
+      EventType.FEATURE_TOGGLE_HOVER_NO_USE,
+      UXEventCategory.BEHAVIOR_MODELING,
+      {
+        featureId,
+        hoverDuration,
+        ...metadata,
+      }
+    );
+  }
+  
+  /**
+   * Add to sequence path
+   */
+  public trackSequence(eventType: UXEventType): void {
+    this.eventSequencePath.push({
+      eventType,
+      timestamp: Date.now(),
+    });
+    
+    // Keep sequence path limited to last 100 events
+    if (this.eventSequencePath.length > 100) {
+      this.eventSequencePath.shift();
+    }
+    
+    // Periodically log sequence path
+    if (this.eventSequencePath.length % 20 === 0) {
+      this.logEvent(
+        EventType.EVENT_SEQUENCE_PATH,
+        UXEventCategory.JOURNEY_ANALYTICS,
+        {
+          sequencePath: this.eventSequencePath.slice(-20),
+        }
+      );
+    }
+  }
+  
+  /**
+   * Get current sequence path
+   */
+  public getSequencePath(): Array<{ eventType: string; timestamp: number }> {
+    return [...this.eventSequencePath];
   }
   
   /**

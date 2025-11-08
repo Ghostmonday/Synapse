@@ -194,6 +194,285 @@ export function useUXTelemetry() {
     sdk.resetSession();
   }
   
+  /**
+   * Log AI suggestion accepted
+   */
+  function logAISuggestionAccepted(
+    suggestionId: string,
+    acceptanceMethod: 'click' | 'copy' | 'keyboard',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAISuggestionAccepted(suggestionId, acceptanceMethod, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log AI suggestion rejected
+   */
+  function logAISuggestionRejected(
+    suggestionId: string,
+    rejectionReason?: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAISuggestionRejected(suggestionId, rejectionReason, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log AI auto-fix applied
+   */
+  function logAIAutoFixApplied(
+    fixType: string,
+    outcome: 'success' | 'fail',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAIAutoFixApplied(fixType, outcome, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log AI edit undone
+   */
+  function logAIEditUndone(
+    undoLatency: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAIEditUndone(undoLatency, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log AI help requested
+   */
+  function logAIHelpRequested(
+    contextQuery: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAIHelpRequested(contextQuery, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log agent handoff failed
+   */
+  function logAgentHandoffFailed(
+    failureStage: 'init' | 'partial' | 'complete',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logAgentHandoffFailed(failureStage, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log message sentiment
+   */
+  function logSentiment(
+    sentimentScore: number,
+    beforeAfter: 'before' | 'after',
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logMessageSentiment(sentimentScore, beforeAfter, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log session emotion curve
+   */
+  function logEmotionCurve(
+    emotionCurve: Array<{ timestamp: string; score: number }>,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logSessionEmotionCurve(emotionCurve, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log message emotion contradiction
+   */
+  function logEmotionContradiction(
+    detectedTone: string,
+    inferredIntent: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logMessageEmotionContradiction(detectedTone, inferredIntent, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log validation irritation score
+   */
+  function logValidationIrritationScore(
+    errorCount: number,
+    retryInterval: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logValidationIrritationScore(errorCount, retryInterval, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log funnel checkpoint hit
+   */
+  function logFunnelCheckpoint(
+    checkpointId: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logFunnelCheckpoint(checkpointId, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log dropoff point detected
+   */
+  function logDropoffPoint(
+    lastEvent: string,
+    sessionDuration: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logDropoffPoint(lastEvent, sessionDuration, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log perceived vs actual load time
+   */
+  function logPerformance(
+    perceivedMs: number,
+    actualMs: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logLoadTimeComparison(perceivedMs, actualMs, componentId, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log stuttered input
+   */
+  function logStutteredInput(
+    retryCount: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logStutteredInput(retryCount, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log long state without progress
+   */
+  function logLongStateWithoutProgress(
+    stateDuration: number,
+    state: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logLongStateWithoutProgress(stateDuration, state, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log first session stall point
+   */
+  function logFirstSessionStallPoint(
+    stallEvent: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logFirstSessionStallPoint(stallEvent, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log retry after error interval
+   */
+  function logRetryAfterError(
+    intervalMs: number,
+    errorType: string,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logRetryAfterError(intervalMs, errorType, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Log feature toggle hover without use
+   */
+  function logFeatureToggleHoverNoUse(
+    featureId: string,
+    hoverDuration: number,
+    metadata: Record<string, unknown> = {}
+  ): void {
+    sdk.logFeatureToggleHoverNoUse(featureId, hoverDuration, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
+  /**
+   * Track sequence
+   */
+  function trackSequence(eventType: UXEventType): void {
+    sdk.trackSequence(eventType);
+  }
+  
+  /**
+   * Get sequence path
+   */
+  function getSequencePath(): Array<{ eventType: string; timestamp: number }> {
+    return sdk.getSequencePath();
+  }
+  
+  /**
+   * Start performance measurement
+   */
+  function markPerformanceStart(markId: string): void {
+    sdk.markPerformanceStart(markId);
+  }
+  
+  /**
+   * End performance measurement
+   */
+  function markPerformanceEnd(
+    markId: string,
+    metadata: Record<string, unknown> = {}
+  ): number | null {
+    return sdk.markPerformanceEnd(markId, {
+      route: getCurrentRoute(),
+      ...metadata,
+    });
+  }
+  
   // Auto-flush on component unmount
   onUnmounted(() => {
     flush();
@@ -209,6 +488,33 @@ export function useUXTelemetry() {
     getSessionId,
     resetSession,
     componentId,
+    // AI Feedback
+    logAISuggestionAccepted,
+    logAISuggestionRejected,
+    logAIAutoFixApplied,
+    logAIEditUndone,
+    logAIHelpRequested,
+    logAgentHandoffFailed,
+    // Emotional & Cognitive State
+    logSentiment,
+    logEmotionCurve,
+    logEmotionContradiction,
+    logValidationIrritationScore,
+    // Journey Analytics
+    logFunnelCheckpoint,
+    logDropoffPoint,
+    trackSequence,
+    getSequencePath,
+    // Performance
+    logPerformance,
+    logStutteredInput,
+    logLongStateWithoutProgress,
+    markPerformanceStart,
+    markPerformanceEnd,
+    // Behavior Modeling
+    logFirstSessionStallPoint,
+    logRetryAfterError,
+    logFeatureToggleHoverNoUse,
   };
 }
 

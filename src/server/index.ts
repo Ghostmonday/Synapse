@@ -119,18 +119,92 @@ app.get('/debug/stats', async (req, res) => {
       return res.status(403).json({ error: 'Forbidden' });
     }
     
-    // Import UX telemetry service dynamically
-    const { getRecentSummary, getCategorySummary } = await import('../services/ux-telemetry-service.js');
+    // Import UX telemetry service and watchdog dynamically
+    const { 
+      getRecentSummary, 
+      getCategorySummary,
+      getAISuggestionMetrics,
+      getSentimentMetrics,
+      getFunnelMetrics,
+      getPerformanceMetrics,
+    } = await import('../services/ux-telemetry-service.js');
+    
+    const { runWatchdog } = await import('../llm-observer/watchdog.js');
     
     // Get aggregated metrics
     const recentSummary = await getRecentSummary(24);
     const categorySummary = await getCategorySummary();
     
+    // Get new category-specific metrics
+    const [
+      aiSuggestionMetrics,
+      sentimentMetrics,
+      funnelMetrics,
+      performanceMetrics,
+    ] = await Promise.all([
+      getAISuggestionMetrics(168), // 7 days
+      getSentimentMetrics(168),
+      getFunnelMetrics(168),
+      getPerformanceMetrics(24),
+    ]);
+    
+    // Get watchdog analysis with derivable metrics
+    let watchdogSummary = null;
+    try {
+      watchdogSummary = await runWatchdog();
+    } catch (error: any) {
+      console.error('[Stats Endpoint] Watchdog failed:', error);
+    }
+    
     return res.json({
       timestamp: new Date().toISOString(),
       recent_summary: recentSummary,
       category_summary: categorySummary,
-      note: 'UX Telemetry stats - separate from system telemetry',
+      
+      // AI Feedback Metrics
+      ai_feedback: {
+        suggestion_acceptance_rate: aiSuggestionMetrics?.acceptanceRate || 0,
+        total_suggestions: aiSuggestionMetrics?.totalSuggestions || 0,
+        accepted: aiSuggestionMetrics?.accepted || 0,
+        rejected: aiSuggestionMetrics?.rejected || 0,
+      },
+      
+      // Emotional Tracking
+      emotional_tracking: {
+        avg_sentiment: sentimentMetrics?.avgSentiment || 0,
+        volatility: sentimentMetrics?.volatility || 0,
+        positive_trend: sentimentMetrics?.positiveTrend || false,
+      },
+      
+      // Journey Analytics
+      journey_analytics: {
+        funnel_completion_rate: funnelMetrics?.completionRate || 0,
+        total_checkpoints: funnelMetrics?.totalCheckpoints || 0,
+        total_dropoffs: funnelMetrics?.totalDropoffs || 0,
+      },
+      
+      // Performance Linking
+      performance_linking: {
+        avg_load_time_ms: performanceMetrics?.avgLoadTime || 0,
+        avg_interaction_latency_ms: performanceMetrics?.avgInteractionLatency || 0,
+        stutter_rate: performanceMetrics?.stutterRate || 0,
+        long_state_count: performanceMetrics?.longStateCount || 0,
+      },
+      
+      // Watchdog Derivable Metrics
+      derivable_metrics: watchdogSummary?.derivableMetrics || {
+        confidenceScorePerAgent: 0,
+        uxFragilityIndex: 0,
+        emotionalVolatilityIndex: 0,
+        pathPredictabilityScore: 0,
+        uxCompletionRateBySegment: [],
+        perceivedAIAccuracyByOutcome: 0,
+      },
+      
+      // Watchdog Recommendations
+      watchdog_recommendations: watchdogSummary?.recommendations || [],
+      
+      note: 'UX Telemetry stats - separate from system telemetry. Includes AI feedback, emotional tracking, journey analytics, performance linking, and watchdog derivable metrics.',
     });
   } catch (error: any) {
     return res.status(500).json({ 
