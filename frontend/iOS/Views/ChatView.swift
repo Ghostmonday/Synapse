@@ -51,9 +51,21 @@ struct ChatView: View {
                     Button("Send") {
                         sendMessage()
                         haptic.impactOccurred()
+                        withAnimation(.easeOut(duration: 0.4)) {
+                            showFlaggedToast = false // Trigger glow animation
+                        }
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(Color("SinapseGold"))
                     .disabled(input.isEmpty)
+                    .overlay(
+                        Circle()
+                            .fill(Color("SinapseGlow"))
+                            .frame(width: 60, height: 60)
+                            .scaleEffect(input.isEmpty ? 0.01 : 0.8)
+                            .opacity(input.isEmpty ? 0 : 0.3)
+                            .animation(.easeOut(duration: 0.4), value: input.isEmpty)
+                    )
                 }
                 .padding()
             }

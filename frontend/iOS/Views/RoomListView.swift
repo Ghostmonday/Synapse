@@ -111,7 +111,7 @@ struct RoomListView: View {
                         print("[RoomListView] Create room tapped")
                     }) {
                         Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.primarySinapse)
+                            .foregroundColor(Color("SinapseGold"))
                     }
                 }
             }

@@ -6,6 +6,29 @@ struct SinapseApp: App {
     @StateObject private var presenceViewModel = PresenceViewModel()
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     
+    init() {
+        // Global tint - golden synapse theme
+        UIView.appearance().tintColor = UIColor(named: "SinapseGold") ?? UIColor(red: 0.96, green: 0.75, blue: 0.29, alpha: 1.0)
+        
+        // Navigation bar appearance
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        navAppearance.backgroundColor = UIColor(named: "SinapseDeep") ?? UIColor(red: 0.10, green: 0.06, blue: 0.00, alpha: 1.0)
+        navAppearance.titleTextAttributes = [.foregroundColor: UIColor(named: "SinapseGold") ?? UIColor(red: 0.96, green: 0.75, blue: 0.29, alpha: 1.0)]
+        navAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor(named: "SinapseGold") ?? UIColor(red: 0.96, green: 0.75, blue: 0.29, alpha: 1.0)]
+        UINavigationBar.appearance().standardAppearance = navAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = navAppearance
+        UINavigationBar.appearance().compactAppearance = navAppearance
+        
+        // Tab bar appearance
+        let tabAppearance = UITabBarAppearance()
+        tabAppearance.configureWithOpaqueBackground()
+        tabAppearance.backgroundColor = UIColor(named: "SinapseDeep") ?? UIColor(red: 0.10, green: 0.06, blue: 0.00, alpha: 1.0)
+        tabAppearance.selectionIndicatorTintColor = UIColor(named: "SinapseGold") ?? UIColor(red: 0.96, green: 0.75, blue: 0.29, alpha: 1.0)
+        UITabBar.appearance().standardAppearance = tabAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+    }
+    
     var body: some Scene {
         WindowGroup {
             if hasCompletedOnboarding {
