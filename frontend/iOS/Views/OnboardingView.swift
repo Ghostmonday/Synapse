@@ -2,15 +2,25 @@ import SwiftUI
 
 struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
-    @State private var showTierSelection = false
     
     var body: some View {
-        WelcomeView()
-            .onChange(of: showTierSelection) { newValue in
-                if newValue {
-                    hasCompletedOnboarding = true
-                }
+        VStack(spacing: 32) {
+            Spacer()
+            
+            Text("Welcome to Sinapse")
+                .font(.system(.largeTitle, weight: .bold))
+                .foregroundColor(.blue)
+            
+            Spacer()
+            
+            Button("Get Started") {
+                hasCompletedOnboarding = true
             }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 60)
+        }
     }
 }
 

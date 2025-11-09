@@ -245,7 +245,11 @@ struct DashboardView: View {
             is_public: true,
             users: [],
             maxOrbs: 10,
-            activityLevel: "calm"
+            activityLevel: "calm",
+            room_tier: "free",
+            ai_moderation: false,
+            expires_at: nil,
+            is_self_hosted: false
         )
         return room
     }

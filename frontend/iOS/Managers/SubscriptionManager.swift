@@ -1,4 +1,5 @@
 import StoreKit
+import Foundation
 
 /// StoreKit 2 subscription manager with multi-tier support
 @available(iOS 15.0, *)

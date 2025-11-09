@@ -1,4 +1,5 @@
 import SwiftUI
+import Foundation
 
 @available(iOS 15.0, *)
 struct ProfileView: View {
@@ -105,10 +106,8 @@ struct ProfileView: View {
             }
             .navigationTitle("Profile")
             .sheet(isPresented: $showPricingSheet) {
-                PricingSheet(
-                    subscriptionManager: subscriptionManager,
-                    isPresented: $showPricingSheet
-                )
+                // PricingSheet(subscriptionManager: subscriptionManager, isPresented: $showPricingSheet)
+                SubscriptionView()
             }
             .alert("Upgrade Required", isPresented: $showUpgradeAlert) {
                 Button("View Plans") {
