@@ -6,7 +6,9 @@
 import { create, findMany } from '../shared/supabase-helpers.js';
 import { getRedisClient } from '../config/db.js';
 import { logError } from '../shared/logger.js';
-import { analyzeMessage, logFlag, getRoomById } from './moderation.service.js';
+import { scanForToxicity, handleViolation, isUserMuted, getRoomById } from './moderation.service.js';
+import { getRoomConfig, isEnterpriseUser } from './room-service.js';
+import { getUserSubscription } from './subscription-service.js';
 import { supabase } from '../config/db.js';
 
 const redis = getRedisClient();
@@ -28,70 +30,57 @@ export async function sendMessageToRoom(data: {
       ? (parseInt(data.roomId) || data.roomId) // Try parse, fallback to string if not numeric
       : data.roomId; // Already a number
 
-    // Check if room has AI moderation enabled (enterprise only)
-    const room = await getRoomById(String(roomIdValue));
-    
-    if (room?.ai_moderation && room.room_tier === 'enterprise') {
-      // Analyze message for toxicity
-      const { score, label } = await analyzeMessage(data.content);
-      
-      if (label === 'toxic') {
-        let action = 'flag';
-        let messageId: string | null = null;
-        
-        if (score > 0.85) {
-          // Hard threshold: block the message completely
-          action = 'remove';
-          await logFlag(String(roomIdValue), data.senderId, null, score, action);
-          throw new Error('Message removed - content violates moderation policy');
-        } else {
-          // Soft threshold: warn but allow message
-          action = 'warn';
-          // Message will be inserted, then we'll log the flag
-        }
-        
-        // Log the moderation flag
-        // Note: messageId will be null if removed, set after insert if warned
-        if (action === 'warn') {
-          // Insert message first, then log flag with message ID
-          const { data: insertedMessage, error: insertError } = await supabase
-            .from('messages')
-            .insert({
-              room_id: roomIdValue,
-              sender_id: data.senderId,
-              content: data.content
-            })
-            .select('id')
-            .single();
-          
-          if (insertError) throw insertError;
-          
-          messageId = insertedMessage.id;
-          await logFlag(String(roomIdValue), data.senderId, messageId, score, action);
-          
-          // Send warning message via system notification
-          // This could be enhanced to send a DM or in-room notification
-          logError(`Moderation warning: room=${roomIdValue}, user=${data.senderId}, score=${score.toFixed(2)}`);
-        } else {
-          // Already logged above for remove action
-          return; // Don't insert or broadcast
-        }
-      } else {
-        // Safe message - proceed with normal insert
-        await create('messages', {
-          room_id: roomIdValue,
-          sender_id: data.senderId,
-          content: data.content
-        });
-      }
-    } else {
-      // No moderation - normal flow
-      await create('messages', {
-        room_id: roomIdValue,
-        sender_id: data.senderId,
-        content: data.content
-      });
+    // Check if user is muted in this room
+    const isMuted = await isUserMuted(data.senderId, String(roomIdValue));
+    if (isMuted) {
+      throw new Error('You are temporarily muted in this room');
     }
+
+    // Check if room has AI moderation enabled (enterprise only)
+    const roomConfig = await getRoomConfig(String(roomIdValue));
+    
+    if (roomConfig?.ai_moderation) {
+      // Verify enterprise tier (moderation is enterprise-only)
+      const userTier = await getUserSubscription(data.senderId);
+      if (!isEnterpriseUser(userTier)) {
+        // This shouldn't happen if room config is correct, but safety check
+        logError(`Non-enterprise user ${data.senderId} tried to send in moderated room`);
+      }
+
+      // Scan message for toxicity
+      const scan = await scanForToxicity(data.content, String(roomIdValue));
+      
+      if (scan.isToxic) {
+        // Log toxic scan event
+        const { logModerationEvent } = await import('./telemetry-service.js');
+        await logModerationEvent('scan_toxic', data.senderId, String(roomIdValue), {
+          score: scan.score,
+          suggestion: scan.suggestion,
+        });
+        // Get current violation count
+        const { data: violations } = await supabase
+          .from('message_violations')
+          .select('count')
+          .eq('user_id', data.senderId)
+          .eq('room_id', String(roomIdValue))
+          .single();
+
+        const violationCount = violations?.count || 0;
+        
+        // Handle violation (warnings first, then mutes)
+        await handleViolation(data.senderId, String(roomIdValue), scan.suggestion, violationCount);
+        
+        // Still allow message through, but warn user
+        // Message will be inserted below, but user gets warning/mute
+      }
+    }
+
+    // Insert message (moderation doesn't block, just warns/mutes)
+    await create('messages', {
+      room_id: roomIdValue,
+      sender_id: data.senderId,
+      content: data.content
+    });
 
     // Broadcast message via Redis pub/sub for real-time delivery to connected clients
     // Channel format: "room:{roomId}" - all clients subscribed to this room receive the message

@@ -10,7 +10,8 @@ A production-ready communication platform with real-time messaging, voice/video 
 ✅ **Security** - Password hashing, file upload validation  
 ✅ **Voice/Video** - LiveKit integration with quality enhancement  
 ✅ **AI Integration** - LLM-powered assistants and autonomous operations  
-✅ **Telemetry** - Comprehensive system and UX telemetry
+✅ **Telemetry** - Comprehensive system and UX telemetry  
+✅ **AI Moderation** - Enterprise-grade content moderation with warnings-first approach
 
 ## Overview
 
@@ -455,6 +456,32 @@ The Sinapse iOS app is built with SwiftUI and integrates with this backend API. 
 - REST API integration with all backend endpoints
 - Real-time messaging support
 - iOS 17.0+ deployment target
+
+---
+
+## Roadmap
+
+### Current (v0.1.0)
+- ✅ AI Moderation (Enterprise-only, warnings-first)
+- ✅ Room Tiers (Temp for Pro, Permanent for Enterprise)
+- ✅ Self-hosting documentation
+- ✅ iOS native app with SwiftUI
+
+### Next Up
+- 🔄 **Android App** - Native Android client (Kotlin/Compose)
+- 🔄 **Hosting Partnerships** - One-click deployment via DigitalOcean/AWS
+- 🔄 **Advanced Moderation** - Custom rules, keyword filtering
+- 🔄 **Federation** - Cross-instance room sharing
+
+### Future
+- 📋 **Video Calls** - Enhanced LiveKit integration with recording
+- 📋 **End-to-End Encryption** - Optional E2EE for enterprise rooms
+- 📋 **AI Assistants** - Customizable AI bots per room
+- 📋 **Analytics Dashboard** - Built-in analytics for room owners
+- 📋 **API Marketplace** - Third-party integrations and plugins
+
+### Partnerships
+We're exploring partnerships with hosting providers for one-click enterprise deployment. Interested? Contact: enterprise@sinapse.app
 
 ---
 

@@ -5,6 +5,8 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { logError, logInfo } from '../shared/logger.js';
+import { scanForToxicity } from '../services/moderation.service.js';
+import { getRoomConfig } from '../services/room-service.js';
 
 const ALLOWED_MIME_TYPES = [
   'image/jpeg',
@@ -59,5 +61,45 @@ export const fileUploadSecurity = (req: Request, res: Response, next: NextFuncti
   // TODO: Add virus scanning integration (ClamAV or cloud service)
   
   next();
+};
+
+/**
+ * File upload moderation check
+ * Scans file names/metadata for toxicity if room has moderation enabled
+ */
+export const fileUploadModeration = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.file) {
+    return next();
+  }
+
+  try {
+    // Get room ID from request (adjust based on your route structure)
+    const roomId = req.body.roomId || req.params.roomId;
+    if (!roomId) {
+      return next(); // No room context, skip moderation
+    }
+
+    // Check if room has moderation enabled
+    const roomConfig = await getRoomConfig(roomId);
+    if (!roomConfig?.ai_moderation) {
+      return next(); // Moderation not enabled, skip
+    }
+
+    // Scan file name for toxicity
+    const fileName = req.file.originalname || req.file.filename || '';
+    const scan = await scanForToxicity(`File: ${fileName}`, roomId);
+
+    if (scan.isToxic) {
+      logInfo('File upload flagged', `File: ${fileName}, Score: ${scan.score}`);
+      // Log but allow upload (moderation is warnings-first)
+      // Could optionally block here if you want stricter file moderation
+    }
+
+    next();
+  } catch (error: any) {
+    logError('File upload moderation check failed', error);
+    // Fail-safe: allow upload if moderation check fails
+    next();
+  }
 };
 

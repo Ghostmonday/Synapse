@@ -9,12 +9,14 @@ import { logError } from '../shared/logger.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { checkUsageLimit, trackUsage } from '../services/usage-service.js';
 import { getUserSubscription, SubscriptionTier } from '../services/subscription-service.js';
+import { createRoom, getRoomConfig } from '../services/room-service.js';
+import { updateOne } from '../shared/supabase-helpers.js';
 
 const router = Router();
 
 /**
  * POST /rooms/create
- * Body: { name, owner_id, is_public? }
+ * Body: { name, is_public?, type?: 'temp' | 'permanent' }
  * Returns: Created room object
  */
 router.post('/create', authMiddleware, async (req, res) => {
@@ -23,7 +25,7 @@ router.post('/create', authMiddleware, async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  const { name, is_public } = req.body;
+  const { name, is_public, type } = req.body;
   const owner_id = userId; // Use authenticated user ID
 
   if (!name) {
@@ -43,43 +45,102 @@ router.post('/create', authMiddleware, async (req, res) => {
       });
     }
 
-    // Get user subscription tier
+    // Determine room type based on tier or explicit type
     const subscriptionTier = await getUserSubscription(userId);
+    let roomType: 'temp' | 'permanent' = 'permanent';
     
-    // Set room tier and expiry for Pro users
-    const roomData = {
-      name,
-      owner_id,
-      is_public: is_public || false,
-      room_tier: subscriptionTier === SubscriptionTier.PRO ? 'pro' : 'free',
-    };
-
-    // Pro rooms expire after 24 hours
-    if (subscriptionTier === SubscriptionTier.PRO) {
-      roomData.expires_at = new Date(Date.now() + 86400000).toISOString(); // 24 hours
+    if (type) {
+      roomType = type;
+    } else if (subscriptionTier === SubscriptionTier.PRO) {
+      roomType = 'temp'; // Pro defaults to temp
     }
 
-    const { data, error } = await supabase
-      .from('rooms')
-      .insert([roomData])
-      .select()
-      .single();
-
-    if (error) throw error;
+    // Create room using room service
+    const room = await createRoom(userId, roomType);
 
     // Track usage
-    await trackUsage(userId, 'room_created', 1, { room_id: data.id });
+    await trackUsage(userId, 'room_created', 1, { room_id: room.id });
 
     res.json({ 
       status: 'ok', 
       room: {
-        ...data,
-        expires_at: data.expires_at || null
+        ...room,
+        expires_at: room.expires_at || null
       }
     });
   } catch (e) {
     logError('Create room error', e instanceof Error ? e : new Error(String(e)));
-    res.status(500).json({ error: e instanceof Error ? e.message : String(e) || 'Server error' });
+    res.status(400).json({ error: e instanceof Error ? e.message : String(e) || 'Server error' });
+  }
+});
+
+/**
+ * GET /rooms/:id/config
+ * Get room configuration
+ */
+router.get('/:id/config', authMiddleware, async (req, res) => {
+  try {
+    const roomId = req.params.id;
+    const userId = (req as any).user?.userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const config = await getRoomConfig(roomId);
+    if (!config || config.created_by !== userId) {
+      return res.status(403).json({ error: 'Not yours' });
+    }
+
+    res.json(config);
+  } catch (e) {
+    logError('Get room config error', e instanceof Error ? e : new Error(String(e)));
+    res.status(500).json({ error: 'Failed to get room config' });
+  }
+});
+
+/**
+ * PUT /rooms/:id/config
+ * Update room configuration (AI moderation toggle - enterprise only)
+ */
+router.put('/:id/config', authMiddleware, async (req, res) => {
+  try {
+    const roomId = req.params.id;
+    const userId = (req as any).user?.userId;
+    const { ai_moderation } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const config = await getRoomConfig(roomId);
+    if (!config || config.created_by !== userId) {
+      return res.status(403).json({ error: 'Not yours' });
+    }
+
+    // Check enterprise requirement for moderation
+    const subscriptionTier = await getUserSubscription(userId);
+    if (ai_moderation && subscriptionTier !== SubscriptionTier.TEAM) {
+      return res.status(403).json({
+        error: 'Enterprise subscription required for AI moderation',
+        upgrade_url: '/subscription/upgrade',
+      });
+    }
+
+    // Update room config
+    const updates: any = {};
+    if (typeof ai_moderation === 'boolean') {
+      updates.ai_moderation = ai_moderation;
+      if (ai_moderation) {
+        updates.room_tier = 'enterprise';
+      }
+    }
+
+    await updateOne('rooms', roomId, updates);
+    res.json({ success: true });
+  } catch (e) {
+    logError('Update room config error', e instanceof Error ? e : new Error(String(e)));
+    res.status(500).json({ error: 'Failed to update room config' });
   }
 });
 

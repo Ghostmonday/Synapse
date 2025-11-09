@@ -2,27 +2,32 @@
  * Moderation Service
  * AI-powered content moderation using DeepSeek API
  * Enterprise-only feature for room-level moderation
+ * Opt-in only: Warnings first, mutes after repeat violations (no auto-bans)
  */
 
 import axios from 'axios';
 import { logError, logWarning, logInfo } from '../shared/logger.js';
 import { supabase } from '../config/db.js';
+import { logModerationEvent } from './telemetry-service.js';
 
 /**
- * Analyze message content for toxicity using DeepSeek LLM
- * Returns score (0-1) and label ('safe' | 'toxic')
+ * Scan message for toxicity using DeepSeek LLM
+ * Returns score, isToxic flag, and suggestion text
  */
-export async function analyzeMessage(content: string): Promise<{ score: number; label: 'safe' | 'toxic' }> {
+export async function scanForToxicity(
+  content: string,
+  roomId: string
+): Promise<{ score: number; isToxic: boolean; suggestion: string }> {
   if (!process.env.DEEPSEEK_API_KEY) {
     logWarning('DeepSeek API key not configured - moderation disabled');
-    return { score: 0, label: 'safe' };
+    return { score: 0, isToxic: false, suggestion: '' };
   }
 
-  const prompt = `Rate this message for toxicity (0 = safe, 1 = extremely toxic). Respond ONLY with JSON: {"score":0.72}
-Message: ${content}`;
+  const prompt = `Analyze this message for toxicity, hate speech, or spam: ${content}
+Respond with JSON only: {"score": 0-1, "isToxic": true/false, "suggestion": "brief warning text"}`;
 
   try {
-    const res = await axios.post(
+    const response = await axios.post(
       'https://api.deepseek.com/v1/chat/completions',
       {
         model: 'deepseek-chat',
@@ -36,51 +41,159 @@ Message: ${content}`;
       }
     );
 
-    const raw = res.data.choices[0]?.message?.content?.trim() || '{"score":0}';
+    const raw = response.data.choices[0]?.message?.content?.trim() || '{"score":0,"isToxic":false,"suggestion":""}';
     
-    // Extract score from JSON response
-    const scoreMatch = raw.match(/{\s*"score"\s*:\s*([0-9.]+)\s*}/);
-    const score = parseFloat(scoreMatch?.[1] || '0');
-    
-    // Clamp score between 0 and 1
-    const clampedScore = Math.max(0, Math.min(1, score));
-    const label: 'safe' | 'toxic' = clampedScore > 0.65 ? 'toxic' : 'safe';
+    // Parse JSON response
+    let result;
+    try {
+      result = JSON.parse(raw);
+    } catch {
+      // Fallback: try to extract JSON from markdown or text
+      const jsonMatch = raw.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        result = JSON.parse(jsonMatch[0]);
+      } else {
+        throw new Error('Invalid JSON response');
+      }
+    }
 
-    return { score: clampedScore, label };
-  } catch (err: any) {
-    logError('LLM moderation analysis failed', err);
+    const score = Math.max(0, Math.min(1, parseFloat(result.score) || 0));
+    const isToxic = result.isToxic === true || score > 0.7; // Threshold: 0.7
+    const suggestion = result.suggestion || 'Please keep conversations respectful';
+
+    return { score, isToxic, suggestion };
+  } catch (error: any) {
+    logError('DeepSeek scan failed', error);
     // Fail-safe: return safe if API fails
-    return { score: 0, label: 'safe' };
+    return { score: 0, isToxic: false, suggestion: '' };
   }
 }
 
 /**
- * Log moderation flag to database
+ * Handle moderation violation: warnings first, then mutes after repeat violations
+ * No auto-bans - keeps it light
  */
-export async function logFlag(
-  roomId: string,
+export async function handleViolation(
   userId: string,
-  messageId: string | null,
-  score: number,
-  action: string
+  roomId: string,
+  suggestion: string,
+  violationCount: number
 ): Promise<void> {
   try {
-    const { error } = await supabase.from('moderation_flags').insert({
-      room_id: roomId,
-      user_id: userId,
-      message_id: messageId,
-      score,
-      label: score > 0.65 ? 'toxic' : 'safe',
-      action_taken: action,
-    });
+    // Get current violation count for this user in this room
+    const { data: violations } = await supabase
+      .from('message_violations')
+      .select('count')
+      .eq('user_id', userId)
+      .eq('room_id', roomId)
+      .single();
 
-    if (error) {
-      logError('Failed to log moderation flag', error);
+    const count = violations?.count || 0;
+
+    if (count === 0) {
+      // First violation: Send warning DM
+      // Find or create DM room with system user
+      const { data: dmRoom } = await supabase
+        .from('rooms')
+        .select('id')
+        .eq('created_by', userId)
+        .eq('is_public', false)
+        .limit(1)
+        .single();
+
+      const targetRoomId = dmRoom?.id || roomId; // Fallback to original room if no DM
+
+      await supabase.from('messages').insert({
+        room_id: targetRoomId,
+        sender_id: 'system', // System user ID - adjust if you have a specific system user UUID
+        content: `Hey, chill - ${suggestion}. Next one's a timeout.`,
+      });
+
+      // Log violation
+      await supabase.from('message_violations').upsert({
+        user_id: userId,
+        room_id: roomId,
+        count: 1,
+      }, {
+        onConflict: 'user_id,room_id',
+      });
+
+      // Log telemetry event
+      await logModerationEvent('warning_sent', userId, roomId, {
+        suggestion,
+        violationCount: 1,
+      });
+
+      logInfo(`Warning sent to user ${userId} in room ${roomId}`);
+    } else if (count >= 2) {
+      // 2+ violations: Auto-mute for 1 hour
+      const mutedUntil = new Date(Date.now() + 3600000).toISOString(); // 1 hour
+
+      await supabase.from('user_mutes').upsert({
+        user_id: userId,
+        room_id: roomId,
+        muted_until: mutedUntil,
+      }, {
+        onConflict: 'user_id,room_id',
+      });
+
+      // Increment violation count
+      await supabase
+        .from('message_violations')
+        .update({ count: count + 1 })
+        .eq('user_id', userId)
+        .eq('room_id', roomId);
+
+      // Log telemetry event
+      await logModerationEvent('mute_applied', userId, roomId, {
+        violationCount: count + 1,
+        mutedUntil,
+      });
+
+      logInfo(`User ${userId} muted in room ${roomId} until ${mutedUntil}`);
     } else {
-      logInfo(`Moderation flag logged: room=${roomId}, action=${action}, score=${score.toFixed(2)}`);
+      // Second violation: Increment count
+      await supabase
+        .from('message_violations')
+        .update({ count: count + 1 })
+        .eq('user_id', userId)
+        .eq('room_id', roomId);
     }
   } catch (err: any) {
-    logError('Error logging moderation flag', err);
+    logError('Error handling violation', err);
+  }
+}
+
+/**
+ * Check if user is muted in a room
+ */
+export async function isUserMuted(userId: string, roomId: string): Promise<boolean> {
+  try {
+    const { data } = await supabase
+      .from('user_mutes')
+      .select('muted_until')
+      .eq('user_id', userId)
+      .eq('room_id', roomId)
+      .single();
+
+    if (!data || !data.muted_until) return false;
+
+    const mutedUntil = new Date(data.muted_until);
+    const now = new Date();
+
+    if (now > mutedUntil) {
+      // Mute expired, clean it up
+      await supabase
+        .from('user_mutes')
+        .delete()
+        .eq('user_id', userId)
+        .eq('room_id', roomId);
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
   }
 }
 
@@ -117,3 +230,44 @@ export async function getRoomById(roomId: string): Promise<{
   }
 }
 
+/**
+ * Analyze message content for toxicity (legacy compatibility)
+ * @deprecated Use scanForToxicity instead
+ */
+export async function analyzeMessage(content: string): Promise<{ score: number; label: 'safe' | 'toxic' }> {
+  const result = await scanForToxicity(content, '');
+  return {
+    score: result.score,
+    label: result.isToxic ? 'toxic' : 'safe',
+  };
+}
+
+/**
+ * Log moderation flag to database (legacy compatibility)
+ */
+export async function logFlag(
+  roomId: string,
+  userId: string,
+  messageId: string | null,
+  score: number,
+  action: string
+): Promise<void> {
+  try {
+    const { error } = await supabase.from('moderation_flags').insert({
+      room_id: roomId,
+      user_id: userId,
+      message_id: messageId,
+      score,
+      label: score > 0.7 ? 'toxic' : 'safe',
+      action_taken: action,
+    });
+
+    if (error) {
+      logError('Failed to log moderation flag', error);
+    } else {
+      logInfo(`Moderation flag logged: room=${roomId}, action=${action}, score=${score.toFixed(2)}`);
+    }
+  } catch (err: any) {
+    logError('Error logging moderation flag', err);
+  }
+}

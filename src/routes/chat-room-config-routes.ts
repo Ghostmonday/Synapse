@@ -134,5 +134,74 @@ router.post('/:id/config', authMiddleware, async (req, res) => {
   }
 });
 
+/**
+ * PUT /chat_rooms/:id/config
+ * Update room configuration (AI moderation toggle - enterprise only)
+ * Same as POST for RESTful compatibility
+ */
+router.put('/:id/config', authMiddleware, async (req, res) => {
+  // Same handler as POST
+  const roomId = req.params.id;
+  const userId = (req as any).user?.userId;
+  const { ai_moderation } = req.body;
+
+  if (!userId) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+
+  const { data: room, error: fetchError } = await supabase
+    .from('rooms')
+    .select('id, room_tier, created_by')
+    .eq('id', roomId)
+    .single();
+
+  if (fetchError || !room) {
+    return res.status(404).json({ error: 'Room not found' });
+  }
+
+  if (room.created_by !== userId) {
+    return res.status(403).json({ error: 'Permission denied - only room owner can update config' });
+  }
+
+  const subscriptionTier = await getUserSubscription(userId);
+  if (ai_moderation && subscriptionTier !== SubscriptionTier.TEAM) {
+    return res.status(403).json({
+      error: 'Enterprise subscription required for AI moderation',
+      upgrade_url: '/subscription/upgrade',
+      current_tier: subscriptionTier,
+    });
+  }
+
+  const updates: any = {};
+  if (typeof ai_moderation === 'boolean') {
+    updates.ai_moderation = ai_moderation;
+    if (ai_moderation && room.room_tier !== 'enterprise') {
+      updates.room_tier = 'enterprise';
+    }
+  }
+
+  const { data: updatedRoom, error: updateError } = await supabase
+    .from('rooms')
+    .update(updates)
+    .eq('id', roomId)
+    .select('id, ai_moderation, room_tier, expires_at')
+    .single();
+
+  if (updateError) {
+    logError('Update room config error', updateError);
+    return res.status(500).json({ error: 'Failed to update room config' });
+  }
+
+  res.json({
+    success: true,
+    room: {
+      id: updatedRoom.id,
+      ai_moderation: updatedRoom.ai_moderation || false,
+      room_tier: updatedRoom.room_tier || 'free',
+      expires_at: updatedRoom.expires_at || null,
+    },
+  });
+});
+
 export default router;
 
