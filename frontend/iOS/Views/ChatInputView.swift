@@ -28,7 +28,7 @@ struct ChatInputView: View {
                     .padding(12)
                     .background(Color(UIColor.systemGray6))
                     .cornerRadius(20)
-                    .onChange(of: input) { newValue in
+                    .onChange(of: input) { oldValue, newValue in
                         handleInputChange(newValue)
                     }
                     .onSubmit {
@@ -205,9 +205,14 @@ struct BotCommand: Codable, Identifiable {
 #Preview {
     VStack {
         Spacer()
-        ChatInputView { message in
-            print("Send: \(message)")
-        }
+        ChatInputView(
+            onSend: { message in
+                print("Send: \(message)")
+            },
+            onFlagged: { suggestion in
+                print("Flagged: \(suggestion)")
+            }
+        )
         .padding()
     }
 }

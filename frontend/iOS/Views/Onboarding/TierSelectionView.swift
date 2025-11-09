@@ -137,8 +137,15 @@ struct TierCard: View {
             }
             .padding()
             .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(isSelected ? LinearGradient(colors: [tierColor, tierColor.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing) : LinearGradient(colors: [.ultraThinMaterial], startPoint: .topLeading, endPoint: .bottomTrailing))
+                Group {
+                    if isSelected {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(LinearGradient(colors: [tierColor, tierColor.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing))
+                    } else {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color(.systemGray6))
+                    }
+                }
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)

@@ -10,7 +10,7 @@ struct RoomTierView: View {
         NavigationStack {
             VStack(spacing: 20) {
                 HStack(spacing: 20) {
-                    TierCard(
+                    RoomTierCard(
                         title: "Free",
                         desc: "Join rooms.",
                         icon: "person.fill",
@@ -18,7 +18,7 @@ struct RoomTierView: View {
                         action: { selectFree() }
                     )
                     
-                    TierCard(
+                    RoomTierCard(
                         title: "Pro",
                         desc: "Temp rooms (24h). $5/mo.",
                         icon: "⏳",
@@ -26,7 +26,7 @@ struct RoomTierView: View {
                         action: { goPro() }
                     )
                     
-                    TierCard(
+                    RoomTierCard(
                         title: "Enterprise",
                         desc: "Permanent. Self-host or deploy.",
                         icon: "server.rack",
@@ -71,7 +71,7 @@ struct RoomTierView: View {
     }
 }
 
-struct TierCard: View {
+struct RoomTierCard: View {
     let title: String
     let desc: String
     let icon: String
@@ -110,6 +110,8 @@ struct TierCard: View {
 }
 
 #Preview {
-    RoomTierView()
+    RoomTierView(onComplete: {
+        print("Preview complete")
+    })
 }
 

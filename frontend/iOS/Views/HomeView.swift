@@ -9,7 +9,7 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             List(rooms) { room in
-                RoomRow(room: room)
+                HomeRoomRow(room: room)
                     .swipeActions(edge: .trailing) {
                         Button("Settings") {
                             haptic.impactOccurred()
@@ -50,7 +50,7 @@ struct HomeView: View {
     }
 }
 
-struct RoomRow: View {
+struct HomeRoomRow: View {
     let room: Room
     @State private var showSettings = false
     

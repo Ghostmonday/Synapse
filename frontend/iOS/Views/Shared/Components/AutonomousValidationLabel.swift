@@ -5,7 +5,7 @@ import SwiftUI
 struct AutonomousValidationLabel: View {
     let componentId: String
     let errorText: String?
-    @Environment(\.autonomyCoordinator) var coordinator
+    // @Environment(\.autonomyCoordinator) var coordinator // TODO: Add autonomy coordinator environment
     
     @State private var displayText: String?
     @State private var isSmooth: Bool = false
@@ -26,43 +26,42 @@ struct AutonomousValidationLabel: View {
                         checkForSmoothing(error: error)
                     }
                 }
-                .onChange(of: errorText) { newError in
+                .onChange(of: errorText) { oldValue, newError in
                     if let error = newError {
                         checkForSmoothing(error: error)
                     } else {
                         displayText = nil
                     }
                 }
-                .onReceive(NotificationCenter.default.publisher(for: .viewModificationApplied)) { notification in
-                    if let mod = notification.object as? ViewModification,
-                       mod.componentId == componentId,
-                       mod.type == .labelChange,
-                       let newText = mod.value as? String {
-                        displayText = newText
-                        isSmooth = true
-                    }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: .viewModificationRolledBack)) { notification in
-                    if let checkpoint = notification.object as? RollbackCheckpoint,
-                       checkpoint.componentId == componentId {
-                        displayText = errorText
-                        isSmooth = false
-                    }
-                }
+                // TODO: Re-enable when ViewModification notifications are available
+                // .onReceive(NotificationCenter.default.publisher(for: .viewModificationApplied)) { notification in
+                //     if let mod = notification.object as? ViewModification,
+                //        mod.componentId == componentId,
+                //        mod.type == .labelChange,
+                //        let newText = mod.value as? String {
+                //         displayText = newText
+                //         isSmooth = true
+                //     }
+                // }
+                // .onReceive(NotificationCenter.default.publisher(for: .viewModificationRolledBack)) { notification in
+                //     if let checkpoint = notification.object as? RollbackCheckpoint,
+                //        checkpoint.componentId == componentId {
+                //         displayText = errorText
+                //         isSmooth = false
+                //     }
+                // }
         }
     }
     
     private func checkForSmoothing(error: String) {
         // Check if label should be smoothed based on emotional state or dropoff
-        let shouldSmooth = coordinator.emotionalMonitor.emotionalState.trend == .negative ||
-                          coordinator.executor.lastDropoffPoint?.rate ?? 0 > 0.3
+        // TODO: Re-enable when autonomy coordinator is available
+        // let shouldSmooth = coordinator.emotionalMonitor.emotionalState.trend == .negative ||
+        //                   coordinator.executor.lastDropoffPoint?.rate ?? 0 > 0.3
         
-        if shouldSmooth {
-            smoothLabel(error: error)
-        } else {
-            displayText = error
-            isSmooth = false
-        }
+        // For now, just display the error
+        displayText = error
+        isSmooth = false
     }
     
     private func smoothLabel(error: String) {
@@ -72,15 +71,16 @@ struct AutonomousValidationLabel: View {
         isSmooth = true
         
         // Apply modification
-        let modification = ViewModification(
-            componentId: componentId,
-            type: .labelChange,
-            value: smoothed
-        )
-        
-        Task { @MainActor in
-            await coordinator.viewGenerator.applyModification(modification)
-        }
+        // TODO: Re-enable when autonomy coordinator is available
+        // let modification = ViewModification(
+        //     componentId: componentId,
+        //     type: .labelChange,
+        //     value: smoothed
+        // )
+        //
+        // Task { @MainActor in
+        //     await coordinator.viewGenerator.applyModification(modification)
+        // }
         
         // Log validation irritation if repeated
         logValidationIrritation()
