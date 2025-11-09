@@ -60,8 +60,15 @@ struct SubscriptionView: View {
     
     private func upgrade(_ tier: SubscriptionTier) {
         haptic.impactOccurred()
-        // TODO: Open Stripe checkout
-        print("Upgrading to \(tier)")
+        
+        Task {
+            await SubscriptionManager.shared.purchaseTier(tier)
+            
+            // Dismiss after purchase attempt
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                dismiss()
+            }
+        }
     }
 }
 

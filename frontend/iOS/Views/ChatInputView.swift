@@ -163,12 +163,38 @@ struct ChatInputView: View {
     }
     
     private func sendMessage(_ message: String) async {
-        // TODO: Call message API and check response for moderation flags
-        // If flagged, call onFlagged callback
-        onSend?(message)
-        
-        // Simulate moderation check (remove in production)
-        // In real implementation, check API response for moderation flags
+        do {
+            // Get current user ID
+            guard let userId = AuthTokenManager.shared.token.flatMap({ _ in UUID() }) else {
+                print("[ChatInput] No auth token available")
+                return
+            }
+            
+            // Call moderation API via Supabase Edge Function
+            // First check if message should be moderated
+            let moderationResponse: ModerationResponse? = try? await APIClient.shared.request(
+                endpoint: "/functions/v1/moderation-check",
+                method: "POST",
+                body: ["content": message]
+            )
+            
+            if let moderation = moderationResponse, moderation.flagged {
+                // Message was flagged - call callback
+                onFlagged?(moderation.suggestion ?? "Please keep conversations respectful")
+                UXTelemetryService.logValidationError(
+                    componentId: "ChatInput-Message",
+                    errorType: "moderation_flagged",
+                    metadata: ["suggestion": moderation.suggestion ?? ""]
+                )
+            } else {
+                // Message is clean - proceed with send
+                onSend?(message)
+            }
+        } catch {
+            print("[ChatInput] Error checking moderation: \(error)")
+            // On error, still send message (fail-open for better UX)
+            onSend?(message)
+        }
     }
     
     private func sendCommand(_ command: String) async {
@@ -208,6 +234,12 @@ struct BotCommand: Codable, Identifiable {
     let id: String
     let command: String
     let description: String
+}
+
+struct ModerationResponse: Codable {
+    let flagged: Bool
+    let suggestion: String?
+    let score: Double?
 }
 
 #Preview {

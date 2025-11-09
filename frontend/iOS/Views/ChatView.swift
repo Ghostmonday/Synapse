@@ -80,24 +80,47 @@ struct ChatView: View {
     }
     
     private func sendMessage() {
-        guard !input.isEmpty else { return }
+        guard !input.isEmpty, let room = room else { return }
         
         let messageText = input
         input = ""
         
         Task {
             do {
-                // Send message via API
-                guard let roomId = room?.id.uuidString else { return }
+                // Get current user ID from auth token
+                guard let userId = AuthTokenManager.shared.token.flatMap({ token in
+                    // Extract user ID from JWT token (simplified - in production, decode JWT properly)
+                    // For now, use a placeholder UUID - should be extracted from token claims
+                    return UUID() // TODO: Extract from JWT claims
+                }) else {
+                    print("Failed to get user ID")
+                    return
+                }
                 
-                // TODO: Call MessageService.sendMessage
-                // Check response for moderation flags
-                // If response contains flagged: true and suggestion
-                // showFlaggedToast = true
-                // flaggedSuggestion = response.suggestion
+                // Create message object
+                let message = Message(
+                    id: UUID(),
+                    senderId: userId,
+                    content: messageText,
+                    type: "text",
+                    timestamp: Date(),
+                    emotion: nil,
+                    renderedHTML: nil,
+                    reactions: nil
+                )
                 
-                // Simulate flagged message for demo
-                if messageText.lowercased().contains("test") {
+                // Send message via MessageService
+                try await MessageService.sendMessage(message, to: room)
+                
+                // Check for moderation flags in response (if API returns moderation info)
+                // Note: Backend moderation happens server-side, but we can check response
+                // For now, moderation warnings come via WebSocket or separate API call
+                
+            } catch {
+                print("Failed to send message: \(error)")
+                // Check if error contains moderation info
+                if let errorMessage = (error as NSError).userInfo[NSLocalizedDescriptionKey] as? String,
+                   errorMessage.contains("moderation") || errorMessage.contains("flagged") {
                     flaggedSuggestion = "Please keep conversations respectful"
                     withAnimation {
                         showFlaggedToast = true
@@ -108,8 +131,6 @@ struct ChatView: View {
                         }
                     }
                 }
-            } catch {
-                print("Failed to send message: \(error)")
             }
         }
     }

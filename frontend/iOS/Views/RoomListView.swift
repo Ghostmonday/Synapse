@@ -3,6 +3,7 @@ import SwiftUI
 struct RoomListView: View {
     @State private var rooms: [Room] = []
     @State private var isLoading = true
+    @State private var showCreateSheet = false
     
     var body: some View {
         NavigationStack {
@@ -61,8 +62,7 @@ struct RoomListView: View {
                         }
                         
                         Button(action: {
-                            // TODO: Show create room sheet
-                            print("[RoomListView] Create room tapped")
+                            showCreateSheet = true
                         }) {
                             HStack {
                                 Image(systemName: "plus.circle.fill")
@@ -107,13 +107,18 @@ struct RoomListView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
-                        // TODO: Show create room sheet
-                        print("[RoomListView] Create room tapped")
+                        showCreateSheet = true
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .foregroundColor(Color("SinapseGold"))
                     }
                 }
+            }
+            .sheet(isPresented: $showCreateSheet) {
+                CreateRoomSheet(onRoomCreated: { newRoom in
+                    rooms.append(newRoom)
+                    showCreateSheet = false
+                })
             }
             .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isLoading)
             .animation(.spring(response: 0.4, dampingFraction: 0.8), value: rooms.isEmpty)

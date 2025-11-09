@@ -75,8 +75,15 @@ struct MessageBubbleView: View {
     }
     
     private func getCurrentUserId() -> UUID {
-        // TODO: Get from AuthService
-        return UUID()
+        // Get user ID from stored auth token
+        // In production, decode JWT to extract user ID
+        // For now, return a placeholder - should be stored in AuthService
+        if let token = AuthTokenManager.shared.token {
+            // TODO: Decode JWT and extract user ID from claims
+            // For now, use a placeholder UUID
+            return UUID() // Placeholder - should extract from JWT
+        }
+        return UUID() // Fallback
     }
 }
 
