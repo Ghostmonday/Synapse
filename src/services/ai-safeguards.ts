@@ -12,6 +12,7 @@
 import { logInfo, logError, logWarning } from '../shared/logger.js';
 import { getRedisClient } from '../config/db.js';
 import { supabase } from '../config/db.js';
+import { llmParamManager } from './llm-parameter-manager';
 
 const redis = getRedisClient();
 
@@ -25,14 +26,22 @@ interface RateLimitState {
 }
 
 const LLM_RATE_LIMIT_KEY = 'ai:llm:rate_limit';
-const LLM_RATE_LIMIT_MAX = 100; // Max calls per hour
-const LLM_RATE_LIMIT_WINDOW = 3600000; // 1 hour in ms
+
+// Get rate limit values from centralized config
+function getRateLimitConfig() {
+  const rateLimits = llmParamManager.getRateLimits();
+  return {
+    LLM_RATE_LIMIT_MAX: rateLimits.maxCallsPerHour,
+    LLM_RATE_LIMIT_WINDOW: rateLimits.windowMs
+  };
+}
 
 /**
  * Check if LLM API call is allowed (rate limited)
  */
 export async function checkLLMRateLimit(): Promise<boolean> {
   try {
+    const { LLM_RATE_LIMIT_MAX, LLM_RATE_LIMIT_WINDOW } = getRateLimitConfig();
     const now = Date.now();
     const stateStr = await redis.get(LLM_RATE_LIMIT_KEY);
     
@@ -83,7 +92,6 @@ export async function checkLLMRateLimit(): Promise<boolean> {
 // ===============================================
 
 const ERROR_BACKOFF_KEY = 'ai:error_backoff';
-const ERROR_BACKOFF_DURATION = 5 * 60 * 1000; // 5 minutes
 
 /**
  * Check if we should back off due to recent errors
@@ -116,10 +124,11 @@ export async function checkErrorBackoff(): Promise<boolean> {
  */
 export async function triggerErrorBackoff(error: any): Promise<void> {
   try {
-    const backoffUntil = Date.now() + ERROR_BACKOFF_DURATION;
-    await redis.setex(ERROR_BACKOFF_KEY, Math.ceil(ERROR_BACKOFF_DURATION / 1000), backoffUntil.toString());
+    const rateLimits = llmParamManager.getRateLimits();
+    const backoffUntil = Date.now() + rateLimits.errorBackoffMs;
+    await redis.setex(ERROR_BACKOFF_KEY, Math.ceil(rateLimits.errorBackoffMs / 1000), backoffUntil.toString());
     
-    logError('AI automation error - entering 5 minute backoff', error);
+    logError('AI automation error - entering backoff', error);
     await logToAudit('ai_error_backoff_triggered', {
       error: error.message || String(error),
       backoffUntil: new Date(backoffUntil).toISOString(),
@@ -134,7 +143,7 @@ export async function triggerErrorBackoff(error: any): Promise<void> {
 // 3. TIMEOUT WRAPPER (30s max per analysis)
 // ===============================================
 
-const ANALYSIS_TIMEOUT = 30000; // 30 seconds
+// ANALYSIS_TIMEOUT moved to centralized config
 
 /**
  * Wrap an async function with timeout
@@ -142,9 +151,14 @@ const ANALYSIS_TIMEOUT = 30000; // 30 seconds
  */
 export async function withTimeout<T>(
   fn: () => Promise<T>,
-  timeoutMs: number = ANALYSIS_TIMEOUT,
+  timeoutMs?: number,
   operationName: string = 'analysis'
 ): Promise<T> {
+  // Use centralized config if timeout not provided
+  if (timeoutMs === undefined) {
+    const rateLimits = llmParamManager.getRateLimits();
+    timeoutMs = rateLimits.analysisTimeoutMs;
+  }
   return Promise.race([
     fn(),
     new Promise<T>((_, reject) => {
@@ -220,11 +234,10 @@ export async function logAIOperationError(operation: string, error: any): Promis
 
 /**
  * Check if we're in maintenance window (3-5 AM UTC)
+ * Uses centralized config for maintenance window hours
  */
 export function isMaintenanceWindow(): boolean {
-  const now = new Date();
-  const utcHour = now.getUTCHours();
-  return utcHour >= 3 && utcHour < 5;
+  return llmParamManager.isInMaintenanceWindow();
 }
 
 /**
@@ -249,14 +262,27 @@ interface MetricBoundaries {
   apiCalls: { hourlyLimit: number; warningThreshold: number };
 }
 
-const DEFAULT_BOUNDARIES: MetricBoundaries = {
-  latency: { min: 0, max: 200 }, // Kill if over 200ms
-  errorRate: { min: 0, max: 10 }, // Kill if over 10%
-  tokenSpend: { dailyLimit: 25, warningThreshold: 22.5 }, // $25/day limit, warn at $22.50
-  apiCalls: { hourlyLimit: 100, warningThreshold: 90 }
-};
+// Get default boundaries from centralized config
+function getDefaultBoundaries(): MetricBoundaries {
+  const performance = llmParamManager.getPerformance();
+  const tokenConfig = llmParamManager.getTokenConfig();
+  const rateLimits = llmParamManager.getRateLimits();
+  
+  return {
+    latency: { min: performance.latencyMin, max: performance.latencyMax },
+    errorRate: { min: performance.errorRateMin, max: performance.errorRateMax },
+    tokenSpend: { 
+      dailyLimit: tokenConfig.dailySpendLimit, 
+      warningThreshold: tokenConfig.warningThreshold 
+    },
+    apiCalls: { 
+      hourlyLimit: rateLimits.hourlyLimit, 
+      warningThreshold: rateLimits.warningThreshold 
+    }
+  };
+}
 
-let currentBoundaries = DEFAULT_BOUNDARIES;
+let currentBoundaries = getDefaultBoundaries();
 
 /**
  * Set metric boundaries
@@ -341,7 +367,6 @@ export function checkMetricBoundary(metric: keyof MetricBoundaries, value: numbe
  * Track token spend
  */
 const TOKEN_SPEND_KEY = 'ai:token_spend:daily';
-const TOKEN_COST_PER_1K = 0.0001; // Approximate cost per 1K tokens (adjust based on provider)
 
 export async function trackTokenSpend(tokens: number): Promise<{
   total: number;
@@ -352,7 +377,8 @@ export async function trackTokenSpend(tokens: number): Promise<{
     const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
     const key = `${TOKEN_SPEND_KEY}:${today}`;
     
-    const cost = (tokens / 1000) * TOKEN_COST_PER_1K;
+    const tokenConfig = llmParamManager.getTokenConfig();
+    const cost = (tokens / 1000) * tokenConfig.costPer1k;
     const currentSpend = parseFloat((await redis.get(key)) || '0');
     const newSpend = currentSpend + cost;
     
@@ -415,14 +441,14 @@ export async function enableAutomation(): Promise<void> {
 // ===============================================
 
 const HEARTBEAT_KEY = 'ai:heartbeat';
-const HEARTBEAT_TIMEOUT = 30000; // 30 seconds
 
 /**
  * Update heartbeat
  */
 export async function updateHeartbeat(operation: string): Promise<void> {
   try {
-    await redis.setex(HEARTBEAT_KEY, Math.ceil(HEARTBEAT_TIMEOUT / 1000), JSON.stringify({
+    const rateLimits = llmParamManager.getRateLimits();
+    await redis.setex(HEARTBEAT_KEY, Math.ceil(rateLimits.heartbeatTimeoutMs / 1000), JSON.stringify({
       operation,
       timestamp: Date.now()
     }));
@@ -443,13 +469,14 @@ export async function checkHeartbeat(): Promise<boolean> {
 
     const heartbeat = JSON.parse(heartbeatStr);
     const age = Date.now() - heartbeat.timestamp;
+    const rateLimits = llmParamManager.getRateLimits();
 
-    if (age > HEARTBEAT_TIMEOUT) {
+    if (age > rateLimits.heartbeatTimeoutMs) {
       logError(`AI automation heartbeat stale - last seen ${age}ms ago (operation: ${heartbeat.operation})`);
       await logToAudit('ai_heartbeat_stale', {
         lastOperation: heartbeat.operation,
         ageMs: age,
-        threshold: HEARTBEAT_TIMEOUT
+        threshold: rateLimits.heartbeatTimeoutMs
       });
       return false; // Heartbeat is stale
     }
@@ -518,8 +545,8 @@ export async function safeAIOperation<T>(
     // 6. Update heartbeat
     await updateHeartbeat(operationName);
 
-    // 7. Run with timeout
-    const result = await withTimeout(operation, ANALYSIS_TIMEOUT, operationName);
+    // 7. Run with timeout (uses centralized config default)
+    const result = await withTimeout(operation, undefined, operationName);
 
     // 8. Calculate duration
     const durationMs = Date.now() - startTime;
@@ -574,6 +601,6 @@ export async function safeAIOperation<T>(
 }
 
 // Export boundaries for configuration
-export { currentBoundaries, DEFAULT_BOUNDARIES };
+export { currentBoundaries, getDefaultBoundaries };
 export type { MetricBoundaries };
 

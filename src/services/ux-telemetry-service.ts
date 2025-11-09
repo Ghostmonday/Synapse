@@ -49,9 +49,10 @@ export async function insertUXTelemetryEvent(
     }
     
     return { success: true };
-  } catch (error: any) {
-    logError('[UX Telemetry] Error inserting event', error);
-    return { success: false, error: error.message || 'Unknown error' };
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logError('[UX Telemetry] Error inserting event', error instanceof Error ? error : new Error(String(error)));
+    return { success: false, error: errorMessage };
   }
 }
 
@@ -121,13 +122,14 @@ export async function insertUXTelemetryBatch(
       failed,
       errors: failed > 0 ? ['Some events failed to insert'] : [],
     };
-  } catch (error: any) {
-    logError('[UX Telemetry] Error inserting batch', error);
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : new Error(String(error));
+    logError('[UX Telemetry] Error inserting batch', errorObj);
     return {
       success: false,
       inserted: 0,
       failed: events.length,
-      errors: [error.message || 'Unknown error'],
+      errors: [errorObj.message || 'Unknown error'],
     };
   }
 }

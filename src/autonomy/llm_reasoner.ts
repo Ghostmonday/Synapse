@@ -14,6 +14,7 @@ import { TelemetryData } from './telemetry_collector.js';
 import { PredictionOutput } from './types.js';
 import { supabase } from '../config/db.js';
 import { logError } from '../shared/logger.js';
+import { llmParamManager } from '../services/llm-parameter-manager';
 
 // Zod schema validates LLM output structure
 // Prevents malformed JSON or missing fields from causing runtime errors
@@ -52,9 +53,14 @@ export class LLMReasoner {
     const prompt = `Analyze telemetry: ${JSON.stringify(telemetry)}. Suggest repairs for Sinaps backend issues like high latency or resource exhaustion. Output JSON: {reasoning, proposedActions}.`;
     
     try {
+      // Get parameters from centralized config
+      const models = llmParamManager.getModels();
+      const temperature = llmParamManager.getTemperature();
+      const tokenConfig = llmParamManager.getTokenConfig();
+
       // Call LLM API with structured request
       const response = await this.client.chat.completions.create({ // No timeout - can hang if LLM API slow
-        model: 'gpt-4', // Can be changed to 'deepseek-chat' for DeepSeek
+        model: models.reasoning, // LLM model from centralized config
         messages: [
           // System message sets LLM's role and output format expectations
           { role: 'system', content: 'You are an AI operations agent. Analyze telemetry and suggest repair actions. Always return valid JSON with "reasoning" and "proposedActions" fields.' },
@@ -62,8 +68,8 @@ export class LLMReasoner {
           { role: 'user', content: prompt }
         ],
         response_format: { type: 'json_object' }, // Force JSON output (OpenAI feature)
-        temperature: 0.0, // Deterministic output (no randomness)
-        max_tokens: 800 // Limit response length to control costs // Load spike: LLM calls expensive, can spike costs under load
+        temperature: temperature.reasoning, // Temperature from centralized config
+        max_tokens: tokenConfig.maxTokensReasoning // Max tokens from centralized config
       });
       
       // Extract content from response
@@ -137,17 +143,22 @@ export class LLMReasoner {
    */
   async predict(input: string): Promise<PredictionOutput> {
     try {
+      // Get parameters from centralized config
+      const models = llmParamManager.getModels();
+      const temperature = llmParamManager.getTemperature();
+      const tokenConfig = llmParamManager.getTokenConfig();
+
       // Call LLM with prediction-focused prompt
       const response = await this.client.chat.completions.create({
-        model: 'gpt-4',
+        model: models.prediction, // LLM model from centralized config
         messages: [
           // System prompt emphasizes failure prediction
           { role: 'system', content: 'You are an AI operations agent. Analyze telemetry and predict failures. Always return valid JSON with "failures" (array of strings) and "recommendations" (string) fields.' },
           { role: 'user', content: input }
         ],
         response_format: { type: 'json_object' },
-        temperature: 0.0, // Deterministic
-        max_tokens: 800
+        temperature: temperature.prediction, // Temperature from centralized config
+        max_tokens: tokenConfig.maxTokensPrediction // Max tokens from centralized config
       });
 
       const content = response.choices[0]?.message?.content || '{}';
@@ -222,10 +233,15 @@ export class LLMReasoner {
 
       const fullPrompt = `${options.prompt}\n\nContext: ${JSON.stringify(options.context)}`;
       
+      // Get parameters from centralized config
+      const models = llmParamManager.getModels();
+      const temperature = llmParamManager.getTemperature();
+      const tokenConfig = llmParamManager.getTokenConfig();
+
       // Wrap API call with timeout (30 seconds)
       const response = await withTimeout(async () => {
         return await this.client.chat.completions.create({
-          model: process.env.DEEPSEEK_API_KEY ? 'deepseek-chat' : 'gpt-4',
+          model: models.automation, // LLM model from centralized config
           messages: [
             {
               role: 'system',
@@ -234,8 +250,8 @@ export class LLMReasoner {
             { role: 'user', content: fullPrompt }
           ],
           response_format: { type: 'json_object' },
-          temperature: 0.3, // Slight creativity for better analysis
-          max_tokens: 1000
+          temperature: temperature.automation, // Temperature from centralized config
+          max_tokens: tokenConfig.maxTokensAutomation // Max tokens from centralized config
         });
       }, 30000, 'LLM analyze');
 

@@ -11,6 +11,7 @@
 
 import OpenAI from 'openai';
 import fetch from 'node-fetch';
+import { llmParamManager } from '../services/llm-parameter-manager';
 
 const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
 
@@ -27,16 +28,21 @@ type RecommendationConfig = {
 };
 
 async function analyzeWithOpenAI(metrics: Record<string, unknown>): Promise<RecommendationConfig> {
+  // Get parameters from centralized config
+  const models = llmParamManager.getModels();
+  const temperature = llmParamManager.getTemperature();
+  const tokenConfig = llmParamManager.getTokenConfig();
+  
   // Ask the model to return strict JSON recommendation, e.g. {"config": {"max_conn": 200}, "reason": "..."}
   const system = 'You are an optimizer agent. Read metrics JSON and return a non-empty JSON recommendation object. Only output JSON.';
   const result = await client.chat.completions.create({
-    model: 'gpt-4',
+    model: models.optimizer, // Model from centralized config
     messages: [
       { role: 'system', content: system },
       { role: 'user', content: JSON.stringify(metrics) }
     ],
-    max_tokens: 800,
-    temperature: 0.0
+    max_tokens: tokenConfig.maxTokensOptimizer, // Max tokens from centralized config
+    temperature: temperature.optimizer // Temperature from centralized config
   });
   const content = (result as any).choices?.[0]?.message?.content || '{}';
   try {

@@ -16,8 +16,28 @@ audit.log
 
 # Archive and temporary files
 docs/archive/
+
+# Deprecated patches (all valuable content merged as of 2025-01-27)
 Sinapse_Heavy_Patch_v2/
+__MACOSX/
 
 # Logs directory
 logs/
 
+# iOS build artifacts
+frontend/iOS/build/
+frontend/iOS/*.xcworkspace/xcuserdata/
+frontend/iOS/*.xcodeproj/xcuserdata/
+frontend/iOS/*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.un~

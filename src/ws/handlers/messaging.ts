@@ -8,14 +8,18 @@
 
 import { WebSocket } from 'ws';
 import { getRedisClient } from '../../config/db.js';
+import { broadcastToRoom } from '../utils.js';
 
 const redis = getRedisClient();
 
 export function handleMessaging(ws: WebSocket, envelope: any) {
-  // Publish message to Redis channel: "room:{room_id}"
-  // All clients subscribed to this room (via Redis pub/sub) will receive the message
-  // This enables real-time message delivery across multiple server instances
-  redis.publish(`room:${envelope.room_id}`, JSON.stringify(envelope)); // Silent fail: if Redis down, publish fails but ack sent = message lost
+  // Broadcast message to room using optimized WebSocket utility
+  // Uses direct WebSocket broadcast for efficiency, falls back to Redis pub/sub
+  broadcastToRoom(
+    envelope.room_id, 
+    { type: 'message', id: envelope.msg_id, payload: envelope.payload },
+    true // Use direct broadcast for efficiency
+  );
   
   // Send acknowledgment back to sender
   // Confirms message was received and published (client can show "sent" status)

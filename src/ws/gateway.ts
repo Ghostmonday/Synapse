@@ -9,6 +9,10 @@ import protobuf from 'protobufjs';
 import path from 'path';
 import { handlePresence } from './handlers/presence.js';
 import { handleMessaging } from './handlers/messaging.js';
+import { 
+  registerWebSocketToRoom, 
+  unregisterWebSocket 
+} from './utils.js';
 
 // Protobuf schema root (loaded from .proto file)
 // Null until schema is loaded
@@ -64,9 +68,14 @@ export function setupWebSocketGateway(wss: WebSocketServer) {
         return;
       }
       
-      // Extract message type from decoded envelope
-      // Type determines which handler to route to
+      // Extract message type and room ID from decoded envelope
       const t = (envelope as any).type;
+      const roomId = (envelope as any).room_id;
+      
+      // Register WebSocket to room for efficient broadcasting
+      if (roomId && typeof roomId === 'string') {
+        registerWebSocketToRoom(ws, roomId);
+      }
       
       // Route message to appropriate handler based on type
       switch (t) {
@@ -83,6 +92,16 @@ export function setupWebSocketGateway(wss: WebSocketServer) {
           ws.send(JSON.stringify({ type: 'error', msg: 'unknown type' })); 
           break;
       }
+    });
+    
+    // Clean up when connection closes
+    ws.on('close', () => {
+      unregisterWebSocket(ws);
+    });
+    
+    // Clean up on error
+    ws.on('error', () => {
+      unregisterWebSocket(ws);
     });
   });
 }

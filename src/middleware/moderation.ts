@@ -14,11 +14,13 @@ export const moderateContent = async (req: Request, res: Response, next: NextFun
     }
 
     // Length check
+    // @llm_param - Maximum content length for moderation. Prevents extremely long inputs that could abuse LLM APIs.
     if (content.length > 50000) {
       return res.status(400).json({ error: 'Content exceeds maximum length' });
     }
 
     // Basic moderation - check for blocked words
+    // @llm_param - Blocked words list from environment. Controls content filtering before LLM processing.
     const blockedWords = process.env.BLOCKED_WORDS?.split(',').map(w => w.trim()).filter(Boolean) || [];
     const contentLower = content.toLowerCase();
     
@@ -47,6 +49,7 @@ export const moderateContent = async (req: Request, res: Response, next: NextFun
     }
     
     const maxRepetition = Math.max(...Object.values(wordCounts));
+    // @llm_param - Maximum word repetition threshold for spam detection. Flags content with excessive repetition.
     if (maxRepetition > 20 && words.length > 50) {
       const userId = (req as any).user?.id || 'anonymous';
       await logAudit('content_moderated', userId, { 

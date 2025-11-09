@@ -4,6 +4,13 @@ extension Color {
     static let primarySinapse = Color(hex: "#7C4DFF")
     static let voidBlack = Color(hex: "#0A0A0A")
     
+    // Communication dashboard colors
+    static let commsActive = Color(hex: "#00C853") // Green for active/online
+    static let commsWarning = Color(hex: "#FFB300") // Amber for warnings
+    static let commsError = Color(hex: "#D32F2F") // Red for errors
+    static let glassBackground = Color.white.opacity(0.1)
+    static let glassBorder = Color.white.opacity(0.2)
+    
     init(hex: String) {
         let scanner = Scanner(string: hex)
         _ = scanner.scanString("#")

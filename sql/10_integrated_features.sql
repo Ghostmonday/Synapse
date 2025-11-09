@@ -15,7 +15,9 @@ CREATE TABLE IF NOT EXISTS assistants (
   owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   name VARCHAR(255) NOT NULL,
   description TEXT,
+  -- @llm_param - LLM model selection per assistant. User-configurable. Options: 'gpt-4', 'claude', 'deepseek'
   model VARCHAR(100) NOT NULL DEFAULT 'gpt-4', -- 'gpt-4', 'claude', 'deepseek'
+  -- @llm_param - Temperature per assistant. Controls creativity/randomness. Range: 0-2. User-configurable.
   temperature DECIMAL(3,2) DEFAULT 0.7 CHECK (temperature >= 0 AND temperature <= 2),
   system_prompt TEXT,
   is_active BOOLEAN DEFAULT TRUE,
@@ -86,6 +88,7 @@ CREATE TABLE IF NOT EXISTS embeddings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   message_id UUID NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
   vector vector(1536) NOT NULL, -- OpenAI text-embedding-3-small dimension
+  -- @llm_param - Embedding model per embedding. Controls which model generates vectors for semantic search.
   model VARCHAR(100) DEFAULT 'text-embedding-3-small',
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -135,7 +138,9 @@ CREATE INDEX IF NOT EXISTS idx_presence_logs_created_at ON presence_logs (create
 -- Function for semantic similarity search using pgvector
 CREATE OR REPLACE FUNCTION match_messages(
   query_embedding vector(1536),
+  -- @llm_param - Similarity threshold for semantic search. Controls how similar messages must be to match. Higher = stricter.
   match_threshold float DEFAULT 0.78,
+  -- @llm_param - Maximum number of matching messages to return. Controls search result count.
   match_count int DEFAULT 10,
   filter_room_id UUID DEFAULT NULL
 )

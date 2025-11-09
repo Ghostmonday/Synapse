@@ -59,6 +59,7 @@ BEGIN
   END IF;
   
   -- Apply probation multiplier if user is on probation
+  -- @llm_param - Probation multiplier applied to moderation thresholds. Makes moderation stricter for users on probation.
   IF mem IS NOT NULL AND mem.probation_until IS NOT NULL AND mem.probation_until > now() THEN
     prob_mult := COALESCE((thresh->>'probation_multiplier')::NUMERIC, 0.5);
   END IF;
@@ -68,6 +69,7 @@ BEGIN
   FROM jsonb_each_text(scrs);
   
   -- Apply threshold check (with probation multiplier)
+  -- @llm_param - Default moderation threshold check. Messages exceeding (threshold * prob_mult) are flagged.
   IF max_score >= (COALESCE((thresh->>'default')::NUMERIC, 0.6) * prob_mult) THEN
     -- Flag message
     UPDATE messages

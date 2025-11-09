@@ -42,6 +42,7 @@ router.post('/invoke', authenticate, moderateContent, async (req, res) => {
     });
 
     try {
+      // @llm_param - Assistant model and temperature from database. User-configurable per assistant.
       const stream = await invokeLLM(assistant.model, prompt, assistant.temperature || 0.7);
       
       for await (const chunk of stream) {

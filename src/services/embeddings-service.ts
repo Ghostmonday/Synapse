@@ -5,6 +5,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 
 export async function generateEmbedding(content: string): Promise<number[]> {
   const { data } = await openai.embeddings.create({
+    // @llm_param - Embedding model selection. Controls which model generates vector embeddings for semantic search.
     model: 'text-embedding-3-small',
     input: content,
   });

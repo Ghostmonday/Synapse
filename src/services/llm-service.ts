@@ -6,12 +6,15 @@ const clients: Record<string, any> = {
   'claude': new Anthropic({ apiKey: process.env.ANTHROPIC_KEY }),
 };
 
+// @llm_param - Generic LLM invocation function. Parameters: model (which LLM to use), prompt (user input), temperature (creativity/randomness control).
 export async function invokeLLM(model: string, prompt: string, temperature: number): Promise<AsyncIterable<string>> {
   const client = clients[model];
   if (model === 'gpt-4') {
     const stream = await client.chat.completions.create({
+      // @llm_param - Model selection for LLM invocation.
       model,
       messages: [{ role: 'user', content: prompt }],
+      // @llm_param - Temperature parameter controls output randomness. Higher = more creative, lower = more deterministic.
       temperature,
       stream: true,
     });
