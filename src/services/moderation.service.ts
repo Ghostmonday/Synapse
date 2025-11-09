@@ -9,6 +9,7 @@ import axios from 'axios';
 import { logError, logWarning, logInfo } from '../shared/logger.js';
 import { supabase } from '../config/db.js';
 import { logModerationEvent } from './telemetry-service.js';
+import { sanitizePrompt, logPromptAudit } from '../utils/prompt-sanitizer.js';
 
 /**
  * Scan message for toxicity using DeepSeek LLM
@@ -23,25 +24,39 @@ export async function scanForToxicity(
     return { score: 0, isToxic: false, suggestion: '' };
   }
 
-  const prompt = `Analyze this message for toxicity, hate speech, or spam: ${content}
+  // Sanitize prompt before sending to LLM
+  const sanitizedContent = sanitizePrompt(content);
+  
+  // Log prompt audit
+  await logPromptAudit(roomId, sanitizedContent, 'moderation_scan', { roomId });
+  
+  const prompt = `Analyze this message for toxicity, hate speech, or spam: ${sanitizedContent}
 Respond with JSON only: {"score": 0-1, "isToxic": true/false, "suggestion": "brief warning text"}`;
 
   try {
+    // Use Supabase Edge Function proxy instead of direct API call
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    
+    // Get JWT token for Supabase auth (from room context or system token)
+    // For now, use anon key - in production, use service role or user JWT
     const response = await axios.post(
-      'https://api.deepseek.com/v1/chat/completions',
+      `${supabaseUrl}/functions/v1/llm-proxy`,
       {
+        prompt,
         model: 'deepseek-chat',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0,
+        intent: 'moderation_scan',
       },
       {
         headers: {
-          Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          Authorization: `Bearer ${supabaseAnonKey}`,
+          'Content-Type': 'application/json',
         },
       }
     );
 
-    const raw = response.data.choices[0]?.message?.content?.trim() || '{"score":0,"isToxic":false,"suggestion":""}';
+    // Edge Function returns DeepSeek response directly
+    const raw = response.data?.choices?.[0]?.message?.content?.trim() || '{"score":0,"isToxic":false,"suggestion":""}';
     
     // Parse JSON response
     let result;
