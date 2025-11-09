@@ -8,9 +8,9 @@ A production-ready communication platform with real-time messaging, voice/video 
 ✅ **Core Features** - Messaging, threads, reactions, search  
 ✅ **Monetization** - Subscription system with usage tracking  
 ✅ **Security** - Password hashing, file upload validation  
-✅ **Voice/Video** - LiveKit integration with quality enhancement
-
-> **Note**: All valuable content from `Sinapse_Heavy_Patch_v2` has been integrated into the codebase as of 2025-01-27. See `PATCH_INTEGRATION_SUMMARY.md` for details.
+✅ **Voice/Video** - LiveKit integration with quality enhancement  
+✅ **AI Integration** - LLM-powered assistants and autonomous operations  
+✅ **Telemetry** - Comprehensive system and UX telemetry
 
 ## Overview
 
@@ -378,9 +378,18 @@ When adding new features:
 4. Add telemetry hooks for observability
 5. Use shared Supabase helpers for database operations
 
-## License
+## Documentation
 
-[Your License Here]
+For complete documentation, see [`DOCUMENTATION.md`](DOCUMENTATION.md) which includes:
+- Complete API reference
+- Database schema documentation
+- Telemetry system guide
+- AI integration and LLM parameters
+- Pricing tiers and feature gating
+- iOS frontend development guide
+- Security and safeguards
+- Deployment instructions
+
 ## iOS Frontend
 
 The Sinapse iOS app is built with SwiftUI and integrates with this backend API. For iOS development and build instructions, see:
@@ -399,4 +408,13 @@ The Sinapse iOS app is built with SwiftUI and integrates with this backend API. 
 
 ---
 
-**For questions or support**: Check the respective README files in each component directory.
+## Additional Resources
+
+- **Complete Documentation**: [`DOCUMENTATION.md`](DOCUMENTATION.md) - Consolidated master documentation
+- **Database Schema**: [`docs/DATABASE_SCHEMA.md`](docs/DATABASE_SCHEMA.md)
+- **Telemetry Events**: [`docs/TELEMETRY_EVENTS.md`](docs/TELEMETRY_EVENTS.md)
+- **Pricing Tiers**: [`docs/PRICING_TIERS.md`](docs/PRICING_TIERS.md)
+- **LLM Parameters**: [`docs/TUNABLE_PARAMETERS.md`](docs/TUNABLE_PARAMETERS.md)
+- **API Specification**: [`specs/api/openapi.yaml`](specs/api/openapi.yaml)
+
+**For questions or support**: Check [`DOCUMENTATION.md`](DOCUMENTATION.md) or the respective README files in each component directory.
