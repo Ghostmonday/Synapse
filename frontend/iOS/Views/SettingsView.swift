@@ -1,119 +1,78 @@
 import SwiftUI
 
-/// Settings view with subscription upsell
+/// Settings with hosting options
 struct SettingsView: View {
-    @State private var subscriptionTier: SubscriptionTier = .starter
-    @State private var showSubscriptionSheet = false
+    @State private var aiOn = false
+    @State private var isEnterprise = false // TODO: Check subscription
+    @State private var haptic = UIImpactFeedbackGenerator(style: .light)
     
     var body: some View {
         NavigationStack {
             List {
-                Section("Subscription") {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(subscriptionTier.displayName)
-                                .font(.headline)
-                            Text("Current plan")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                Section("Rooms") {
+                    Toggle("AI Moderation", isOn: $aiOn)
+                        .disabled(!isEnterprise)
+                        .onChange(of: aiOn) { _ in
+                            haptic.impactOccurred()
                         }
-                        
-                        Spacer()
-                        
-                        Button("Upgrade") {
-                            showSubscriptionSheet = true
-                        }
-                        .buttonStyle(.borderedProminent)
-                    }
                     
-                    if subscriptionTier != .enterprise {
-                        Text("Want permanent rooms? Go enterprise - $19/mo. Or self-host free.")
-                            .font(.caption)
+                    if !isEnterprise {
+                        Text("Only in enterprise rooms.")
                             .foregroundColor(.secondary)
+                            .font(.caption)
                     }
+                }
+                
+                Section("Hosting") {
+                    Button("Export Config") {
+                        haptic.impactOccurred()
+                        shareJSON()
+                    }
+                    .disabled(!isEnterprise)
+                    
+                    Button("Launch on AWS") {
+                        haptic.impactOccurred()
+                        openTerraformRun()
+                    }
+                    .disabled(!isEnterprise)
+                    
+                    NavigationLink("Hosting Guide", destination: HostingGuideView())
+                    
+                    Text("Self-host with our Docker image - no lock-in.")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
                 }
                 
                 Section("Account") {
-                    NavigationLink("Profile", destination: ProfileView())
-                }
-                
-                Section("Resources") {
-                    NavigationLink("Hosting Guide", destination: HostingGuideView())
-                    Button("Export Config") {
-                        exportTerraformConfig()
-                    }
+                    NavigationLink("Subscription", destination: SubscriptionView())
                 }
             }
             .navigationTitle("Settings")
-            .sheet(isPresented: $showSubscriptionSheet) {
-                SubscriptionUpgradeView()
-            }
         }
     }
     
-    private func exportTerraformConfig() {
-        // TODO: Generate and download Terraform config JSON
-        print("Exporting Terraform config...")
+    private func shareJSON() {
+        // Generate Terraform config JSON
+        let config: [String: Any] = [
+            "room_schema": "rooms",
+            "env_vars": [
+                "NEXT_PUBLIC_SUPABASE_URL": "your-url",
+                "REDIS_URL": "your-redis"
+            ],
+            "redis_creds": [
+                "host": "your-host",
+                "port": 6379
+            ]
+        ]
+        
+        // TODO: Convert to JSON and share via UIActivityViewController
+        print("Exporting config: \(config)")
     }
-}
-
-struct SubscriptionUpgradeView: View {
-    @Environment(\.dismiss) var dismiss
-    @State private var selectedTier: SubscriptionTier?
     
-    var body: some View {
-        NavigationStack {
-            TierSelectionView(selectedTier: $selectedTier)
-                .navigationTitle("Upgrade")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Cancel") {
-                            dismiss()
-                        }
-                    }
-                }
-        }
-    }
-}
-
-struct HostingGuideView: View {
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("Self-Hosting Guide")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Text("Deploy Sinapse on your own infrastructure for full control and compliance.")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
-                // Pull content from docs/SELF-HOSTING.md
-                // Simplified version for mobile
-                VStack(alignment: .leading, spacing: 16) {
-                    GuideSection(title: "Quick Start", content: "Use our Terraform configs in infra/aws/ for one-click AWS deployment.")
-                    GuideSection(title: "Docker", content: "docker-compose up -d for local testing.")
-                    GuideSection(title: "Enterprise", content: "Full control, GDPR compliance, custom retention policies.")
-                }
-            }
-            .padding()
-        }
-        .navigationTitle("Hosting Guide")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-struct GuideSection: View {
-    let title: String
-    let content: String
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.headline)
-            Text(content)
-                .font(.body)
-                .foregroundColor(.secondary)
+    private func openTerraformRun() {
+        // Open Terraform Cloud workspace
+        if let url = URL(string: "https://app.terraform.io/runs/new/your-workspace") {
+            UIApplication.shared.open(url)
         }
     }
 }
@@ -121,4 +80,3 @@ struct GuideSection: View {
 #Preview {
     SettingsView()
 }
-

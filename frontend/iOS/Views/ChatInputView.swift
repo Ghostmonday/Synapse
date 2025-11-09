@@ -8,8 +8,10 @@ struct ChatInputView: View {
     @State private var showCommands: Bool = false
     @State private var commands: [BotCommand] = []
     @FocusState private var isFocused: Bool
+    @State private var haptic = UIImpactFeedbackGenerator(style: .medium)
     
     let onSend: ((String) -> Void)?
+    let onFlagged: ((String) -> Void)? // Callback for flagged messages
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -127,6 +129,9 @@ struct ChatInputView: View {
         
         let message = input
         
+        // Haptic feedback on send
+        haptic.impactOccurred()
+        
         // Log telemetry
         UXTelemetryService.logClick(
             componentId: "ChatInput-SendButton",
@@ -139,11 +144,23 @@ struct ChatInputView: View {
                 await sendCommand(message)
             }
         } else {
-            onSend?(message)
+            // Check for flagged content (simplified - would call moderation API)
+            Task {
+                await sendMessage(message)
+            }
         }
         
         // Clear input
         input = ""
+    }
+    
+    private func sendMessage(_ message: String) async {
+        // TODO: Call message API and check response for moderation flags
+        // If flagged, call onFlagged callback
+        onSend?(message)
+        
+        // Simulate moderation check (remove in production)
+        // In real implementation, check API response for moderation flags
     }
     
     private func sendCommand(_ command: String) async {
