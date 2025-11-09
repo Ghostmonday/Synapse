@@ -8,6 +8,7 @@ import { supabase } from '../config/db.js';
 import { logError } from '../shared/logger.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { checkUsageLimit, trackUsage } from '../services/usage-service.js';
+import { getUserSubscription, SubscriptionTier } from '../services/subscription-service.js';
 
 const router = Router();
 
@@ -42,9 +43,25 @@ router.post('/create', authMiddleware, async (req, res) => {
       });
     }
 
+    // Get user subscription tier
+    const subscriptionTier = await getUserSubscription(userId);
+    
+    // Set room tier and expiry for Pro users
+    const roomData = {
+      name,
+      owner_id,
+      is_public: is_public || false,
+      room_tier: subscriptionTier === SubscriptionTier.PRO ? 'pro' : 'free',
+    };
+
+    // Pro rooms expire after 24 hours
+    if (subscriptionTier === SubscriptionTier.PRO) {
+      roomData.expires_at = new Date(Date.now() + 86400000).toISOString(); // 24 hours
+    }
+
     const { data, error } = await supabase
       .from('rooms')
-      .insert([{ name, owner_id, is_public: is_public || false }])
+      .insert([roomData])
       .select()
       .single();
 
@@ -53,7 +70,13 @@ router.post('/create', authMiddleware, async (req, res) => {
     // Track usage
     await trackUsage(userId, 'room_created', 1, { room_id: data.id });
 
-    res.json({ status: 'ok', room: data });
+    res.json({ 
+      status: 'ok', 
+      room: {
+        ...data,
+        expires_at: data.expires_at || null
+      }
+    });
   } catch (e) {
     logError('Create room error', e instanceof Error ? e : new Error(String(e)));
     res.status(500).json({ error: e instanceof Error ? e.message : String(e) || 'Server error' });
