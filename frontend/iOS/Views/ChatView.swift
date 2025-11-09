@@ -1,171 +1,124 @@
 import SwiftUI
 
+/// Chat view with message send and AI feedback
 struct ChatView: View {
+    let room: Room?
     @StateObject private var viewModel = RoomViewModel()
+    @State private var input: String = ""
+    @State private var showFlaggedToast = false
+    @State private var flaggedSuggestion: String = ""
+    @State private var haptic = UIImpactFeedbackGenerator(style: .light)
+    
+    init(room: Room? = nil) {
+        self.room = room
+    }
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                // Background gradient
-                MoodGradient(mood: viewModel.room?.activityLevel ?? "calm")
-                    .ignoresSafeArea()
-                
-                AmbientParticles()
-                
-                if viewModel.messages.isEmpty {
-                    // Enhanced empty state
-                    VStack(spacing: 24) {
-                        Image(systemName: "bubble.left.and.bubble.right")
-                            .font(.system(size: 64))
-                            .foregroundStyle(
-                                LinearGradient(
-                                    colors: [.primarySinapse, .blue],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .shadow(color: .primarySinapse.opacity(0.3), radius: 10)
-                        
-                        VStack(spacing: 8) {
-                            Text("No messages yet")
-                                .font(.title3)
-                                .fontWeight(.semibold)
-                                .foregroundColor(.primary)
-                            
-                            Text("Start a conversation")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        Button(action: {
-                            // TODO: Show message composer
-                            print("[ChatView] Start conversation tapped")
-                        }) {
-                            HStack {
-                                Image(systemName: "plus.message.fill")
-                                Text("New Message")
-                            }
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(
-                                LinearGradient(
-                                    colors: [.primarySinapse, .blue],
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .cornerRadius(12)
-                            .shadow(color: .primarySinapse.opacity(0.3), radius: 8)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding()
-                    .transition(.opacity.combined(with: .scale))
-                } else {
-                    // Enhanced message list
-                    List {
+            VStack(spacing: 0) {
+                // Message list
+                ScrollView {
+                    LazyVStack(spacing: 12) {
                         ForEach(viewModel.messages) { message in
-                            MessageBubbleRow(message: message)
-                                .listRowBackground(Color.clear)
-                                .listRowSeparator(.hidden)
+                            MessageBubble(message: message)
                         }
                     }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
+                    .padding()
                 }
-            }
-            .navigationTitle("Chat")
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        // TODO: Show message composer
-                        print("[ChatView] New message tapped")
-                    }) {
-                        Image(systemName: "plus.message.fill")
-                            .foregroundColor(.primarySinapse)
+                
+                // AI feedback toast
+                if showFlaggedToast {
+                    HStack {
+                        Text("AI: \(flaggedSuggestion)")
+                            .font(.caption)
+                            .foregroundColor(.orange)
                     }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(.ultraThinMaterial)
+                    )
+                    .padding(.horizontal)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
+                
+                // Input area
+                HStack(spacing: 12) {
+                    TextField("Message...", text: $input)
+                        .textFieldStyle(.roundedBorder)
+                    
+                    Button("Send") {
+                        sendMessage()
+                        haptic.impactOccurred()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(input.isEmpty)
+                }
+                .padding()
             }
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.messages.isEmpty)
+            .navigationTitle(room?.name ?? "Chat")
+            .navigationBarTitleDisplayMode(.inline)
         }
         .task {
-            // Try to load room, but don't fail silently
-            viewModel.loadRoom(id: UUID())
-            
-            // Add dummy message if none exist after a delay
-            Task {
-                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
-                if viewModel.messages.isEmpty {
-                    // Add dummy message for visibility
-                    print("[ChatView] No messages loaded, showing empty state")
-                }
+            if let roomId = room?.id {
+                viewModel.loadRoom(id: roomId)
             }
         }
-        /// UX: Voice-text thread + AI bubbles
+    }
+    
+    private func sendMessage() {
+        guard !input.isEmpty else { return }
+        
+        let messageText = input
+        input = ""
+        
+        Task {
+            do {
+                // Send message via API
+                guard let roomId = room?.id.uuidString else { return }
+                
+                // TODO: Call MessageService.sendMessage
+                // Check response for moderation flags
+                // If response contains flagged: true and suggestion
+                // showFlaggedToast = true
+                // flaggedSuggestion = response.suggestion
+                
+                // Simulate flagged message for demo
+                if messageText.lowercased().contains("test") {
+                    flaggedSuggestion = "Please keep conversations respectful"
+                    withAnimation {
+                        showFlaggedToast = true
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        withAnimation {
+                            showFlaggedToast = false
+                        }
+                    }
+                }
+            } catch {
+                print("Failed to send message: \(error)")
+            }
+        }
     }
 }
 
-/// Message Bubble Row Component
-struct MessageBubbleRow: View {
+struct MessageBubble: View {
     let message: Message
     
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            // Avatar placeholder
-            Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [.primarySinapse.opacity(0.6), .blue.opacity(0.4)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
+        HStack {
+            Text(message.content)
+                .padding()
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(.ultraThinMaterial)
                 )
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Text(String(message.senderId.uuidString.prefix(1).uppercased()))
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                )
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(message.content)
-                    .font(.body)
-                    .foregroundColor(.primary)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(.ultraThinMaterial)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(Color.glassBorder, lineWidth: 1)
-                            )
-                    )
-                
-                Text(formatTimestamp(message.timestamp))
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                    .padding(.leading, 16)
-            }
-            
             Spacer()
         }
-        .padding(.vertical, 4)
-        .padding(.horizontal, 16)
-    }
-    
-    private func formatTimestamp(_ date: Date) -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 
 #Preview {
     ChatView()
 }
-

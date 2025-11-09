@@ -160,7 +160,7 @@ struct RoomRow: View {
     @State private var showSettings = false
     
     var body: some View {
-        NavigationLink(destination: ChatView(room: room)) {
+        NavigationLink(destination: ChatView(room: room).navigationBarTitleDisplayMode(.inline)) {
             HStack(spacing: 16) {
                 // Room icon with tier badges
                 ZStack(alignment: .bottomTrailing) {
