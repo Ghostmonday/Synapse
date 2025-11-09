@@ -43,7 +43,33 @@ loadProto().catch(err => console.warn('proto load failed', err));
  */
 export function setupWebSocketGateway(wss: WebSocketServer) {
   // Listen for new WebSocket connections
-  wss.on('connection', (ws: WebSocket) => {
+  wss.on('connection', (ws: WebSocket & { alive?: number }) => {
+    // Mark connection as alive
+    ws.alive = Date.now();
+    
+    // Ping-pong health check every 30 seconds
+    const pingInterval = setInterval(() => {
+      if (ws.readyState === ws.OPEN) {
+        // Check if last pong was more than 1 minute ago
+        if (ws.alive && Date.now() - ws.alive > 60000) {
+          // Stale connection - close it
+          ws.terminate();
+          clearInterval(pingInterval);
+          return;
+        }
+        
+        // Send ping
+        ws.ping();
+      } else {
+        clearInterval(pingInterval);
+      }
+    }, 30000); // Every 30 seconds
+    
+    // Handle pong response
+    ws.on('pong', () => {
+      ws.alive = Date.now();
+    });
+    
     // Handle incoming messages on this connection
     ws.on('message', (data: Buffer) => {
       // Check if protobuf schema is loaded
@@ -96,11 +122,13 @@ export function setupWebSocketGateway(wss: WebSocketServer) {
     
     // Clean up when connection closes
     ws.on('close', () => {
+      clearInterval(pingInterval);
       unregisterWebSocket(ws);
     });
     
     // Clean up on error
     ws.on('error', () => {
+      clearInterval(pingInterval);
       unregisterWebSocket(ws);
     });
   });

@@ -49,6 +49,28 @@ const wss = new WebSocketServer({ server });
 // collect node metrics for Prometheus
 client.collectDefaultMetrics();
 
+// CORS configuration - locked to synapse.app and localhost:3000
+const allowedOrigins = [
+  'https://sinapse.app',
+  'http://localhost:3000',
+];
+
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  }
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  
+  next();
+});
+
 // Security middleware
 app.use(helmet({
   contentSecurityPolicy: {
