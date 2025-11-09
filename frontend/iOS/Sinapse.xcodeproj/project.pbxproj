@@ -17,6 +17,7 @@
 		204DB5FAB077E85EF339F4F5 /* SystemMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DBE88AE9B0C4F81A7A724E /* SystemMonitor.swift */; };
 		2374500CBAD21CB462258C6D /* LiveKitRoomManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 984152983CF02FF0C0BC653D /* LiveKitRoomManager.swift */; };
 		2487A6664355C77B288B918D /* AILog.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCDA62476F3EFFB74E3D2F91 /* AILog.swift */; };
+		24DA69C72EC0B1AF00C2D473 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 24DA69C62EC0B1AF00C2D473 /* Assets.xcassets */; };
 		24DCD1D32EC08D8A00072E81 /* SubscriptionTier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DCD1D22EC08D8A00072E81 /* SubscriptionTier.swift */; };
 		24DCD1D82EC08DCD00072E81 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DCD1D42EC08DCD00072E81 /* HomeView.swift */; };
 		24DCD1D92EC08DCD00072E81 /* HostingGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24DCD1D52EC08DCD00072E81 /* HostingGuideView.swift */; };
@@ -93,6 +94,7 @@
 		0992E747737CA1FEA99621EE /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		0C848D3A289169E425CE298A /* SubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionManager.swift; sourceTree = "<group>"; };
 		14F2CC020D00B79E3B622756 /* RoomManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomManager.swift; sourceTree = "<group>"; };
+		24DA69C62EC0B1AF00C2D473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		24DCD1D22EC08D8A00072E81 /* SubscriptionTier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTier.swift; sourceTree = "<group>"; };
 		24DCD1D42EC08DCD00072E81 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		24DCD1D52EC08DCD00072E81 /* HostingGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingGuideView.swift; sourceTree = "<group>"; };
@@ -371,6 +373,7 @@
 		E358D1EF2481D755C1EFDCE7 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				24DA69C62EC0B1AF00C2D473 /* Assets.xcassets */,
 				39BF14B077AF33E2D91700C3 /* Info.plist */,
 				F8322ECBDA9B90EE12F6306A /* Products.storekit */,
 				56024B43ECEDF76205A81A4E /* SinapseApp.swift */,
@@ -460,6 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24DA69C72EC0B1AF00C2D473 /* Assets.xcassets in Resources */,
 				4AB1D050AB1501C44368615F /* Products.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
