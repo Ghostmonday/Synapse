@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import OSLog
 import UIKit
 
 /// WebSocket Manager for Real-Time Communication
@@ -7,6 +8,7 @@ import UIKit
 /// Provides AsyncStream and Combine publishers for events
 @MainActor
 class WebSocketManager: ObservableObject {
+    private static let logger = Logger(subsystem: "com.sinapse.app", category: "WebSocket")
     static let shared = WebSocketManager()
     
     @Published var isConnected: Bool = false
@@ -20,6 +22,7 @@ class WebSocketManager: ObservableObject {
     private let presenceSubject = PassthroughSubject<PresenceUpdate, Never>()
     private let voiceEventSubject = PassthroughSubject<VoiceEvent, Never>()
     private let typingSubject = PassthroughSubject<TypingEvent, Never>()
+    private let emotionPulseSubject = PassthroughSubject<EmotionPulseEvent, Never>()
     
     var messagePublisher: AnyPublisher<Message, Never> {
         messageSubject.eraseToAnyPublisher()
@@ -35,6 +38,10 @@ class WebSocketManager: ObservableObject {
     
     var typingPublisher: AnyPublisher<TypingEvent, Never> {
         typingSubject.eraseToAnyPublisher()
+    }
+    
+    var emotionPulsePublisher: AnyPublisher<EmotionPulseEvent, Never> {
+        emotionPulseSubject.eraseToAnyPublisher()
     }
     
     enum ConnectionState {
@@ -57,7 +64,7 @@ class WebSocketManager: ObservableObject {
         
         // Construct WebSocket URL
         guard let url = URL(string: "\(APIClient.wsBaseURL)?userId=\(userId)&token=\(token)") else {
-            print("[WebSocket] Invalid URL")
+            Self.logger.error("[WebSocket] Invalid URL")
             connectionState = .disconnected
             return
         }
@@ -75,7 +82,7 @@ class WebSocketManager: ObservableObject {
         // Start ping/pong heartbeat
         startPing()
         
-        print("[WebSocket] Connected")
+        Self.logger.info("[WebSocket] Connected")
     }
     
     func disconnect() {
@@ -86,7 +93,7 @@ class WebSocketManager: ObservableObject {
         connectionState = .disconnected
         isConnected = false
         
-        print("[WebSocket] Disconnected")
+        Self.logger.info("[WebSocket] Disconnected")
     }
     
     private func receiveMessage() {
@@ -108,7 +115,7 @@ class WebSocketManager: ObservableObject {
                 self.receiveMessage()
                 
             case .failure(let error):
-                print("[WebSocket] Receive error: \(error)")
+                Self.logger.error("[WebSocket] Receive error: \(error.localizedDescription)")
                 self.handleConnectionLost()
             }
         }
@@ -137,17 +144,21 @@ class WebSocketManager: ObservableObject {
                 if let typing = try? JSONDecoder().decode(TypingEvent.self, from: envelope.payload) {
                     typingSubject.send(typing)
                 }
+            case "emotion_pulse":
+                if let pulseEvent = try? JSONDecoder().decode(EmotionPulseEvent.self, from: envelope.payload) {
+                    emotionPulseSubject.send(pulseEvent)
+                }
             default:
-                print("[WebSocket] Unknown message type: \(envelope.type)")
+                Self.logger.warning("[WebSocket] Unknown message type: \(envelope.type)")
             }
         } catch {
-            print("[WebSocket] Parse error: \(error)")
+            Self.logger.error("[WebSocket] Parse error: \(error.localizedDescription)")
         }
     }
     
     private func handleIncomingData(_ data: Data) {
         // Handle binary data if needed
-        print("[WebSocket] Received binary data: \(data.count) bytes")
+        Self.logger.debug("[WebSocket] Received binary data: \(data.count) bytes")
     }
     
     private func handleConnectionLost() {
@@ -167,14 +178,14 @@ class WebSocketManager: ObservableObject {
         
         // TODO: Get userId and token from AuthService
         // For now, this is a placeholder
-        print("[WebSocket] Reconnecting...")
+        Self.logger.info("[WebSocket] Reconnecting...")
     }
     
     // MARK: - Sending Messages
     
     func send(event: String, payload: [String: Any]) {
         guard isConnected else {
-            print("[WebSocket] Cannot send - not connected")
+            Self.logger.warning("[WebSocket] Cannot send - not connected")
             return
         }
         
@@ -190,12 +201,12 @@ class WebSocketManager: ObservableObject {
                 let message = URLSessionWebSocketTask.Message.string(jsonString)
                 webSocketTask?.send(message) { error in
                     if let error = error {
-                        print("[WebSocket] Send error: \(error)")
+                        Self.logger.error("[WebSocket] Send error: \(error.localizedDescription)")
                     }
                 }
             }
         } catch {
-            print("[WebSocket] Encoding error: \(error)")
+            Self.logger.error("[WebSocket] Encoding error: \(error.localizedDescription)")
         }
     }
     
@@ -222,7 +233,7 @@ class WebSocketManager: ObservableObject {
     private func sendPing() {
         webSocketTask?.sendPing { error in
             if let error = error {
-                print("[WebSocket] Ping error: \(error)")
+                Self.logger.error("[WebSocket] Ping error: \(error.localizedDescription)")
             }
         }
     }
@@ -247,7 +258,7 @@ class WebSocketManager: ObservableObject {
     
     @objc private func appDidEnterBackground() {
         // Keep connection alive in background (iOS limitations apply)
-        print("[WebSocket] App entering background")
+        Self.logger.info("[WebSocket] App entering background")
     }
     
     @objc private func appWillEnterForeground() {
@@ -255,7 +266,7 @@ class WebSocketManager: ObservableObject {
         if connectionState == .disconnected {
             reconnect()
         }
-        print("[WebSocket] App entering foreground")
+        Self.logger.info("[WebSocket] App entering foreground")
     }
     
     nonisolated deinit {

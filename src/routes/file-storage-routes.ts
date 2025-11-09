@@ -3,11 +3,12 @@
  * Handles file upload, retrieval, and deletion endpoints
  */
 
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import * as fileStorageService from '../services/file-storage-service.js';
 import { telemetryHook } from '../telemetry/index.js';
 import { fileUploadSecurity } from '../middleware/file-upload-security.js';
+import { authMiddleware } from '../server/middleware/auth.js';
 
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max (enforced by middleware)
 const router = Router();
@@ -15,11 +16,25 @@ const router = Router();
 /**
  * POST /files/upload
  * Upload a file to S3 and store metadata
+ * Supports voice hash encoding for audio files
  */
-router.post('/upload', fileUploadSecurity, upload.single('file'), async (req, res, next) => {
+router.post('/upload', authMiddleware, fileUploadSecurity, upload.single('file'), async (req: Request, res: Response, next) => {
   try {
     telemetryHook('files_upload_start');
-    const result = await fileStorageService.uploadFileToStorage(req.file); // Error branch: S3 upload can hang, no timeout
+    
+    // Extract user ID from authenticated request
+    const user = (req as any).user;
+    const userId = user?.id;
+    
+    // Check if voice hash should be enabled (default: true for audio files)
+    const enableVoiceHash = req.body.enableVoiceHash !== 'false';
+    
+    const result = await fileStorageService.uploadFileToStorage(req.file, {
+      userId: userId,
+      mimeType: req.body.mimeType || req.file?.mimetype,
+      enableVoiceHash: enableVoiceHash
+    }); // Error branch: S3 upload can hang, no timeout
+    
     telemetryHook('files_upload_end');
     res.json(result);
   } catch (error) {

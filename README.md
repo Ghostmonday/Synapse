@@ -10,6 +10,8 @@ A production-ready communication platform with real-time messaging, voice/video 
 ✅ **Security** - Password hashing, file upload validation  
 ✅ **Voice/Video** - LiveKit integration with quality enhancement
 
+> **Note**: All valuable content from `Sinapse_Heavy_Patch_v2` has been integrated into the codebase as of 2025-01-27. See `PATCH_INTEGRATION_SUMMARY.md` for details.
+
 ## Overview
 
 Sinapse Backend is built with Node.js, Express, TypeScript, and Supabase. It provides RESTful APIs for user management, real-time messaging via WebSockets, file storage with AWS S3, and integrated observability with Prometheus.

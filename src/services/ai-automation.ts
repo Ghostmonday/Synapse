@@ -16,6 +16,7 @@ import { LLMReasoner } from '../autonomy/llm_reasoner.js';
 import { PolicyGuard } from '../autonomy/policy_guard.js';
 import { logInfo, logError, logWarning } from '../shared/logger.js';
 import { safeAIOperation, checkLLMRateLimit, trackTokenSpend, shouldRunAI, isAutomationDisabled } from './ai-safeguards.js';
+import { llmParamManager } from './llm-parameter-manager';
 
 const redis = getRedisClient();
 const reasoner = new LLMReasoner(process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || '');
@@ -51,11 +52,7 @@ export async function optimizeRateLimits(): Promise<void> {
     const analysis = await reasoner.analyze({
       context: {
         events: rateLimitEvents,
-        currentLimits: {
-          global: 100, // per minute
-          ip: 1000, // per minute
-          user: 100, // per minute
-        }
+        currentLimits: llmParamManager.getAutomation().rateLimits // Get from centralized config
       },
       prompt: `Analyze these rate limit events. Are they legitimate users being blocked (false positives) or actual attacks? 
       Should we increase or decrease rate limits? Provide reasoning and recommended limits.`
@@ -219,6 +216,7 @@ export async function adjustModerationThresholds(): Promise<void> {
         const newMetadata = {
           ...currentMetadata,
           auto_moderation: true,
+          // @llm_param - Toxicity threshold for auto-moderation. LLM adjusts this based on room health metrics.
           toxicity_threshold: Math.max(0.5, (rec.avg_toxicity || 0.7) * 0.9), // Lower threshold
           moderation_enabled_at: new Date().toISOString()
         };
@@ -290,10 +288,7 @@ export async function optimizeCacheTTL(): Promise<void> {
     const analysis = await reasoner.analyze({
       context: {
         metrics: cacheMetrics,
-        currentTTLs: {
-          l1: 60000, // 1 minute
-          l2: 300000 // 5 minutes
-        }
+        currentTTLs: llmParamManager.getAutomation().cacheTTLs // Get from centralized config
       },
       prompt: `Analyze cache hit rates. Should we increase or decrease TTLs? 
       Consider: high hit rate = increase TTL, low hit rate = decrease TTL, stale data complaints = decrease TTL.`

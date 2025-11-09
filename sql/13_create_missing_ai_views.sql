@@ -39,6 +39,7 @@ SELECT
   (SELECT COUNT(*) FROM message_receipts WHERE message_id = m.id) AS receipt_count,
   CASE 
     WHEN m.is_flagged = TRUE THEN 'flagged'
+    -- @llm_param - Toxicity score threshold for high-risk classification. Messages with toxicity > 0.7 are marked high-risk.
     WHEN m.flags->>'toxicity_score' IS NOT NULL 
       AND (m.flags->>'toxicity_score')::float > 0.7 THEN 'high_risk'
     ELSE 'normal'
@@ -171,7 +172,9 @@ BEGIN
     ROUND(100.0 * COUNT(*) FILTER (WHERE m.is_flagged = TRUE) / NULLIF(COUNT(*), 0), 2) AS flagged_rate,
     (AVG((m.flags->>'toxicity_score')::float))::NUMERIC AS avg_toxicity,
     CASE 
+      -- @llm_param - High toxicity threshold (0.8). Triggers recommendation for stricter moderation.
       WHEN AVG((m.flags->>'toxicity_score')::float) > 0.8 THEN 'High toxicity detected - consider stricter moderation'
+      -- @llm_param - Moderate toxicity threshold (0.6). Triggers monitoring recommendation.
       WHEN AVG((m.flags->>'toxicity_score')::float) > 0.6 THEN 'Moderate toxicity - monitor closely'
       ELSE 'Normal activity'
     END::TEXT AS recommendation,

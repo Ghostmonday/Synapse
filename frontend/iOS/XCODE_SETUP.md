@@ -21,8 +21,8 @@
 If you have `xcodegen` installed:
 
 ```bash
-cd frontend/iOS
-./create_xcode_project.sh
+# From repository root
+./scripts/dev/ios/create_xcode_project.sh
 ```
 
 Or install xcodegen first:

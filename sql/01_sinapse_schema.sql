@@ -244,13 +244,21 @@ INSERT INTO system_config (key, value) VALUES
     'bucket', 'sinapse-cold',
     'provider', 's3'
   )),
+  -- @llm_param - Moderation thresholds stored in system_config. Controls AI moderation sensitivity per category. LLM can adjust these.
   ('moderation_thresholds', jsonb_build_object(
+    -- @llm_param - Default moderation threshold. Messages exceeding this score are flagged.
     'default', 0.6,
+    -- @llm_param - Illegal content threshold. Higher threshold = stricter detection.
     'illegal', 0.7,
+    -- @llm_param - Threat detection threshold. Controls sensitivity to threats.
     'threat', 0.6,
+    -- @llm_param - PII (Personally Identifiable Information) detection threshold.
     'pii', 0.65,
+    -- @llm_param - Hate speech detection threshold. Lower = more sensitive.
     'hate', 0.55,
+    -- @llm_param - Adult content threshold. 0.0 = disabled.
     'adult', 0.0,
+    -- @llm_param - Probation multiplier. Users on probation have thresholds multiplied by this value (lower = stricter).
     'probation_multiplier', 0.5
   )),
   ('codec', jsonb_build_object(

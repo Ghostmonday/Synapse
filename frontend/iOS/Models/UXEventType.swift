@@ -106,6 +106,13 @@ enum UXEventType: String, Codable {
     case firstSessionStallPoint = "first_session_stall_point"
     case retryAfterErrorInterval = "retry_after_error_interval"
     case featureToggleHoverNoUse = "feature_toggle_hover_no_use"
+    
+    // Communication Dashboard Events
+    case metricsCardSwipeGesture = "metrics_card_swipe_gesture"
+    case messageVelocityViewed = "message_velocity_viewed"
+    case presenceDistributionViewed = "presence_distribution_viewed"
+    case roomActivityViewed = "room_activity_viewed"
+    case systemHealthViewed = "system_health_viewed"
 }
 
 /// Device Context Information

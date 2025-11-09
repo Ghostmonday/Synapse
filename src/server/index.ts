@@ -99,6 +99,12 @@ app.get('/metrics', async (req, res) => {
 // Websocket gateway
 setupWebSocketGateway(wss);
 
+// Partition management cron job (if enabled)
+if (process.env.ENABLE_PARTITION_MANAGEMENT !== 'false') {
+  const { schedulePartitionManagement } = await import('../jobs/partition-management-cron.js');
+  schedulePartitionManagement();
+}
+
 // Health
 app.get('/health', (req, res) => res.json({ status: 'ok', ts: new Date().toISOString() }));
 
@@ -152,8 +158,9 @@ app.get('/debug/stats', async (req, res) => {
     let watchdogSummary = null;
     try {
       watchdogSummary = await runWatchdog();
-    } catch (error: any) {
-      console.error('[Stats Endpoint] Watchdog failed:', error);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      console.error('[Stats Endpoint] Watchdog failed:', errorMessage);
     }
     
     return res.json({
@@ -206,10 +213,11 @@ app.get('/debug/stats', async (req, res) => {
       
       note: 'UX Telemetry stats - separate from system telemetry. Includes AI feedback, emotional tracking, journey analytics, performance linking, and watchdog derivable metrics.',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     return res.status(500).json({ 
       error: 'Failed to fetch stats',
-      message: error.message,
+      message: errorMessage,
     });
   }
 });
