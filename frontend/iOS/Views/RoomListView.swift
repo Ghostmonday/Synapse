@@ -154,55 +154,106 @@ struct RoomListView: View {
     }
 }
 
-/// Room Row Component
+/// Room Row Component with tier icons
 struct RoomRow: View {
     let room: Room
+    @State private var showSettings = false
     
     var body: some View {
-        HStack(spacing: 16) {
-            // Room icon
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [.primarySinapse.opacity(0.6), .blue.opacity(0.4)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
+        NavigationLink(destination: ChatView(room: room)) {
+            HStack(spacing: 16) {
+                // Room icon with tier badges
+                ZStack(alignment: .bottomTrailing) {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                colors: [.primarySinapse.opacity(0.6), .blue.opacity(0.4)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
                         )
-                    )
-                    .frame(width: 50, height: 50)
-                
-                Image(systemName: "door.left.hand.open")
-                    .foregroundColor(.white)
-                    .font(.title3)
-            }
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(room.name ?? "Unnamed Room")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                
-                if let activityLevel = room.activityLevel {
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(activityColor(activityLevel))
-                            .frame(width: 6, height: 6)
-                        
-                        Text(activityLevel.capitalized)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        .frame(width: 50, height: 50)
+                    
+                    Image(systemName: "door.left.hand.open")
+                        .foregroundColor(.white)
+                        .font(.title3)
+                    
+                    // Tier badges
+                    if room.isTemp {
+                        Image(systemName: "clock.fill")
+                            .font(.caption2)
+                            .foregroundColor(.orange)
+                            .padding(4)
+                            .background(Circle().fill(.white))
+                            .offset(x: 4, y: 4)
+                    } else if room.isModerated {
+                        Image(systemName: "shield.checkered")
+                            .font(.caption2)
+                            .foregroundColor(.green)
+                            .padding(4)
+                            .background(Circle().fill(.white))
+                            .offset(x: 4, y: 4)
+                    } else if room.is_self_hosted == true {
+                        Image(systemName: "server.rack")
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                            .padding(4)
+                            .background(Circle().fill(.white))
+                            .offset(x: 4, y: 4)
                     }
                 }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(room.name ?? "Unnamed Room")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        if room.isTemp, let countdown = room.expiryCountdown {
+                            Text("• \(countdown)")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                        }
+                    }
+                    
+                    HStack(spacing: 8) {
+                        if let activityLevel = room.activityLevel {
+                            HStack(spacing: 4) {
+                                Circle()
+                                    .fill(activityColor(activityLevel))
+                                    .frame(width: 6, height: 6)
+                                
+                                Text(activityLevel.capitalized)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                        if room.isModerated {
+                            Label("Moderated", systemImage: "shield.checkered")
+                                .font(.caption2)
+                                .foregroundColor(.green)
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    showSettings = true
+                }) {
+                    Image(systemName: "gearshape.fill")
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+                .buttonStyle(.plain)
             }
-            
-            Spacer()
-            
-            Image(systemName: "chevron.right")
-                .foregroundColor(.secondary)
-                .font(.caption)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 12)
+        .sheet(isPresented: $showSettings) {
+            RoomSettingsView(room: room)
+        }
     }
     
     private func activityColor(_ level: String) -> Color {

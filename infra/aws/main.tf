@@ -383,16 +383,16 @@ resource "aws_instance" "sinapse_api" {
   vpc_security_group_ids = [aws_security_group.sinapse_api.id]
 
   user_data = base64encode(templatefile("${path.module}/user_data.sh", {
-    db_host     = var.create_rds ? aws_db_instance.sinapse[0].endpoint : var.external_db_host
-    db_name     = "sinaps"
-    db_user     = var.db_username
-    db_password = var.db_password
-    redis_host  = var.create_redis ? aws_elasticache_replication_group.sinapse[0].configuration_endpoint_address : var.external_redis_host
-    redis_port  = var.create_redis ? 6379 : var.external_redis_port
-    s3_bucket   = aws_s3_bucket.sinapse_files.id
-    aws_region  = var.aws_region
-    github_repo = var.github_repo
-    environment = var.environment
+    db_host                  = var.create_rds ? aws_db_instance.sinapse[0].endpoint : var.external_db_host
+    db_name                  = "sinaps"
+    db_user                  = var.db_username
+    db_password              = var.db_password
+    redis_instance_private_ip = var.create_redis ? aws_elasticache_replication_group.sinapse[0].primary_endpoint_address : var.external_redis_host
+    redis_port               = var.create_redis ? 6379 : var.external_redis_port
+    s3_bucket                = aws_s3_bucket.sinapse_files.id
+    aws_region               = var.aws_region
+    github_repo              = var.github_repo
+    environment              = var.environment
   }))
 
   root_block_device {

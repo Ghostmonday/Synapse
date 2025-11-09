@@ -6,30 +6,31 @@ struct MainTabView: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            VoiceView()
-                .tabItem { Label("Voice", systemImage: "mic") }
+            // Home - Dashboard/Rooms overview
+            RoomListView()
+                .tabItem { 
+                    Label("Home", systemImage: "house.fill")
+                }
                 .tag(0)
             
+            // Rooms - Full room list
             RoomListView()
-                .tabItem { Label("Rooms", systemImage: "door.left.hand.open") }
+                .tabItem { 
+                    Label("Rooms", systemImage: "door.left.hand.open")
+                }
                 .tag(1)
             
-            ChatView()
-                .tabItem { Label("Chat", systemImage: "bubble.left") }
+            // Settings - Profile + Subscription
+            SettingsView()
+                .tabItem { 
+                    Label("Settings", systemImage: "gearshape.fill")
+                }
                 .tag(2)
-            
-            ProfileView()
-                .tabItem { Label("Profile", systemImage: "person") }
-                .tag(3)
-            
-            DashboardView()
-                .tabItem { Label("Dashboard", systemImage: "chart.bar") }
-                .tag(4)
         }
         .onChange(of: selectedTab) { newValue in
             print("[MainTabView] Tab changed to: \(newValue)")
         }
-        /// UX: Main tab navigation
+        /// UX: Simple 3-tab navigation - Home, Rooms, Settings
     }
 }
 
