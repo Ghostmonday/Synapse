@@ -55,7 +55,8 @@ Respond with JSON only: {"score": 0-1, "isToxic": true/false, "suggestion": "bri
       }
     );
 
-    const raw = response.data.choices[0]?.message?.content?.trim() || '{"score":0,"isToxic":false,"suggestion":""}';
+    // Edge Function returns DeepSeek response directly
+    const raw = response.data?.choices?.[0]?.message?.content?.trim() || '{"score":0,"isToxic":false,"suggestion":""}';
     
     // Parse JSON response
     let result;

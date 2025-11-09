@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .env
+.env.*
 *.log
 audit.log
 .DS_Store
@@ -8,6 +9,13 @@ audit.log
 *.swo
 .vscode/
 .idea/
+
+# Security: Never commit secrets
+*.pem
+*.key
+*.cert
+secrets/
+*.secret
 
 # Build artifacts
 *.zip
