@@ -56,7 +56,8 @@ NEXT_PUBLIC_SUPABASE_URL=postgresql://${db_user}:${db_password}@${db_host}/${db_
 SUPABASE_SERVICE_ROLE_KEY=${db_password}
 
 # Redis
-REDIS_URL=redis://${redis_host}:${redis_port}
+REDIS_HOST=${redis_instance_private_ip}
+REDIS_URL=redis://${redis_instance_private_ip}:${redis_port}
 
 # AWS S3
 AWS_S3_BUCKET=${s3_bucket}
