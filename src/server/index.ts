@@ -33,6 +33,7 @@ import reactionsRoutes from '../routes/reactions-routes.js';
 import searchRoutes from '../routes/search-routes.js';
 import threadsRoutes from '../routes/threads-routes.js';
 import uxTelemetryRoutes from '../routes/ux-telemetry-routes.js';
+import chatRoomConfigRoutes from '../routes/chat-room-config-routes.js';
 import { telemetryMiddleware } from './middleware/telemetry.js';
 import { errorMiddleware } from './middleware/error.js';
 import { rateLimit, ipRateLimit } from '../middleware/rate-limiter.js';
@@ -88,6 +89,7 @@ app.use('/api/reactions', reactionsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/threads', threadsRoutes);
 app.use('/api/ux-telemetry', uxTelemetryRoutes); // UX Telemetry (separate from system telemetry)
+app.use('/chat_rooms', chatRoomConfigRoutes); // Room configuration endpoints
 app.use(healthRoutes); // Mount health routes at root level
 
 // Metrics endpoint

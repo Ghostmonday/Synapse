@@ -177,6 +177,56 @@ The server will start on `http://localhost:3000` (or your configured PORT).
 - `GET /messaging/:roomId` - Get recent messages from a room
   - Returns: Array of messages
 
+### AI Moderation (Enterprise-Only)
+
+AI-powered content moderation is available for Enterprise-tier rooms. This feature uses DeepSeek LLM to analyze messages for toxicity.
+
+**Features:**
+- **Opt-in only** - No free user gets policed
+- **Enterprise tier required** - Only rooms with `room_tier = 'enterprise'` can enable moderation
+- **Automatic flagging** - Messages with toxicity score > 0.65 are flagged
+- **Hard threshold** - Messages with score > 0.85 are automatically removed
+- **Soft threshold** - Messages with score 0.65-0.85 trigger warnings but are allowed
+- **Audit logging** - All moderation actions are logged to `moderation_flags` table
+
+**Endpoints:**
+
+- `GET /chat_rooms/:id/config` - Get room configuration including moderation settings
+  - Returns: `{ id, ai_moderation, room_tier, expires_at }`
+  - Requires: Room owner authentication
+
+- `POST /chat_rooms/:id/config` - Update room configuration
+  - Body: `{ "ai_moderation": true }` (enterprise only)
+  - Requires: Room owner authentication + Enterprise subscription
+  - Automatically sets `room_tier` to `'enterprise'` when moderation is enabled
+
+**Testing:**
+
+Test moderation analysis:
+```bash
+npx tsx scripts/test-moderation.ts "your message here" --threshold=0.65
+```
+
+**Configuration:**
+
+Add to your `.env`:
+```env
+DEEPSEEK_API_KEY=your_deepseek_api_key
+```
+
+**Room Expiry:**
+
+Pro-tier rooms automatically expire after 24 hours. Expired rooms are cleaned up by the cron job:
+```bash
+npx tsx src/jobs/expire-temporary-rooms.ts
+```
+
+Schedule via Supabase Edge Functions, cron-job.org, or your preferred scheduler.
+
+**Future: Hosting Partner Integration**
+
+Enterprise rooms can be self-hosted on partner infrastructure (e.g., DigitalOcean droplets) for full control and compliance.
+
 ### File Storage
 
 - `POST /files/upload` - Upload a file
