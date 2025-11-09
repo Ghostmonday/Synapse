@@ -11,16 +11,23 @@ struct WelcomeView: View {
             
             Text("Welcome to Sinapse")
                 .font(.system(.largeTitle, weight: .bold))
-                .foregroundColor(.blue)
+                .foregroundColor(Color("SinapseGold"))
+                .shadow(color: Color("SinapseGlow").opacity(0.6), radius: 8)
             
             Spacer()
             
             Button("Get Started") {
                 showRoomOptions = true
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
-            .padding(.horizontal, 40)
+            .font(.title3.bold())
+            .foregroundColor(.black)
+            .padding(.horizontal, 44)
+            .padding(.vertical, 16)
+            .background(
+                Capsule()
+                    .fill(Color("SinapseGold"))
+            )
+            .shadow(color: Color("SinapseGoldDark").opacity(0.6), radius: 6, y: 3)
             .padding(.bottom, 60)
         }
         .sheet(isPresented: $showRoomOptions) {

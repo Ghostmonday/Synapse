@@ -19,14 +19,30 @@ struct MessageBubbleView: View {
         }
         .padding(12)
         .background(bubbleBackground)
+        .foregroundColor(message.senderId == getCurrentUserId() ? .black : .white)
         .cornerRadius(12)
     }
     
-    private var bubbleBackground: Color {
-        // Distinguish own messages from others
-        message.senderId == getCurrentUserId() 
-            ? Color.blue.opacity(0.2) 
-            : Color.gray.opacity(0.2)
+    private var bubbleBackground: some View {
+        Group {
+            if message.senderId == getCurrentUserId() {
+                // Outgoing (user) - golden synapse
+                Color("SinapseGold")
+            } else if message.senderId.uuidString == "system" || message.type == "ai" {
+                // AI responses - subtle golden gradient
+                LinearGradient(
+                    colors: [
+                        Color("SinapseGold").opacity(0.15),
+                        Color.clear
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            } else {
+                // Incoming (others) - subtle white
+                Color.white.opacity(0.12)
+            }
+        }
     }
     
     // MARK: - HTML/Markdown Parsing
@@ -46,9 +62,9 @@ struct MessageBubbleView: View {
            ) {
             var attributedString = AttributedString(attributed)
             
-            // Apply mention styling
+            // Apply mention styling - golden synapse theme
             if let range = attributedString.range(of: "@") {
-                attributedString[range].foregroundColor = .blue
+                attributedString[range].foregroundColor = Color("SinapseGold")
                 attributedString[range].font = .body.bold()
             }
             

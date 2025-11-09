@@ -36,7 +36,10 @@ struct SubscriptionView: View {
             .padding()
             .background(
                 LinearGradient(
-                    gradient: Gradient(colors: [.blue, .purple]),
+                    gradient: Gradient(colors: [
+                        Color("SinapseDeep"),
+                        Color("SinapseGoldDark").opacity(0.3)
+                    ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )

@@ -24,7 +24,7 @@ struct MainTabView: View {
                 }
                 .tag(2)
         }
-        .tint(.blue)
+        .tint(Color("SinapseGold"))
     }
 }
 

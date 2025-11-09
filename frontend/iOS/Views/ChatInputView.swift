@@ -38,9 +38,17 @@ struct ChatInputView: View {
                 Button(action: handleSend) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.system(size: 28))
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color("SinapseGold"))
                 }
                 .disabled(input.isEmpty)
+                .overlay(
+                    Circle()
+                        .fill(Color("SinapseGlow"))
+                        .frame(width: 40, height: 40)
+                        .scaleEffect(input.isEmpty ? 0.01 : 0.7)
+                        .opacity(input.isEmpty ? 0 : 0.3)
+                        .animation(.easeOut(duration: 0.4), value: input.isEmpty)
+                )
             }
         }
     }

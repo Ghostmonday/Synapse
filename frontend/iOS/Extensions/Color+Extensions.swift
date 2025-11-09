@@ -1,6 +1,13 @@
 import SwiftUI
 
 extension Color {
+    // Golden Synapse Theme Colors
+    static let sinapseGold = Color("SinapseGold")
+    static let sinapseGoldDark = Color("SinapseGoldDark")
+    static let sinapseDeep = Color("SinapseDeep")
+    static let sinapseGlow = Color("SinapseGlow")
+    
+    // Legacy colors (for backward compatibility)
     static let primarySinapse = Color(hex: "#7C4DFF")
     static let voidBlack = Color(hex: "#0A0A0A")
     
