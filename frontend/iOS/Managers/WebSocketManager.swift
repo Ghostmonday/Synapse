@@ -3,6 +3,18 @@ import Combine
 import OSLog
 import UIKit
 
+// EmotionPulseEvent type definition (matches EmotionPulseMonitor.swift)
+struct EmotionPulseEvent: Codable {
+    let pulse: EmotionPulse
+    let intensity: Double
+    let timestamp: Date
+    let userId: String?
+}
+
+enum EmotionPulse: String, Codable {
+    case neutral, happy, sad, angry, excited, calm
+}
+
 /// WebSocket Manager for Real-Time Communication
 /// Replaces Vue socket listeners with URLSessionWebSocketTask
 /// Provides AsyncStream and Combine publishers for events
