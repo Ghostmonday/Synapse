@@ -31,46 +31,33 @@ docker-compose up -d
 We provide Terraform configurations for AWS EC2 deployment:
 
 ```bash
-cd terraform/
+cd infra/aws/
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars with your values
 terraform init
 terraform plan
 terraform apply
 ```
 
-**Terraform Setup** (create `terraform/main.tf`):
+**Complete Terraform Setup**: See [`infra/aws/README.md`](../infra/aws/README.md) for full documentation.
 
-```hcl
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
+The Terraform configuration includes:
+- **VPC** with public/private subnets
+- **EC2** instances (auto-deploy from GitHub)
+- **RDS PostgreSQL** (optional, can use external DB)
+- **ElastiCache Redis** (optional, can use external Redis)
+- **S3 bucket** for file storage
+- **Application Load Balancer** (optional, for production)
+- **Security groups** and IAM roles
 
-provider "aws" {
-  region = "us-east-1"
-}
-
-resource "aws_instance" "sinapse" {
-  ami           = "ami-0c55b159cbfafe1f0" # Ubuntu 22.04
-  instance_type = "t3.medium"
-  
-  user_data = <<-EOF
-    #!/bin/bash
-    apt-get update
-    apt-get install -y docker.io docker-compose
-    git clone https://github.com/Ghostmonday/Synapse
-    cd Sinapse
-    docker-compose up -d
-  EOF
-
-  tags = {
-    Name = "Sinapse Enterprise"
-  }
-}
+**Quick Start**:
+```bash
+cd infra/aws
+terraform init
+terraform apply
 ```
+
+See [`infra/aws/README.md`](../infra/aws/README.md) for detailed instructions and configuration options.
 
 ### 4. iOS Configuration
 
