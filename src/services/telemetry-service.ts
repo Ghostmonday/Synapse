@@ -574,6 +574,37 @@ export async function logAIFlag(
 }
 
 // ===============================================
+// MODERATION EVENTS
+// ===============================================
+
+/**
+ * Log moderation event (scan, warning, mute)
+ */
+export async function logModerationEvent(
+  event: 'scan_toxic' | 'warning_sent' | 'mute_applied',
+  userId: string,
+  roomId: string,
+  metadata: {
+    score?: number;
+    suggestion?: string;
+    violationCount?: number;
+    mutedUntil?: string;
+  } = {}
+): Promise<void> {
+  await logTelemetryEvent(`moderation_${event}`, {
+    userId,
+    roomId,
+    metadata: {
+      ...metadata,
+      timestamp: new Date().toISOString(),
+    },
+  });
+
+  // Also increment Prometheus metric specifically for moderation
+  telemetryEventCounter.inc({ event: `moderation_${event}` });
+}
+
+// ===============================================
 // BATCH LOGGING (for performance)
 // ===============================================
 
