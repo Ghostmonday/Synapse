@@ -115,11 +115,13 @@ Sinapse/
 
 ### iOS App
 - Modern SwiftUI interface with golden synapse theme
-- Animated launch screen
+- Instant app launch with auth-bound onboarding
+- Animated launch screen with smooth transitions
 - Dashboard with real-time metrics
 - Telemetry and analytics integration
 - Accessibility support
 - Dark mode support
+- Zero artificial delays - feels instant and responsive
 
 ### Data Management
 - Encrypted API key vault
@@ -275,7 +277,14 @@ See `legacy/LICENSE` for license information.
 
 ## Recent Updates
 
-### iOS App Improvements (Latest)
+### Performance Optimizations (Latest)
+- **Instant App Launch**: Removed all artificial delays - app feels instant and responsive
+- **Auth-Bound Onboarding**: OnboardingView now binds to auth state for instant transition when logged in
+- **Zero Loading Delays**: Removed 0.3s-0.5s artificial delays in RoomListView, DashboardView, HomeView, and PricingSheet
+- **Faster Animations**: Reduced animation delays from 0.2s to 0.1s for snappier feel
+- **Legacy Cleanup**: Removed old LaunchView.swift and legacy/LICENSE file
+
+### iOS App Improvements
 - **Modern Launch Screen**: Redesigned onboarding with animated golden glow effects
 - **Telemetry Integration**: Enabled emotion pulse monitoring and UX telemetry logging
 - **Build Cleanup**: Removed build artifacts from git tracking for cleaner repository
