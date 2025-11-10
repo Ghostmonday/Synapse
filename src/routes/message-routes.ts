@@ -37,13 +37,15 @@ router.post('/send', async (req, res, next) => {
 });
 
 /**
- * GET /messaging/:roomId
+ * GET /messaging/:roomId?since=ISO8601_TIMESTAMP
  * Retrieve recent messages from a room
+ * @param since - Optional ISO8601 timestamp to fetch messages after this time (lazy loading)
  */
 router.get('/:roomId', async (req, res, next) => {
   try {
     telemetryHook('messaging_get_start');
-    const messages = await messageService.getRoomMessages(req.params.roomId); // No timeout - can hang if DB slow
+    const since = req.query.since as string | undefined;
+    const messages = await messageService.getRoomMessages(req.params.roomId, since); // No timeout - can hang if DB slow
     telemetryHook('messaging_get_end');
     res.json(messages);
   } catch (error) {

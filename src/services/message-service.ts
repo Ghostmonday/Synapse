@@ -102,14 +102,29 @@ export async function sendMessageToRoom(data: {
 /**
  * Retrieve recent messages from a room
  * Returns up to 50 most recent messages, ordered by timestamp (newest first)
+ * @param since - Optional ISO8601 timestamp string to fetch messages after this time (lazy loading)
  */
-export async function getRoomMessages(roomId: string | number): Promise<any[]> {
+export async function getRoomMessages(roomId: string | number, since?: string): Promise<any[]> {
   try {
+    // Build filter with room_id
+    const filter: any = { room_id: roomId };
+    
+    // Add timestamp filter if since parameter provided (lazy loading optimization)
+    if (since) {
+      try {
+        const sinceDate = new Date(since);
+        filter.ts = { gte: sinceDate.toISOString() }; // Greater than or equal to since timestamp
+      } catch (e) {
+        // Invalid date format - ignore since parameter
+        logWarning('Invalid since parameter format, ignoring', { since });
+      }
+    }
+    
     // Query messages table with filters and ordering
     // ascending: false = newest first (most recent at top)
     // limit: 50 = reasonable page size for initial load (can paginate for more)
     const messages = await findMany('messages', {
-      filter: { room_id: roomId }, // Only messages from this room
+      filter,
       orderBy: { column: 'ts', ascending: false }, // 'ts' = timestamp column, newest first
       limit: 50 // Max 50 messages per request (prevents large payloads)
     });
