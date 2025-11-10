@@ -3,20 +3,21 @@
  * Handles Apple Sign-In verification, username/password login, and JWT token generation
  */
 
-import appleSignin from 'apple-signin-auth';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { findOne, upsert, create } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { verifyAppleTokenWithJWKS } from './apple-jwks-verifier.js';
 
 // LiveKit token generation helper (optional - requires @livekit/server-sdk package)
-async function createLiveKitToken(userId: string): Promise<string> {
+async function createLiveKitToken(userId: string, roomId?: string): Promise<string> {
   try {
     const livekitModule = await import('@livekit/server-sdk') as { TokenGenerator?: new (apiKey: string, apiSecret: string) => { createToken: (grants: unknown, options: unknown) => string } };
     const TokenGenerator = livekitModule.TokenGenerator;
     if (TokenGenerator && process.env.LIVEKIT_API_KEY && process.env.LIVEKIT_API_SECRET) {
       const tokenGenerator = new TokenGenerator(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
-      return tokenGenerator.createToken({ video: { roomJoin: true, room: 'default' } }, { identity: userId });
+      const room = roomId || 'default';
+      return tokenGenerator.createToken({ video: { roomJoin: true, room } }, { identity: userId });
     }
   } catch {
     logInfo('LiveKit SDK not available - video token generation disabled');
@@ -25,7 +26,7 @@ async function createLiveKitToken(userId: string): Promise<string> {
 }
 
 /**
- * Verify Apple ID token and create user session
+ * Verify Apple ID token using Apple's JWKS and create user session
  * Returns JWT token and LiveKit room token
  */
 export async function verifyAppleSignInToken(token: string): Promise<{ jwt: string; livekitToken: string }> {
@@ -34,12 +35,10 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
       throw new Error('Apple authentication token is required');
     }
 
-    // Verify Apple ID token
-    const payload = await appleSignin.verifyIdToken(token, { // No timeout - can hang if Apple API slow
-      audience: process.env.APPLE_APP_BUNDLE || 'com.your.app'
-    });
+    // Verify Apple ID token using JWKS
+    const payload = await verifyAppleTokenWithJWKS(token);
     
-    const appleUserId = (payload as { sub: string }).sub;
+    const appleUserId = payload.sub;
 
     // Create or update user record
     try {

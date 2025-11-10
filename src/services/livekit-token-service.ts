@@ -1,0 +1,56 @@
+/**
+ * LiveKit Token Service
+ * Generates tokens for room calls with proper roles
+ */
+
+import { AccessToken } from '@livekit/server-sdk';
+import { logError, logInfo } from '../shared/logger.js';
+
+/**
+ * Generate LiveKit token for a room
+ * @param userId - User ID
+ * @param roomId - Room ID (used as room name)
+ * @param role - Participant role: 'admin' or 'guest'
+ * @returns JWT token string
+ */
+export async function generateLiveKitToken(
+  userId: string,
+  roomId: string,
+  role: 'admin' | 'guest' = 'guest'
+): Promise<string> {
+  try {
+    const apiKey = process.env.LIVEKIT_API_KEY;
+    const apiSecret = process.env.LIVEKIT_API_SECRET;
+
+    if (!apiKey || !apiSecret) {
+      logError('LiveKit credentials not configured');
+      return '';
+    }
+
+    const token = new AccessToken(apiKey, apiSecret, {
+      identity: userId,
+      ttl: 2 * 60 * 60, // 2 hours
+    });
+
+    // Grant permissions based on role
+    const canPublish = role === 'admin';
+    const canSubscribe = true;
+    const canPublishData = true;
+
+    token.addGrant({
+      roomJoin: true,
+      room: roomId,
+      canPublish,
+      canSubscribe,
+      canPublishData,
+    });
+
+    const jwt = token.toJwt();
+    logInfo(`LiveKit token generated for user ${userId} in room ${roomId} as ${role}`);
+    return jwt;
+  } catch (error) {
+    logError('Failed to generate LiveKit token', error instanceof Error ? error : new Error(String(error)));
+    return '';
+  }
+}
+

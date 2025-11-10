@@ -5,12 +5,75 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.38.1";
-import { AccessToken } from "https://esm.sh/livekit-server-sdk@2.2.3";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "https://sinapse.app",
   "Access-Control-Allow-Headers": "authorization, content-type",
 };
+
+// Manual LiveKit JWT token generation
+async function generateLiveKitToken(
+  apiKey: string,
+  apiSecret: string,
+  identity: string,
+  name: string,
+  room: string
+): Promise<string> {
+  const header = {
+    alg: "HS256",
+    typ: "JWT",
+  };
+
+  const now = Math.floor(Date.now() / 1000);
+  const payload = {
+    iss: apiKey,
+    sub: identity,
+    iat: now,
+    exp: now + 3600, // 1 hour
+    video: {
+      room: room,
+      roomJoin: true,
+      canPublish: true,
+      canSubscribe: true,
+    },
+    name: name,
+  };
+
+  // Encode header and payload
+  const encodeBase64Url = (data: Uint8Array): string => {
+    return btoa(String.fromCharCode(...data))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=/g, "");
+  };
+
+  const headerEncoded = encodeBase64Url(
+    new TextEncoder().encode(JSON.stringify(header))
+  );
+  const payloadEncoded = encodeBase64Url(
+    new TextEncoder().encode(JSON.stringify(payload))
+  );
+
+  // Create signature
+  const signatureInput = `${headerEncoded}.${payloadEncoded}`;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(apiSecret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    key,
+    new TextEncoder().encode(signatureInput)
+  );
+
+  const signatureEncoded = encodeBase64Url(new Uint8Array(signature));
+
+  return `${headerEncoded}.${payloadEncoded}.${signatureEncoded}`;
+}
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -101,19 +164,13 @@ serve(async (req) => {
       );
     }
 
-    const at = new AccessToken(livekitApiKey, livekitApiSecret, {
-      identity: user.id,
-      name: participantName,
-    });
-
-    at.addGrant({
-      room: roomId,
-      roomJoin: true,
-      canPublish: true,
-      canSubscribe: true,
-    });
-
-    const livekitToken = await at.toJwt();
+    const livekitToken = await generateLiveKitToken(
+      livekitApiKey,
+      livekitApiSecret,
+      user.id,
+      participantName,
+      roomId
+    );
 
     return new Response(
       JSON.stringify({
@@ -129,4 +186,3 @@ serve(async (req) => {
     );
   }
 });
-

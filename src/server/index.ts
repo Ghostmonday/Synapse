@@ -34,6 +34,7 @@ import searchRoutes from '../routes/search-routes.js';
 import threadsRoutes from '../routes/threads-routes.js';
 import uxTelemetryRoutes from '../routes/ux-telemetry-routes.js';
 import chatRoomConfigRoutes from '../routes/chat-room-config-routes.js';
+import roomRoutes from '../routes/room-routes.js';
 import { telemetryMiddleware } from './middleware/telemetry.js';
 import { errorMiddleware } from './middleware/error.js';
 import { rateLimit, ipRateLimit } from '../middleware/rate-limiter.js';
@@ -112,6 +113,7 @@ app.use('/api/search', searchRoutes);
 app.use('/api/threads', threadsRoutes);
 app.use('/api/ux-telemetry', uxTelemetryRoutes); // UX Telemetry (separate from system telemetry)
 app.use('/chat_rooms', chatRoomConfigRoutes); // Room configuration endpoints
+app.use('/', roomRoutes); // Room creation and join endpoints (POST /chat-rooms, POST /chat-rooms/:id/join)
 app.use(healthRoutes); // Mount health routes at root level
 
 // Metrics endpoint
@@ -249,6 +251,14 @@ app.get('/debug/stats', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   logInfo(`Server running on port ${PORT}`);
+});
+
+// Initialize Sin AI worker
+import('../workers/sin-worker.js').then(({ startSinWorker }) => {
+  startSinWorker();
+  logInfo('Sin AI worker started');
+}).catch((error) => {
+  logInfo('Sin worker not available', error);
 });
 
 // Initialize AI schedulers (if enabled)

@@ -114,12 +114,13 @@ struct RoomListView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showCreateSheet) {
-                CreateRoomSheet(onRoomCreated: { newRoom in
-                    rooms.append(newRoom)
-                    showCreateSheet = false
-                })
-            }
+            // TODO: Add CreateRoomSheet.swift to Xcode project target
+            // .sheet(isPresented: $showCreateSheet) {
+            //     CreateRoomSheet(onRoomCreated: { newRoom in
+            //         rooms.append(newRoom)
+            //         showCreateSheet = false
+            //     })
+            // }
             .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isLoading)
             .animation(.spring(response: 0.4, dampingFraction: 0.8), value: rooms.isEmpty)
         }
