@@ -138,9 +138,6 @@ struct RoomListView: View {
     private func loadRooms() async {
         isLoading = true
         
-        // Simulate loading delay
-        try? await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
-        
         do {
             rooms = try await RoomService.fetchRooms()
         } catch {

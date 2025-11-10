@@ -5,6 +5,11 @@ struct OnboardingView: View {
     @State private var showContent = false
     @State private var pulseAnimation = false
     
+    // Check auth state - if already logged in, skip onboarding instantly
+    private var isAuthenticated: Bool {
+        AuthTokenManager.shared.token != nil
+    }
+    
     var body: some View {
         ZStack {
             // Modern gradient background with golden synapse theme
@@ -133,11 +138,26 @@ struct OnboardingView: View {
             }
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.8).delay(0.2)) {
+            // If already authenticated, skip onboarding instantly
+            if isAuthenticated {
+                hasCompletedOnboarding = true
+                return
+            }
+            
+            // Otherwise show content with minimal delay
+            withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
                 showContent = true
             }
-            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true).delay(0.5)) {
+            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true).delay(0.3)) {
                 pulseAnimation = true
+            }
+        }
+        .onChange(of: isAuthenticated) { authenticated in
+            // Snap off instantly when auth state changes
+            if authenticated {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    hasCompletedOnboarding = true
+                }
             }
         }
     }

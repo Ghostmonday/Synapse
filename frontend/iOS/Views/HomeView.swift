@@ -41,7 +41,7 @@ struct HomeView: View {
     private func pullLatestRooms() async {
         isLoading = true
         // TODO: Fetch rooms from API
-        try? await Task.sleep(nanoseconds: 500_000_000)
+        // Removed artificial delay - load instantly
         isLoading = false
     }
     

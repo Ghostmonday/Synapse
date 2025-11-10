@@ -185,9 +185,6 @@ struct DashboardView: View {
     private func loadMetrics() async {
         isLoading = true
         
-        // Simulate loading delay for better UX
-        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
-        
         // Load rooms
         do {
             rooms = try await RoomService.fetchRooms()

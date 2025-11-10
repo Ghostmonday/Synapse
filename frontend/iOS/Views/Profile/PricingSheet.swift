@@ -96,9 +96,8 @@ struct PricingSheet: View {
         
         isPurchasing = false
         
-        // Dismiss sheet after successful purchase
+        // Dismiss sheet after successful purchase - instant feedback
         if subscriptionManager.currentTier == tier {
-            try? await Task.sleep(nanoseconds: 500_000_000) // 0.5s delay
             isPresented = false
         }
     }
