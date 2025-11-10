@@ -83,7 +83,6 @@
 		E8815F90453F3535B1B00ED1 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3101C4CB8B4E3BCC8F81BB4B /* Message.swift */; };
 		EB9881465CB1D21AA52F132C /* EmojiPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD344E33900D51AF48094A5 /* EmojiPickerView.swift */; };
 		EE76B7357315F6F9E21CCADD /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0992E747737CA1FEA99621EE /* DashboardView.swift */; };
-		F24B5007F9A6A43F668B0CD0 /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73932BF7BAAEB8F56704A910 /* LaunchView.swift */; };
 		FDD73A44220AB0FD11612E4E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6829671CDDD5591FC744CD /* MainTabView.swift */; };
 		FFFCAB553B2C5C5757E4074E /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26609E8679DE6D519E524F41 /* APIClient.swift */; };
 /* End PBXBuildFile section */
@@ -133,7 +132,6 @@
 		67E67CEADDF50FCAEE1D29AA /* PresenceModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenceModifier.swift; sourceTree = "<group>"; };
 		6E70900A38C9C0200E6C19C3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		730BB1926C583E8E19417286 /* VoiceRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRoomView.swift; sourceTree = "<group>"; };
-		73932BF7BAAEB8F56704A910 /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		73DBE88AE9B0C4F81A7A724E /* SystemMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMonitor.swift; sourceTree = "<group>"; };
 		79CBD9B2962D1484037D3BAD /* AmbientParticles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientParticles.swift; sourceTree = "<group>"; };
 		79D618D840F08568D9251900 /* DeepSeekClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepSeekClient.swift; sourceTree = "<group>"; };
@@ -287,7 +285,6 @@
 				32C9231BD88CA86A5C63C0AF /* ChatInputView.swift */,
 				C6B4857C2232E9B345D7CD5D /* ChatView.swift */,
 				0992E747737CA1FEA99621EE /* DashboardView.swift */,
-				73932BF7BAAEB8F56704A910 /* LaunchView.swift */,
 				2E6829671CDDD5591FC744CD /* MainTabView.swift */,
 				A95A05E59151B18214FE6E63 /* MessageBubbleView.swift */,
 				B636D99E62873018BCA669E4 /* OnboardingView.swift */,
@@ -498,7 +495,6 @@
 				89C8DBDB0313786B72377FA0 /* IAPReceipt.swift in Sources */,
 				00009671F1822AB9B6EEA80A /* IAPService.swift in Sources */,
 				E510D1729C27022EE6F0B6E6 /* InputStateModifier.swift in Sources */,
-				F24B5007F9A6A43F668B0CD0 /* LaunchView.swift in Sources */,
 				2374500CBAD21CB462258C6D /* LiveKitRoomManager.swift in Sources */,
 				285D3CE20C70B65ECDF2BC2E /* LoadingSpinner.swift in Sources */,
 				FDD73A44220AB0FD11612E4E /* MainTabView.swift in Sources */,
