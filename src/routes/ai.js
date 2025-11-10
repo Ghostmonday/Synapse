@@ -6,12 +6,13 @@ import { Router } from 'express';
 import { logError } from '../shared/logger.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { checkUsageLimit, trackUsage } from '../services/usage-service.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = Router();
 
-router.post('/chat', authMiddleware, async (req, res) => {
+router.post('/chat', authMiddleware, async (req: AuthenticatedRequest, res) => {
   try {
-    const userId = (req as any).user?.userId;
+    const userId = req.user.userId;
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -37,8 +38,29 @@ router.post('/chat', authMiddleware, async (req, res) => {
     // Track usage BEFORE processing
     await trackUsage(userId, 'ai_message', 1, { roomId });
 
-    // TODO: Integrate with OpenAI/DeepSeek API for actual AI responses
-    const aiResponse = `AI response to: ${message}`; // Placeholder
+    // Integrate with DeepSeek API for AI responses
+    const { getDeepSeekKey } = await import('../services/api-keys-service.js');
+    const { invokeLLM } = await import('../services/llm-service.js');
+    
+    let aiResponse: string;
+    try {
+      const deepseekKey = await getDeepSeekKey();
+      if (!deepseekKey) {
+        throw new Error('DeepSeek API key not configured');
+      }
+      
+      // Use DeepSeek for AI responses
+      const responseStream = await invokeLLM('deepseek-chat', message, 0.7);
+      const chunks: string[] = [];
+      for await (const chunk of responseStream) {
+        chunks.push(chunk);
+      }
+      aiResponse = chunks.join('');
+    } catch (error) {
+      logError('AI chat LLM error', error instanceof Error ? error : new Error(String(error)));
+      // Fallback response if LLM fails
+      aiResponse = 'I apologize, but I\'m having trouble processing your request right now. Please try again.';
+    }
 
     res.json({ 
       status: 'ok',
@@ -50,8 +72,12 @@ router.post('/chat', authMiddleware, async (req, res) => {
       }
     });
   } catch (err: unknown) {
-    logError('AI chat error', err instanceof Error ? err : new Error(String(err)));
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) || 'Server error' });
+    // Log full error details server-side only
+    const error = err instanceof Error ? err : new Error(String(err));
+    logError('AI chat error', error);
+    
+    // SECURITY: Never expose error details to clients
+    res.status(500).json({ error: 'Something broke on our end. We\'ve been notified and are looking into it.' });
   }
 });
 

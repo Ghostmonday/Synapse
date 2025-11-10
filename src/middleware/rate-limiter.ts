@@ -3,16 +3,18 @@
  * Implements token bucket algorithm for API rate limiting and DDoS protection
  */
 
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { getRedisClient } from '../config/db.js';
 import { logWarning } from '../shared/logger.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
+import * as Sentry from '@sentry/node';
 
 const redis = getRedisClient();
 
 export interface RateLimitOptions {
   windowMs: number; // Time window in milliseconds
   max: number; // Maximum requests per window
-  keyGenerator?: (req: Request) => string; // Custom key generator
+  keyGenerator?: (req: AuthenticatedRequest) => string; // Custom key generator
   skipSuccessfulRequests?: boolean; // Don't count successful requests
   skipFailedRequests?: boolean; // Don't count failed requests
   message?: string; // Custom error message
@@ -21,9 +23,9 @@ export interface RateLimitOptions {
 const defaultOptions: RateLimitOptions = {
   windowMs: 60000, // 1 minute
   max: 100, // 100 requests per minute
-  keyGenerator: (req: Request) => {
+  keyGenerator: (req: AuthenticatedRequest) => {
     // Use IP address or user ID if authenticated
-    return (req as any).user?.id || req.ip || 'unknown';
+    return req.user?.userId || req.ip || 'unknown';
   },
   message: 'Too many requests, please try again later.',
 };
@@ -36,7 +38,7 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
   const windowMs = opts.windowMs;
   const max = opts.max;
 
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
       // Generate unique key for this client (IP or user ID)
       // Format: "rate_limit:{identifier}" - used as Redis sorted set key
@@ -50,7 +52,7 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
       // Step 1: Remove old entries outside the time window
       // zremrangebyscore removes entries with scores (timestamps) < (now - windowMs)
       // This keeps only requests within the current window
-      pipeline.zremrangebyscore(key, 0, now - windowMs); // Race: entries can expire between zrem and zcard
+      pipeline.zremrangebyscore(key, 0, now - windowMs);
       
       // Step 2: Count remaining requests in the window
       // zcard returns count of entries in sorted set (requests in current window)
@@ -59,14 +61,24 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
       // Step 3: Add current request to the window
       // Score = timestamp (for sorting/expiration)
       // Value = unique identifier (timestamp + random to prevent collisions)
-      pipeline.zadd(key, now, `${now}-${Math.random()}`); // Collision risk: Math.random() not cryptographically secure
+      pipeline.zadd(key, now, `${now}-${Math.random()}`);
       
       // Step 4: Set expiration on the key (cleanup if no requests for a while)
       // Expire after windowMs (convert to seconds for Redis EXPIRE command)
-      pipeline.expire(key, Math.ceil(windowMs / 1000)); // Gotcha: EXPIRE resets TTL even if key already exists
+      pipeline.expire(key, Math.ceil(windowMs / 1000));
       
       // Execute all pipeline commands atomically
-      const results = await pipeline.exec(); // Silent fail: if Redis down, pipeline fails but request allowed (fail-open)
+      const results = await pipeline.exec();
+      
+      // Add Sentry breadcrumb for monitoring
+      if (!results) {
+        Sentry.addBreadcrumb({
+          message: 'Redis pipeline failed in rate limiter',
+          level: 'warning',
+          data: { key }
+        });
+      }
+      
       // Extract count from pipeline results: results[1] is zcard result, [1] is the count value
       const count = results?.[1]?.[1] as number || 0;
 
@@ -87,11 +99,28 @@ export function rateLimit(options: Partial<RateLimitOptions> = {}) {
 
       // Request allowed - continue to next middleware/route handler
       next();
-    } catch (error: any) {
+    } catch (error: unknown) {
       // If Redis fails, fail open (allow request) rather than fail closed (block all)
       // This prevents Redis outages from taking down the entire API
       // Log error for monitoring but don't block legitimate users
-      logWarning('Rate limiter Redis error, allowing request', error);
+      const err = error instanceof Error ? error : new Error(String(error));
+      logWarning('Rate limiter Redis error, allowing request', err);
+      
+      // Add Sentry breadcrumb for monitoring silent failures
+      Sentry.addBreadcrumb({
+        message: 'Rate limiter Redis error - failing open',
+        level: 'warning',
+        data: { 
+          error: err.message,
+          key: opts.keyGenerator!(req)
+        }
+      });
+      
+      // Report to Sentry but don't block request
+      Sentry.captureException(err, {
+        tags: { component: 'rate-limiter', failOpen: 'true' }
+      });
+      
       next(); // Allow request to proceed
     }
   };
@@ -115,8 +144,8 @@ export function userRateLimit(max: number, windowMs: number = 60000) {
   return rateLimit({
     max,
     windowMs,
-    keyGenerator: (req: Request) => {
-      const userId = (req as any).user?.id;
+    keyGenerator: (req: AuthenticatedRequest) => {
+      const userId = req.user?.userId;
       if (!userId) {
         throw new Error('User rate limit requires authentication');
       }
@@ -132,7 +161,7 @@ export function ipRateLimit(max: number = 1000, windowMs: number = 60000) {
   return rateLimit({
     max,
     windowMs,
-    keyGenerator: (req: Request) => {
+    keyGenerator: (req: AuthenticatedRequest) => {
       return `ip:${req.ip || req.socket.remoteAddress || 'unknown'}`;
     },
     message: 'Too many requests from this IP address.',

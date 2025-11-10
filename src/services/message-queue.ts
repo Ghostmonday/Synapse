@@ -12,6 +12,8 @@ const redisClient = getRedisClient();
 
 // Create message queue with rate limiting
 // Bull uses Redis URL directly or connection object
+// VAULT NOT FEASIBLE: Performance blocker - Redis needed synchronously at startup
+// TODO: Move to vault when async initialization performance allows
 const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 
 // Create Bull queue instance for reliable message processing

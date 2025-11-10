@@ -49,7 +49,7 @@ export function validateStringLength(field: string, maxLength: number, minLength
 export function sanitizeInput(req: Request, res: Response, next: NextFunction) {
   try {
     // Recursively sanitize string fields
-    const sanitize = (obj: any): any => {
+    const sanitize = (obj: unknown): unknown => {
       if (typeof obj === 'string') {
         // Remove null bytes and trim
         return obj.replace(/\0/g, '').trim();
@@ -58,7 +58,7 @@ export function sanitizeInput(req: Request, res: Response, next: NextFunction) {
         return obj.map(sanitize);
       }
       if (obj && typeof obj === 'object') {
-        const sanitized: any = {};
+        const sanitized: Record<string, unknown> = {};
         for (const [key, value] of Object.entries(obj)) {
           sanitized[key] = sanitize(value);
         }
@@ -68,11 +68,12 @@ export function sanitizeInput(req: Request, res: Response, next: NextFunction) {
     };
 
     if (req.body) {
-      req.body = sanitize(req.body);
+      req.body = sanitize(req.body) as typeof req.body;
     }
     next();
-  } catch (error: any) {
-    logError('Input sanitization error', error);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError('Input sanitization error', err);
     res.status(400).json({ error: 'Invalid input format' });
   }
 }

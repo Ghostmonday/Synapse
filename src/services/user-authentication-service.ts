@@ -160,9 +160,10 @@ export async function registerUser(
       subscription: 'free'
     });
 
-    const jwtSecret = process.env.JWT_SECRET;
+    // Get JWT secret from vault
+    const jwtSecret = await getJwtSecret();
     if (!jwtSecret) {
-      throw new Error('JWT_SECRET environment variable is required');
+      throw new Error('JWT_SECRET not found in vault');
     }
 
     const applicationToken = jwt.sign(

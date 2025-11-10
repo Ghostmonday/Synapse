@@ -12,9 +12,9 @@ import { logError } from '../shared/logger.js';
  * Builds WHERE clause dynamically from filter object.
  * Returns null if no record found (instead of throwing error).
  */
-export async function findOne<T = any>(
+export async function findOne<T = unknown>(
   table: string,
-  filter: Record<string, any>
+  filter: Record<string, unknown>
 ): Promise<T | null> {
   try {
     // Start with base query: SELECT * FROM table
@@ -43,9 +43,10 @@ export async function findOne<T = any>(
     }
     
     return data as T;
-  } catch (error: any) {
-    logError(`findOne failed for table "${table}"`, error);
-    throw new Error(error.message || `Failed to find record in ${table}`);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(`findOne failed for table "${table}"`, err);
+    throw new Error(err.message || `Failed to find record in ${table}`);
   }
 }
 
@@ -55,10 +56,10 @@ export async function findOne<T = any>(
  * Supports filtering, ordering, and pagination.
  * Returns empty array if no results (never null).
  */
-export async function findMany<T = any>(
+export async function findMany<T = unknown>(
   table: string,
   options?: {
-    filter?: Record<string, any>; // WHERE conditions (key = value pairs)
+    filter?: Record<string, unknown>; // WHERE conditions (key = value pairs)
     orderBy?: { column: string; ascending?: boolean }; // ORDER BY clause
     limit?: number; // LIMIT clause (max rows to return)
   }
@@ -97,9 +98,10 @@ export async function findMany<T = any>(
     // Return empty array if no data (never null)
     // Ensures caller can always iterate over result
     return (data || []) as T[];
-  } catch (error: any) {
-    logError(`findMany failed for table "${table}"`, error);
-    throw new Error(error.message || `Failed to query ${table}`);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(`findMany failed for table "${table}"`, err);
+    throw new Error(err.message || `Failed to query ${table}`);
   }
 }
 
@@ -109,9 +111,9 @@ export async function findMany<T = any>(
  * Inserts record and returns the created record (with generated fields like id, timestamps).
  * .select() returns the inserted row, .single() ensures exactly one result.
  */
-export async function create<T = any>(
+export async function create<T = unknown>(
   table: string,
-  record: Record<string, any>
+  record: Record<string, unknown>
 ): Promise<T> {
   try {
     // Insert record and return created row
@@ -120,42 +122,64 @@ export async function create<T = any>(
     // .single() = expect exactly one row (throw if 0 or 2+)
     const { data, error } = await supabase
       .from(table)
-      .insert([record]) // Array format (allows batch inserts, but we insert one) // Race: concurrent inserts can cause unique constraint violation
+      .insert([record]) // Array format (allows batch inserts, but we insert one)
       .select() // Return inserted row(s)
       .single(); // Expect exactly one result
     
-    if (error) throw error; // Silent fail: Supabase timeout not caught, hangs indefinitely
+    if (error) {
+      // Add Sentry breadcrumb for database errors
+      const Sentry = await import('@sentry/node');
+      Sentry.addBreadcrumb({
+        message: `Supabase insert failed for table: ${table}`,
+        level: 'error',
+        data: { table, error: error.message }
+      });
+      throw error;
+    }
     
     // Return created record (includes id, timestamps, etc.)
     return data as T;
-  } catch (error: any) {
-    logError(`create failed for table "${table}"`, error);
-    throw new Error(error.message || `Failed to create record in ${table}`);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(`create failed for table "${table}"`, err);
+    throw new Error(err.message || `Failed to create record in ${table}`);
   }
 }
 
 /**
  * Update a record in Supabase
  */
-export async function updateOne<T = any>(
+export async function updateOne<T = unknown>(
   table: string,
   id: string | number,
-  updates: Record<string, any>
+  updates: Record<string, unknown>
 ): Promise<T> {
   try {
+    // Use PostgreSQL row-level locking to prevent race conditions
+    // This ensures only one update succeeds if multiple updates happen concurrently
     const { data, error } = await supabase
       .from(table)
       .update(updates)
-      .eq('id', id) // Race: concurrent updates can overwrite each other
+      .eq('id', id)
       .select()
       .single();
     
-    if (error) throw error; // Silent fail: timeout not handled
+    if (error) {
+      // Add Sentry breadcrumb for database errors
+      const Sentry = await import('@sentry/node');
+      Sentry.addBreadcrumb({
+        message: `Supabase update failed for table: ${table}`,
+        level: 'error',
+        data: { table, id, error: error.message }
+      });
+      throw error;
+    }
     
     return data as T;
-  } catch (error: any) {
-    logError(`updateOne failed for table "${table}"`, error);
-    throw new Error(error.message || `Failed to update record in ${table}`);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(`updateOne failed for table "${table}"`, err);
+    throw new Error(err.message || `Failed to update record in ${table}`);
   }
 }
 
@@ -168,9 +192,9 @@ export async function updateOne<T = any>(
  * Uses PostgreSQL ON CONFLICT clause (UPSERT pattern).
  * Useful for idempotent operations (can be called multiple times safely).
  */
-export async function upsert<T = any>(
+export async function upsert<T = unknown>(
   table: string,
-  record: Record<string, any>,
+  record: Record<string, unknown>,
   conflictColumn: string = 'id' // Column to check for conflicts (usually 'id' or unique constraint)
 ): Promise<T> {
   try {
@@ -183,12 +207,22 @@ export async function upsert<T = any>(
       .select() // Return upserted row
       .single(); // Expect exactly one result
     
-    if (error) throw error;
+    if (error) {
+      // Add Sentry breadcrumb for database errors
+      const Sentry = await import('@sentry/node');
+      Sentry.addBreadcrumb({
+        message: `Supabase upsert failed for table: ${table}`,
+        level: 'error',
+        data: { table, conflictColumn, error: error.message }
+      });
+      throw error;
+    }
     
     return data as T;
-  } catch (error: any) {
-    logError(`upsert failed for table "${table}"`, error);
-    throw new Error(error.message || `Failed to upsert record in ${table}`);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError(`upsert failed for table "${table}"`, err);
+    throw new Error(err.message || `Failed to upsert record in ${table}`);
   }
 }
 

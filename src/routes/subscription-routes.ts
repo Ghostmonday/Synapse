@@ -13,13 +13,14 @@ import {
 } from '../services/subscription-service.js';
 import { getUsageCount, checkUsageLimit } from '../services/usage-service.js';
 import { verifyAppleReceipt } from '../services/apple-iap-service.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = Router();
 router.use(authMiddleware);
 
-router.get('/status', async (req, res) => {
+router.get('/status', async (req: AuthenticatedRequest, res) => {
   try {
-    const userId = (req as any).user.userId;
+    const userId = req.user.userId;
     const tier = await getUserSubscription(userId);
     const limits = await getSubscriptionLimits(userId);
     const usage = {

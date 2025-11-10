@@ -3,12 +3,13 @@
  * Handles file upload, retrieval, and deletion endpoints
  */
 
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import multer from 'multer';
 import * as fileStorageService from '../services/file-storage-service.js';
 import { telemetryHook } from '../telemetry/index.js';
 import { fileUploadSecurity } from '../middleware/file-upload-security.js';
 import { authMiddleware } from '../server/middleware/auth.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max (enforced by middleware)
 const router = Router();
@@ -18,13 +19,12 @@ const router = Router();
  * Upload a file to S3 and store metadata
  * Supports voice hash encoding for audio files
  */
-router.post('/upload', authMiddleware, fileUploadSecurity, upload.single('file'), async (req: Request, res: Response, next) => {
+router.post('/upload', authMiddleware, fileUploadSecurity, upload.single('file'), async (req: AuthenticatedRequest, res: Response, next) => {
   try {
     telemetryHook('files_upload_start');
     
     // Extract user ID from authenticated request
-    const user = (req as any).user;
-    const userId = user?.id;
+    const userId = req.user?.userId;
     
     // Check if voice hash should be enabled (default: true for audio files)
     const enableVoiceHash = req.body.enableVoiceHash !== 'false';

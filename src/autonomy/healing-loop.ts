@@ -12,6 +12,7 @@ import { Executor } from './executor.js';
 import { PolicyGuard } from './policy_guard.js';
 import { TelemetryEvent } from './types.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { getDeepSeekKey, getOpenAIKey } from '../services/api-keys-service.js';
 
 // Redis client for state management and dynamic control
 const redisClient = getRedisClient();
@@ -124,7 +125,20 @@ async function processTelemetryEvents(events: TelemetryEvent[]): Promise<void> {
   // LLMReasoner: Uses GPT-4/DeepSeek to analyze telemetry and suggest fixes
   // Executor: Runs approved shell commands/scripts
   // PolicyGuard: Validates actions against safety policies
-  const reasoner = new LLMReasoner(process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || '');
+  let reasoner: LLMReasoner;
+  try {
+    // Try DeepSeek first, fallback to OpenAI
+    const apiKey = await getDeepSeekKey();
+    reasoner = new LLMReasoner(apiKey);
+  } catch {
+    try {
+      const apiKey = await getOpenAIKey();
+      reasoner = new LLMReasoner(apiKey);
+    } catch {
+      logError('No LLM API key available in vault', new Error('LLM key missing'));
+      return;
+    }
+  }
   const executor = new Executor();
   const guard = new PolicyGuard();
 

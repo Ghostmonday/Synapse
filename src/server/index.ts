@@ -35,11 +35,21 @@ import threadsRoutes from '../routes/threads-routes.js';
 import uxTelemetryRoutes from '../routes/ux-telemetry-routes.js';
 import chatRoomConfigRoutes from '../routes/chat-room-config-routes.js';
 import roomRoutes from '../routes/room-routes.js';
+import aiLogRoutes from '../routes/ai-log-routes.js';
+import readReceiptsRoutes from '../routes/read-receipts-routes.js';
+import pollsRoutes from '../routes/polls-routes.js';
+import nicknamesRoutes from '../routes/nicknames-routes.js';
+import pinnedRoutes from '../routes/pinned-routes.js';
+import bandwidthRoutes from '../routes/bandwidth-routes.js';
+import botInvitesRoutes from '../routes/bot-invites-routes.js';
 import { telemetryMiddleware } from './middleware/telemetry.js';
 import { errorMiddleware } from './middleware/error.js';
 import { rateLimit, ipRateLimit } from '../middleware/rate-limiter.js';
+import { sanitizeInput } from '../middleware/input-validation.js';
+import { fileUploadSecurity } from '../middleware/file-upload-security.js';
 import helmet from 'helmet';
 import { logInfo } from '../shared/logger.js';
+import { LIMIT_REQUESTS_PER_MIN } from './utils/config.js';
 
 dotenv.config();
 
@@ -86,11 +96,12 @@ app.use(helmet({
 }));
 
 // Rate limiting - IP-based DDoS protection
-app.use(ipRateLimit(1000, 60000)); // 1000 requests per minute per IP
+app.use(ipRateLimit(LIMIT_REQUESTS_PER_MIN, 60000));
 
 // Middleware
 app.use(express.json({ limit: '10mb' })); // Limit request size
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(sanitizeInput); // SECURITY: Sanitize all input before processing
 app.use(telemetryMiddleware);
 
 // Routes
@@ -112,6 +123,13 @@ app.use('/api/reactions', reactionsRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/threads', threadsRoutes);
 app.use('/api/ux-telemetry', uxTelemetryRoutes); // UX Telemetry (separate from system telemetry)
+app.use('/api/ai-logs', aiLogRoutes); // AI log classification and routing
+app.use('/api/read-receipts', readReceiptsRoutes); // Read receipts endpoints
+app.use('/api/polls', pollsRoutes); // Polls endpoints
+app.use('/api/nicknames', nicknamesRoutes); // Nicknames endpoints
+app.use('/api/pinned', pinnedRoutes); // Pinned items endpoints
+app.use('/api/bandwidth', bandwidthRoutes); // Bandwidth mode endpoints
+app.use('/api/bot-invites', botInvitesRoutes); // Bot invites endpoints
 app.use('/chat_rooms', chatRoomConfigRoutes); // Room configuration endpoints
 app.use('/', roomRoutes); // Room creation and join endpoints (POST /chat-rooms, POST /chat-rooms/:id/join)
 app.use(healthRoutes); // Mount health routes at root level

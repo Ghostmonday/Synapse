@@ -17,10 +17,29 @@ import { PolicyGuard } from '../autonomy/policy_guard.js';
 import { logInfo, logError, logWarning } from '../shared/logger.js';
 import { safeAIOperation, checkLLMRateLimit, trackTokenSpend, shouldRunAI, isAutomationDisabled } from './ai-safeguards.js';
 import { llmParamManager } from './llm-parameter-manager';
+import { getDeepSeekKey, getOpenAIKey } from './api-keys-service.js';
 
 const redis = getRedisClient();
-const reasoner = new LLMReasoner(process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || '');
+let reasoner: LLMReasoner | null = null;
 const guard = new PolicyGuard();
+
+async function getReasoner(): Promise<LLMReasoner> {
+  if (!reasoner) {
+    // Try DeepSeek first, fallback to OpenAI
+    try {
+      const apiKey = await getDeepSeekKey();
+      reasoner = new LLMReasoner(apiKey);
+    } catch {
+      try {
+        const apiKey = await getOpenAIKey();
+        reasoner = new LLMReasoner(apiKey);
+      } catch {
+        throw new Error('No LLM API key available in vault');
+      }
+    }
+  }
+  return reasoner;
+}
 
 /**
  * 1. Dynamic Rate Limiting
@@ -49,7 +68,8 @@ export async function optimizeRateLimits(): Promise<void> {
     }
 
     // Analyze with LLM (with token tracking)
-    const analysis = await reasoner.analyze({
+    const reasonerInstance = await getReasoner();
+    const analysis = await reasonerInstance.analyze({
       context: {
         events: rateLimitEvents,
         currentLimits: llmParamManager.getAutomation().rateLimits // Get from centralized config

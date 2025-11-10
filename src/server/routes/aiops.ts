@@ -7,14 +7,33 @@ import { LLMReasoner } from '../../autonomy/llm_reasoner.js';
 import { Executor } from '../../autonomy/executor.js';
 import { PolicyGuard } from '../../autonomy/policy_guard.js';
 import { TelemetryCollector } from '../../autonomy/telemetry_collector.js';
+import { getDeepSeekKey, getOpenAIKey } from '../../services/api-keys-service.js';
 import fs from 'fs';
 import path from 'path';
 
 const router = express.Router();
-const reasoner = new LLMReasoner(process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || '');
+let reasoner: LLMReasoner | null = null;
 const executor = new Executor();
 const guard = new PolicyGuard();
 const collector = new TelemetryCollector(process.env.PROMETHEUS_URL || 'http://prometheus:9090');
+
+async function getReasoner(): Promise<LLMReasoner> {
+  if (!reasoner) {
+    // Try DeepSeek first, fallback to OpenAI
+    try {
+      const apiKey = await getDeepSeekKey();
+      reasoner = new LLMReasoner(apiKey);
+    } catch {
+      try {
+        const apiKey = await getOpenAIKey();
+        reasoner = new LLMReasoner(apiKey);
+      } catch {
+        throw new Error('No LLM API key available in vault');
+      }
+    }
+  }
+  return reasoner;
+}
 
 const auditLogFile = path.join(process.cwd(), 'audit.log');
 
@@ -37,7 +56,8 @@ router.post('/controls', async (req, res) => {
   const { action } = req.body; // Optional manual action
   try {
     const telemetry = await collector.collect();
-    const { reasoning, proposedActions } = await reasoner.reason(telemetry);
+    const reasonerInstance = await getReasoner();
+    const { reasoning, proposedActions } = await reasonerInstance.reason(telemetry);
     
     const approvedActions = proposedActions.filter(act => guard.validate(act));
     const results = [];

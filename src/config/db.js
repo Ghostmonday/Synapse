@@ -6,9 +6,12 @@
 import { createClient } from '@supabase/supabase-js';
 import Redis from 'ioredis';
 import { logError, logInfo } from '../shared/logger.js';
+import { getSupabaseKeys, getRedisUrl } from '../services/api-keys-service.js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Initialize with env vars (needed for initial connection to vault)
+// These will be migrated to vault after first connection
+let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+let supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 // Validate environment variables
 if (!supabaseUrl) {
@@ -86,15 +89,19 @@ if (!healthCheckInterval) {
 }
 
 // Singleton Redis client instance (shared across entire application)
-let redisClient = null;
+let redisClient: Redis | null = null;
+let redisClientPromise: Promise<Redis> | null = null;
 
 /**
  * Get or create Redis client instance
  * Uses singleton pattern to ensure only one connection pool is created
+ * NOTE: Redis URL stays in env for now (vault not feasible: performance blocker)
+ * TODO: Move to vault when async initialization performance allows
  */
-export function getRedisClient() {
+export function getRedisClient(): Redis {
   if (!redisClient) {
-    // Get Redis URL from environment or use localhost default
+    // VAULT NOT FEASIBLE: Performance blocker - Redis needed synchronously at startup
+    // This must be available immediately, can't wait for async vault call
     const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
     
     // Create Redis client with retry configuration

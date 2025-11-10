@@ -9,6 +9,7 @@ import protobuf from 'protobufjs';
 import path from 'path';
 import { handlePresence } from './handlers/presence.js';
 import { handleMessaging } from './handlers/messaging.js';
+import { handleReadReceipt } from './handlers/read-receipts.js';
 import { 
   registerWebSocketToRoom, 
   unregisterWebSocket 
@@ -112,6 +113,10 @@ export function setupWebSocketGateway(wss: WebSocketServer) {
         case 'messaging': 
           // Chat messages
           handleMessaging(ws, envelope); 
+          break;
+        case 'read_receipt':
+          // Read receipts (delivered, read, seen)
+          handleReadReceipt(ws, envelope);
           break;
         default: 
           // Unknown message type - send error back to client

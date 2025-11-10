@@ -40,7 +40,7 @@ Respond with JSON only: {"score": 0-1, "isToxic": true/false, "suggestion": "bri
     const { getSupabaseKeys } = await import('./api-keys-service.js');
     const supabaseKeys = await getSupabaseKeys();
     const supabaseUrl = supabaseKeys.url;
-    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY; // Keep this in env for client-side access
+    const supabaseAnonKey = supabaseKeys.anonKey;
     
     // Get JWT token for Supabase auth (from room context or system token)
     // For now, use anon key - in production, use service role or user JWT

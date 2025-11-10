@@ -684,7 +684,7 @@ const joinCall = async () => {
 
     }
 
-    const { token, serverUrl } = await response.json();
+    const { token, serverUrl, ws_url } = await response.json();
 
     await roomManager.joinRoom({
 
@@ -693,6 +693,8 @@ const joinCall = async () => {
       identity: sanitizedUserId,
 
       token,
+
+      host: ws_url || serverUrl, // Host URL from server (retrieved from vault)
 
       audioEnabled: props.initialAudio,
 

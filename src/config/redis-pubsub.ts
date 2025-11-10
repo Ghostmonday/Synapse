@@ -24,6 +24,8 @@ export function getRedisSubscriber(): any {
     // Create separate Redis connection for subscriber
     // Use require() instead of import to avoid TypeScript type conflicts with ioredis
     const Redis = require('ioredis');
+    // VAULT NOT FEASIBLE: Performance blocker - Redis needed synchronously at startup
+    // TODO: Move to vault when async initialization performance allows
     const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
     
     // Create subscriber with same retry strategy as main client

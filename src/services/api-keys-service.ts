@@ -135,11 +135,13 @@ export async function getLiveKitKeys(): Promise<{
 export async function getSupabaseKeys(): Promise<{
   url: string;
   serviceRoleKey: string;
+  anonKey: string;
 }> {
   const keys = await getApiKeysByCategory('supabase');
   return {
     url: keys.NEXT_PUBLIC_SUPABASE_URL || '',
     serviceRoleKey: keys.SUPABASE_SERVICE_ROLE_KEY || '',
+    anonKey: keys.SUPABASE_ANON_KEY || '',
   };
 }
 
@@ -172,6 +174,20 @@ export async function getAwsKeys(): Promise<{
     bucket: keys.AWS_S3_BUCKET || '',
     region: keys.AWS_REGION || '',
   };
+}
+
+export async function getAppleSharedSecret(): Promise<string> {
+  return await getApiKey('APPLE_SHARED_SECRET');
+}
+
+export async function getRedisUrl(): Promise<string> {
+  try {
+    return await getApiKey('REDIS_URL', 'production');
+  } catch {
+    // Fallback: Redis URL can stay in env for local dev (performance blocker for vault)
+    // TODO: Move to vault when performance allows
+    return process.env.REDIS_URL || 'redis://localhost:6379';
+  }
 }
 
 /**

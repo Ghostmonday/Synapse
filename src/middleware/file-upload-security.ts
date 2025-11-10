@@ -96,8 +96,9 @@ export const fileUploadModeration = async (req: Request, res: Response, next: Ne
     }
 
     next();
-  } catch (error: any) {
-    logError('File upload moderation check failed', error);
+  } catch (error: unknown) {
+    const err = error instanceof Error ? error : new Error(String(error));
+    logError('File upload moderation check failed', err);
     // Fail-safe: allow upload if moderation check fails
     next();
   }

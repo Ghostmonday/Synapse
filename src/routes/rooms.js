@@ -19,8 +19,10 @@ const router = Router();
  * Body: { name, is_public?, type?: 'temp' | 'permanent' }
  * Returns: Created room object
  */
+import { AuthenticatedRequest } from '../types/auth.types.js';
+
 router.post('/create', authMiddleware, async (req, res) => {
-  const userId = (req as any).user?.userId;
+  const userId = (req as AuthenticatedRequest).user?.userId;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
   }

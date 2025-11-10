@@ -4,10 +4,11 @@
  * POST /chat-rooms/:id/join - Join room
  */
 
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { createRoom, joinRoom, getRoom } from '../services/room-service.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { logError } from '../shared/logger.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = Router();
 
@@ -17,9 +18,9 @@ const router = Router();
  * Body: { name: string }
  * Requires: Authentication
  */
-router.post('/chat-rooms', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/chat-rooms', authMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = (req as any).user?.userId;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -56,9 +57,9 @@ router.post('/chat-rooms', authMiddleware, async (req: Request, res: Response, n
  * Join a room
  * Requires: Authentication
  */
-router.post('/chat-rooms/:id/join', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/chat-rooms/:id/join', authMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = (req as any).user?.userId;
+    const userId = req.user?.userId;
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
@@ -86,7 +87,7 @@ router.post('/chat-rooms/:id/join', authMiddleware, async (req: Request, res: Re
  * GET /chat-rooms/:id
  * Get room details
  */
-router.get('/chat-rooms/:id', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
+router.get('/chat-rooms/:id', authMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const roomId = req.params.id;
     const room = await getRoom(roomId);

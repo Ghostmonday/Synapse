@@ -12,8 +12,17 @@
 import OpenAI from 'openai';
 import fetch from 'node-fetch';
 import { llmParamManager } from '../services/llm-parameter-manager';
+import { getOpenAIKey } from '../services/api-keys-service.js';
 
-const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' });
+let client: OpenAI | null = null;
+
+async function getClient(): Promise<OpenAI> {
+  if (!client) {
+    const apiKey = await getOpenAIKey();
+    client = new OpenAI({ apiKey });
+  }
+  return client;
+}
 
 async function queryPrometheus() {
   const url = `${process.env.PROMETHEUS_URL}/api/v1/query?query=up`;
@@ -35,7 +44,8 @@ async function analyzeWithOpenAI(metrics: Record<string, unknown>): Promise<Reco
   
   // Ask the model to return strict JSON recommendation, e.g. {"config": {"max_conn": 200}, "reason": "..."}
   const system = 'You are an optimizer agent. Read metrics JSON and return a non-empty JSON recommendation object. Only output JSON.';
-  const result = await client.chat.completions.create({
+  const openaiClient = await getClient();
+  const result = await openaiClient.chat.completions.create({
     model: models.optimizer, // Model from centralized config
     messages: [
       { role: 'system', content: system },

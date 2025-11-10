@@ -7,6 +7,7 @@ import https from 'https';
 import { updateSubscription, SubscriptionTier } from './subscription-service.js';
 import { create } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { getAppleSharedSecret } from './api-keys-service.js';
 
 interface AppleReceiptResponse {
   status: number;
@@ -28,9 +29,12 @@ export async function verifyAppleReceipt(
     ? 'https://buy.itunes.apple.com/verifyReceipt'
     : 'https://sandbox.itunes.apple.com/verifyReceipt';
 
+  // Get Apple Shared Secret from vault
+  const appleSharedSecret = await getAppleSharedSecret();
+
   const payload = JSON.stringify({
     'receipt-data': receiptData,
-    'password': process.env.APPLE_SHARED_SECRET || '',
+    'password': appleSharedSecret,
     'exclude-old-transactions': true
   });
 

@@ -16,6 +16,8 @@ export interface VideoRoomConfig {
 
   token: string;
 
+  host: string; // LiveKit host URL (passed from server, retrieved from vault)
+
   audioEnabled?: boolean;
 
   videoEnabled?: boolean;
@@ -147,10 +149,14 @@ export class VideoRoomManager {
       const sanitizedIdentity = config.identity.trim();
 
       // Connect to the room with retries and timeout
+      // Host URL is passed from server (retrieved from vault)
+      const wsUrl = config.host.startsWith('wss://') || config.host.startsWith('ws://') 
+        ? config.host 
+        : `wss://${config.host}`;
 
       await this.retryAsync(async () => {
 
-        await this.withTimeout(this.room.connect(`wss://${process.env.LIVEKIT_HOST}`, config.token), 10000);
+        await this.withTimeout(this.room.connect(wsUrl, config.token), 10000);
 
       }, 3);
 

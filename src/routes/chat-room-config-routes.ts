@@ -8,6 +8,7 @@ import { supabase } from '../config/db.js';
 import { logError } from '../shared/logger.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { getUserSubscription, SubscriptionTier } from '../services/subscription-service.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = Router();
 
@@ -15,10 +16,10 @@ const router = Router();
  * GET /chat_rooms/:id/config
  * Get room configuration including moderation settings
  */
-router.get('/:id/config', authMiddleware, async (req, res) => {
+router.get('/:id/config', authMiddleware, async (req: AuthenticatedRequest, res) => {
   try {
     const roomId = req.params.id;
-    const userId = (req as any).user?.userId;
+    const userId = req.user?.userId;
 
     if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });

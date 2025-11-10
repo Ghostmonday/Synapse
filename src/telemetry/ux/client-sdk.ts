@@ -266,9 +266,7 @@ export class UXTelemetrySDK {
   ): void {
     // Check consent
     if (!this.config.consent.enabled) {
-      if (this.config.debug) {
-        console.log('[UX Telemetry] Event dropped: consent not given');
-      }
+      // Debug logging handled by logger service if needed
       return;
     }
     
@@ -291,9 +289,7 @@ export class UXTelemetrySDK {
     // Check sampling
     const samplingFlag = this.shouldSample(eventType);
     if (samplingFlag) {
-      if (this.config.debug) {
-        console.log('[UX Telemetry] Event sampled:', eventType);
-      }
+      // Event sampled out - no logging needed
       return; // Skip this event
     }
     
@@ -319,10 +315,6 @@ export class UXTelemetrySDK {
     
     // Add to queue
     this.eventQueue.push(event);
-    
-    if (this.config.debug) {
-      console.log('[UX Telemetry] Event queued:', event);
-    }
     
     // Flush if batch size reached
     if (this.eventQueue.length >= this.config.batchSize) {
@@ -439,24 +431,26 @@ export class UXTelemetrySDK {
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
-      
-      if (this.config.debug) {
-        console.log('[UX Telemetry] Batch sent successfully:', batch.batchId);
-      }
     } catch (error) {
-      console.error('[UX Telemetry] Failed to send batch:', error);
+      // Log error using logger service (if available in browser context)
+      if (typeof window === 'undefined' && typeof process !== 'undefined') {
+        // Node.js environment - use logger
+        const { logError, logInfo } = await import('../../shared/logger.js');
+        logError('[UX Telemetry] Failed to send batch', error instanceof Error ? error : new Error(String(error)));
+      }
       
       // Retry with exponential backoff
       if (attempt < this.config.maxRetries) {
         const delay = this.config.retryDelay * Math.pow(2, attempt);
-        if (this.config.debug) {
-          console.log(`[UX Telemetry] Retrying in ${delay}ms (attempt ${attempt + 1}/${this.config.maxRetries})`);
-        }
         setTimeout(() => {
           this.sendBatch(batch, attempt + 1);
         }, delay);
       } else {
-        console.error('[UX Telemetry] Max retries reached, batch dropped:', batch.batchId);
+        // Max retries reached - log error
+        if (typeof window === 'undefined' && typeof process !== 'undefined') {
+          const { logError } = await import('../../shared/logger.js');
+          logError('[UX Telemetry] Max retries reached, batch dropped', new Error(`Batch ID: ${batch.batchId}`));
+        }
       }
     }
   }
@@ -471,10 +465,6 @@ export class UXTelemetrySDK {
     // Persist consent
     this.storage.set('consent', JSON.stringify(this.config.consent));
     
-    if (this.config.debug) {
-      console.log('[UX Telemetry] Consent updated:', enabled);
-    }
-    
     // Flush if consent granted
     if (enabled) {
       this.flush();
@@ -486,10 +476,6 @@ export class UXTelemetrySDK {
    */
   public setSamplingConfig(sampling: Partial<SamplingConfig>): void {
     this.config.sampling = { ...this.config.sampling, ...sampling };
-    
-    if (this.config.debug) {
-      console.log('[UX Telemetry] Sampling config updated:', this.config.sampling);
-    }
   }
   
   /**
@@ -505,10 +491,6 @@ export class UXTelemetrySDK {
   public resetSession(): void {
     this.sessionId = generateId();
     this.storage.set('session_id', this.sessionId);
-    
-    if (this.config.debug) {
-      console.log('[UX Telemetry] Session reset:', this.sessionId);
-    }
   }
   
   /**

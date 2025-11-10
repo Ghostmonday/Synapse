@@ -84,11 +84,13 @@ export class LiveKitService {
   /**
    * SIN-101: Generate participant token
    */
-  generateParticipantToken(
+  async generateParticipantToken(
     roomName: string,
     participantIdentity: string,
     userName: string = ''
   ): Promise<string> {
+    await this.ensureInitialized();
+    
     if (!roomName || typeof roomName !== 'string') {
       throw new Error('Invalid roomName');
     }
@@ -97,8 +99,9 @@ export class LiveKitService {
       throw new Error('Invalid participantIdentity');
     }
 
-    const livekitApiKey = process.env.LIVEKIT_API_KEY;
-    const livekitApiSecret = process.env.LIVEKIT_API_SECRET;
+    const livekitKeys = await getLiveKitKeys();
+    const livekitApiKey = livekitKeys.apiKey;
+    const livekitApiSecret = livekitKeys.apiSecret;
 
     if (!livekitApiKey || !livekitApiSecret) {
       throw new Error('LiveKit API credentials not configured');

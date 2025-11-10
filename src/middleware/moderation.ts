@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { logAudit } from '../shared/logger.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
-export const moderateContent = async (req: Request, res: Response, next: NextFunction) => {
+export const moderateContent = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const content = req.body?.content || req.body?.prompt || '';
   if (!content) {
     return next();
@@ -32,7 +33,7 @@ export const moderateContent = async (req: Request, res: Response, next: NextFun
     });
     
     if (hasBlockedContent) {
-      const userId = (req as any).user?.id || 'anonymous';
+      const userId = req.user?.userId || 'anonymous';
       await logAudit('content_moderated', userId, { 
         reason: 'blocked_word',
         content_length: content.length 
@@ -51,7 +52,7 @@ export const moderateContent = async (req: Request, res: Response, next: NextFun
     const maxRepetition = Math.max(...Object.values(wordCounts));
     // @llm_param - Maximum word repetition threshold for spam detection. Flags content with excessive repetition.
     if (maxRepetition > 20 && words.length > 50) {
-      const userId = (req as any).user?.id || 'anonymous';
+      const userId = req.user?.userId || 'anonymous';
       await logAudit('content_moderated', userId, { 
         reason: 'excessive_repetition',
         max_repetition: maxRepetition 
@@ -60,10 +61,11 @@ export const moderateContent = async (req: Request, res: Response, next: NextFun
     }
     
     next();
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Log moderation errors but don't block the request
-    await logAudit('moderation_error', (req as any).user?.id || 'anonymous', { 
-      error: error.message 
+    const err = error instanceof Error ? error : new Error(String(error));
+    await logAudit('moderation_error', req.user?.userId || 'anonymous', { 
+      error: err.message 
     });
     next(error);
   }

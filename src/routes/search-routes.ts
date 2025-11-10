@@ -1,35 +1,92 @@
 import express from 'express';
-import { supabase } from '../config/db.js';
-import { getRedisClient } from '../config/db.js';
 import { authMiddleware as authenticate } from '../server/middleware/auth.js';
-import { generateEmbedding } from '../services/embeddings-service.js';
+import { fullTextSearch, searchRoomMessages, searchRooms } from '../services/search-service.js';
 import { logAudit } from '../shared/logger.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = express.Router();
-const redis = getRedisClient();
 
-router.get('/', authenticate, async (req, res) => {
-  const { query, room_id } = req.query;
-  const cacheKey = `search:${query}:${room_id}`;
-  let results = await redis.get(cacheKey);
-  if (results) return res.json(JSON.parse(results));
-
+/**
+ * GET /search?query=foo&type=messages&room_id=xxx
+ * Full-text search across messages, rooms, and users
+ */
+router.get('/', authenticate, async (req: AuthenticatedRequest, res) => {
   try {
-    const embedding = await generateEmbedding(query as string);
-    const { data: semantic } = await supabase.rpc('match_messages', {
-      query_embedding: embedding,
-      match_threshold: 0.78,
-      match_count: 10,
-      filter_room_id: room_id,
+    const { query, type, room_id, user_id, limit, offset } = req.query;
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ error: 'query parameter is required' });
+    }
+
+    const results = await fullTextSearch({
+      query: query as string,
+      type: (type as any) || 'all',
+      roomId: room_id as string | undefined,
+      userId: user_id as string | undefined,
+      limit: limit ? parseInt(limit as string) : 50,
+      offset: offset ? parseInt(offset as string) : 0
     });
-    // Hybrid search: combine semantic with keyword search
-    const { data: keyword } = await supabase.from('messages').select().textSearch('content', query as string).eq('room_id', room_id);
-    results = [...new Set([...semantic || [], ...keyword || []])]; // Merge unique
-    await redis.set(cacheKey, JSON.stringify(results), 'EX', 600);
-    await logAudit('search', req.user.id, { query });
-    res.json(results);
-  } catch (error) {
-    res.status(500).json({ error: 'Search failed' });
+
+    await logAudit('search', req.user?.userId || 'unknown', { 
+      query, 
+      type, 
+      result_count: results.length 
+    });
+
+    res.json({ results, count: results.length });
+  } catch (error: any) {
+    res.status(500).json({ error: 'Search failed', message: error.message });
+  }
+});
+
+/**
+ * GET /search/messages?room_id=xxx&query=foo
+ * Search messages in a specific room
+ */
+router.get('/messages', authenticate, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { room_id, query, limit } = req.query;
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ error: 'query parameter is required' });
+    }
+
+    if (!room_id || typeof room_id !== 'string') {
+      return res.status(400).json({ error: 'room_id parameter is required' });
+    }
+
+    const results = await searchRoomMessages(
+      room_id as string,
+      query as string,
+      limit ? parseInt(limit as string) : 50
+    );
+
+    res.json({ results, count: results.length });
+  } catch (error: any) {
+    res.status(500).json({ error: 'Message search failed', message: error.message });
+  }
+});
+
+/**
+ * GET /search/rooms?query=foo
+ * Search public rooms
+ */
+router.get('/rooms', authenticate, async (req: AuthenticatedRequest, res) => {
+  try {
+    const { query, limit } = req.query;
+
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ error: 'query parameter is required' });
+    }
+
+    const results = await searchRooms(
+      query as string,
+      limit ? parseInt(limit as string) : 20
+    );
+
+    res.json({ results, count: results.length });
+  } catch (error: any) {
+    res.status(500).json({ error: 'Room search failed', message: error.message });
   }
 });
 

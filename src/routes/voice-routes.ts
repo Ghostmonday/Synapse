@@ -3,10 +3,12 @@
  * SIN-101: LiveKit integration for voice channels
  */
 
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Response, NextFunction } from 'express';
 import { liveKitService } from '../services/livekit-service.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { logError } from '../shared/logger.js';
+import { AuthenticatedRequest } from '../types/auth.types.js';
+import { getLiveKitKeys } from '../services/api-keys-service.js';
 
 const router = Router();
 
@@ -17,12 +19,12 @@ router.use(authMiddleware);
  * POST /voice/rooms/:room_name/join
  * Create or join voice room
  */
-router.post('/rooms/:room_name/join', async (req, res, next) => {
+router.post('/rooms/:room_name/join', async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const { room_name } = req.params;
-    const user = (req as any).user;
+    const userId = req.user?.userId;
 
-    if (!user || !user.id) {
+    if (!userId) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
@@ -37,14 +39,18 @@ router.post('/rooms/:room_name/join', async (req, res, next) => {
     // Generate participant token
     const token = await liveKitService.generateParticipantToken( // Silent fail: token generation can throw, no retry
       voiceRoomName,
-      user.id,
-      user.username || user.handle || ''
+      userId,
+      req.user?.username || req.user?.handle || ''
     );
+
+    // Get LiveKit URL from vault
+    const livekitKeys = await getLiveKitKeys();
+    const wsUrl = livekitKeys.url || livekitKeys.host || '';
 
     res.json({
       token,
       room_name: voiceRoomName,
-      ws_url: process.env.LIVEKIT_WS_URL || process.env.LIVEKIT_HOST,
+      ws_url: wsUrl,
     });
   } catch (error: any) {
     logError('Voice join error', error);

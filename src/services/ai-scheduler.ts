@@ -10,6 +10,7 @@ import { LLMReasoner } from '../autonomy/llm_reasoner.js';
 import { Executor } from '../autonomy/executor.js';
 import { PolicyGuard } from '../autonomy/policy_guard.js';
 import { safeAIOperation, shouldRunAI, isAutomationDisabled, updateHeartbeat } from './ai-safeguards.js';
+import { getDeepSeekKey, getOpenAIKey } from './api-keys-service.js';
 
 export interface ScheduleConfig {
   enabled: boolean;
@@ -22,15 +23,31 @@ export interface ScheduleConfig {
 
 class AIScheduler {
   private intervals: Map<string, NodeJS.Timeout> = new Map();
-  private reasoner: LLMReasoner;
+  private reasoner: LLMReasoner | null = null;
   private executor: Executor;
   private guard: PolicyGuard;
 
   constructor() {
-    const apiKey = process.env.DEEPSEEK_API_KEY || process.env.OPENAI_API_KEY || '';
-    this.reasoner = new LLMReasoner(apiKey);
     this.executor = new Executor();
     this.guard = new PolicyGuard();
+  }
+
+  private async getReasoner(): Promise<LLMReasoner> {
+    if (!this.reasoner) {
+      // Try DeepSeek first, fallback to OpenAI
+      try {
+        const apiKey = await getDeepSeekKey();
+        this.reasoner = new LLMReasoner(apiKey);
+      } catch {
+        try {
+          const apiKey = await getOpenAIKey();
+          this.reasoner = new LLMReasoner(apiKey);
+        } catch {
+          throw new Error('No LLM API key available in vault');
+        }
+      }
+    }
+    return this.reasoner;
   }
 
   /**
@@ -194,7 +211,8 @@ class AIScheduler {
       if (bot.recommendation?.includes('high error rate')) {
         logInfo(`Bot ${bot.bot_name} has high error rate - sending to LLM for analysis`);
         
-        const analysis = await this.reasoner.analyze({
+        const reasoner = await this.getReasoner();
+        const analysis = await reasoner.analyze({
           context: bot,
           prompt: `Bot ${bot.bot_name} has ${bot.error_count} errors in the last 24 hours. Should it be deactivated?`
         });
@@ -265,7 +283,8 @@ class AIScheduler {
     logInfo(`Detected ${dropouts.length} potential dropouts`);
     
     // Analyze patterns
-    const analysis = await this.reasoner.analyze({
+    const reasoner = await this.getReasoner();
+    const analysis = await reasoner.analyze({
       context: { dropouts },
       prompt: 'Analyze these user dropouts. Are there patterns? Should we send re-engagement messages?'
     });
