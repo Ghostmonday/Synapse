@@ -23,6 +23,7 @@ class APIClient {
     enum Endpoint {
         // Authentication
         static let authApple = "/auth/apple"
+        static let authGoogle = "/auth/google"
         static let authLogin = "/auth/login"
         
         // Rooms

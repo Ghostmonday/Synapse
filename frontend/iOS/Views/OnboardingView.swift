@@ -1,9 +1,12 @@
 import SwiftUI
+import AuthenticationServices
 
 struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var showContent = false
     @State private var pulseAnimation = false
+    @State private var appleAuth = AppleAuthHelper()
+    @State private var googleAuth = GoogleAuthHelper()
     
     // Check auth state - if already logged in, skip onboarding instantly
     private var isAuthenticated: Bool {
@@ -81,7 +84,69 @@ struct OnboardingView: View {
                 
                 Spacer()
                 
-                // Get Started button
+                // Auth buttons row
+                HStack(spacing: 12) {
+                    // Sign In With Apple button
+                    Button(action: {
+                        Task {
+                            await appleAuth.signIn()
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                hasCompletedOnboarding = true
+                            }
+                        }
+                    }) {
+                        HStack {
+                            Image(systemName: "applelogo")
+                            Text("Sign In With Apple")
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                        .background(Color.black)
+                        .cornerRadius(8)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .disabled(!appleAuth.isAvailable)
+                    .accessibilityLabel("Sign In With Apple")
+                    .accessibilityHint("Double tap to sign in with your Apple ID")
+                    
+                    // Sign In With Google button
+                    Button(action: {
+                        Task {
+                            do {
+                                let (idToken, email) = try await googleAuth.signIn()
+                                _ = try await AuthService.loginWithGoogle(idToken: idToken, email: email)
+                                // Auth successful - route to HomeView
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    hasCompletedOnboarding = true
+                                }
+                            } catch {
+                                print("Google Sign In error: \(error)")
+                            }
+                        }
+                    }) {
+                        HStack {
+                            // Google G icon - using SF Symbols alternative
+                            Text("G")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                            Text("Sign In With Google")
+                                .foregroundColor(.white)
+                        }
+                        .padding()
+                        .background(Color.black)
+                        .cornerRadius(8)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .disabled(!googleAuth.isAvailable)
+                    .accessibilityLabel("Sign In With Google")
+                    .accessibilityHint("Double tap to sign in with your Google account")
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 20)
+                .offset(y: showContent ? 0 : 30)
+                .opacity(showContent ? 1.0 : 0.0)
+                
+                // Get Started button (skip auth)
                 Button(action: {
                     withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                         hasCompletedOnboarding = true

@@ -93,9 +93,11 @@ Sinapse/
 ## Key Features
 
 ### Authentication
-- Apple Sign-In integration
+- Apple Sign-In integration (inline flow, no redirects)
+- Google Sign-In integration (FirebaseUI-Auth, inline flow)
 - JWT-based session management
 - Secure credential storage (database vault)
+- Instant auth-bound onboarding - routes to HomeView after successful sign-in
 
 ### Real-Time Communication
 - WebSocket messaging
@@ -115,12 +117,14 @@ Sinapse/
 ### iOS App
 - Modern SwiftUI interface with golden synapse theme
 - Instant app launch with auth-bound onboarding
+- Apple & Google Sign-In buttons (black buttons with white icons)
 - Animated launch screen with smooth transitions
 - Dashboard with real-time metrics
 - Telemetry and analytics integration
 - Accessibility support
 - Dark mode support
 - Zero artificial delays - feels instant and responsive
+- Inline authentication flow - no redirects or extra screens
 
 ### Data Management
 - Encrypted API key vault
@@ -276,7 +280,14 @@ MIT License - See repository root for details.
 
 ## Recent Updates
 
-### Performance Optimizations (Latest)
+### Authentication (Latest)
+- **Google Sign-In**: Added Google Sign-In using GoogleSignIn SDK with inline flow
+- **Apple Sign-In**: Enhanced Apple Sign-In with proper token handling and backend integration
+- **Unified Auth Flow**: Both Apple and Google auth route directly to HomeView after successful sign-in
+- **No Redirects**: Inline authentication flow - no redirects or extra screens
+- **Backend Integration**: AuthService.loginWithGoogle() and AuthService.loginWithApple() handle backend communication
+
+### Performance Optimizations
 - **Instant App Launch**: Removed all artificial delays - app feels instant and responsive
 - **Auth-Bound Onboarding**: OnboardingView now binds to auth state for instant transition when logged in
 - **Zero Loading Delays**: Removed 0.3s-0.5s artificial delays in RoomListView, DashboardView, HomeView, and PricingSheet

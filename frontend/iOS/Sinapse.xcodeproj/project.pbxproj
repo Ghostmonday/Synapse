@@ -86,6 +86,8 @@
 		FDD73A44220AB0FD11612E4E /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E6829671CDDD5591FC744CD /* MainTabView.swift */; };
 		FFFCAB553B2C5C5757E4074E /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26609E8679DE6D519E524F41 /* APIClient.swift */; };
 		CONSTANTS1234567890 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CONSTANTS9876543210 /* Constants.swift */; };
+		APPLEAUTH123456789 /* AppleAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = APPLEAUTH987654321 /* AppleAuthHelper.swift */; };
+		GOOGLEAUTH123456789 /* GoogleAuthHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = GOOGLEAUTH987654321 /* GoogleAuthHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,6 +119,8 @@
 		24DCD1F12EC08E8E00072E81 /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		26609E8679DE6D519E524F41 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		CONSTANTS9876543210 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		APPLEAUTH987654321 /* AppleAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthHelper.swift; sourceTree = "<group>"; };
+		GOOGLEAUTH987654321 /* GoogleAuthHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthHelper.swift; sourceTree = "<group>"; };
 		29453C184FDF88D12E8AC14E /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
 		29895A3E64873D515E91F640 /* Sinapse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sinapse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E6829671CDDD5591FC744CD /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -212,6 +216,8 @@
 			children = (
 				5D9D6BD8CF2F41791AE22627 /* AIReasoner.swift */,
 				26609E8679DE6D519E524F41 /* APIClient.swift */,
+				APPLEAUTH987654321 /* AppleAuthHelper.swift */,
+				GOOGLEAUTH987654321 /* GoogleAuthHelper.swift */,
 				CONSTANTS9876543210 /* Constants.swift */,
 				79D618D840F08568D9251900 /* DeepSeekClient.swift */,
 				984152983CF02FF0C0BC653D /* LiveKitRoomManager.swift */,
@@ -479,6 +485,8 @@
 				13D1597E13D15F9B2953101C /* AIReasoner.swift in Sources */,
 				7BBE0C8FD4A81368A2BFE3FA /* AIService.swift in Sources */,
 				FFFCAB553B2C5C5757E4074E /* APIClient.swift in Sources */,
+				APPLEAUTH123456789 /* AppleAuthHelper.swift in Sources */,
+				GOOGLEAUTH123456789 /* GoogleAuthHelper.swift in Sources */,
 				CONSTANTS1234567890 /* Constants.swift in Sources */,
 				0F9AC45590819425F2824D93 /* AmbientParticles.swift in Sources */,
 				A131775CB135C519859E88A8 /* AnimationModifiers.swift in Sources */,

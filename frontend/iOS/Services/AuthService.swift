@@ -58,5 +58,33 @@ class AuthService {
             return User(id: UUID(), name: "Apple User", avatar: "", mood: "calm")
         }
     }
+    
+    static func loginWithGoogle(idToken: String, email: String?) async throws -> User {
+        struct GoogleAuthRequest: Codable {
+            let idToken: String
+            let email: String?
+        }
+        
+        struct GoogleAuthResponse: Codable {
+            let jwt: String
+            let livekitToken: String?
+            let user: User?
+        }
+        
+        let request = GoogleAuthRequest(idToken: idToken, email: email)
+        let response: GoogleAuthResponse = try await APIClient.shared.request(
+            endpoint: APIClient.Endpoint.authGoogle,
+            method: "POST",
+            body: request
+        )
+        
+        AuthTokenManager.shared.token = response.jwt
+        
+        if let user = response.user {
+            return user
+        } else {
+            return User(id: UUID(), name: email ?? "Google User", avatar: "", mood: "calm")
+        }
+    }
 }
 
