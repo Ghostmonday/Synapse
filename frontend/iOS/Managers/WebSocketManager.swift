@@ -13,6 +13,17 @@ struct EmotionPulseEvent: Codable {
 
 enum EmotionPulse: String, Codable {
     case neutral, happy, sad, angry, excited, calm
+    
+    var animationSpeed: Double {
+        switch self {
+        case .calm: return 0.5
+        case .excited: return 2.0
+        case .angry: return 1.5
+        case .neutral: return 1.0
+        case .happy: return 1.8
+        case .sad: return 3.0
+        }
+    }
 }
 
 /// WebSocket Manager for Real-Time Communication

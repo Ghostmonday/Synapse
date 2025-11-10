@@ -1,11 +1,12 @@
 import Foundation
 import Combine
 
-/// Emotion Pulse Monitor
+/// Emotional State Monitor
 /// Tracks emotional state changes and provides pulse intensity metrics
+/// Note: This is a different implementation from Services/EmotionPulseMonitor
 @MainActor
-class EmotionPulseMonitor: ObservableObject {
-    static let shared = EmotionPulseMonitor()
+class EmotionalStateMonitor: ObservableObject {
+    static let shared = EmotionalStateMonitor()
     
     @Published var currentEmotion: EmotionState = .neutral
     @Published var pulseIntensity: Double = 0.5

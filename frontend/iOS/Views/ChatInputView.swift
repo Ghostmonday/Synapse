@@ -44,7 +44,9 @@ struct ChatInputView: View {
                         .foregroundColor(Color("SinapseGold"))
                 }
                 .disabled(input.isEmpty)
-                .accessibleButton("Send message", hint: input.isEmpty ? "Enter a message first" : "Double tap to send")
+                .accessibilityLabel("Send message")
+                .accessibilityHint(input.isEmpty ? "Enter a message first" : "Double tap to send")
+                .accessibilityAddTraits(.isButton)
                 .overlay(
                     Circle()
                         .fill(Color("SinapseGlow"))

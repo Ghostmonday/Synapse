@@ -14,7 +14,8 @@ class MessageManager {
             timestamp: Date(),
             emotion: "neutral",
             renderedHTML: nil,
-            reactions: nil
+            reactions: nil,
+            seenAt: nil
         )
         try? await MessageService.sendMessage(message, to: room)
     }

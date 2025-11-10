@@ -20,7 +20,7 @@ struct ChatView: View {
                 ScrollView {
                     LazyVStack(spacing: 12) {
                         ForEach(viewModel.messages) { message in
-                            MessageBubble(message: message)
+                            MessageBubbleView(message: message)
                         }
                     }
                     .padding()
@@ -61,7 +61,9 @@ struct ChatView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(Color("SinapseGold"))
                     .disabled(input.isEmpty)
-                    .accessibleButton("Send message", hint: input.isEmpty ? "Message cannot be empty" : "Double tap to send")
+                    .accessibilityLabel("Send message")
+                    .accessibilityHint(input.isEmpty ? "Message cannot be empty" : "Double tap to send")
+                    .accessibilityAddTraits(.isButton)
                     .overlay(
                         Circle()
                             .fill(Color("SinapseGlow"))
@@ -110,7 +112,8 @@ struct ChatView: View {
                     timestamp: Date(),
                     emotion: nil,
                     renderedHTML: nil,
-                    reactions: nil
+                    reactions: nil,
+                    seenAt: nil
                 )
                 
                 // Send message via MessageService
@@ -140,21 +143,6 @@ struct ChatView: View {
     }
 }
 
-struct MessageBubble: View {
-    let message: Message
-    
-    var body: some View {
-        HStack {
-            Text(message.content)
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(.ultraThinMaterial)
-                )
-            Spacer()
-        }
-    }
-}
 
 #Preview {
     ChatView()

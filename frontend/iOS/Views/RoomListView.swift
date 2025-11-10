@@ -84,7 +84,9 @@ struct RoomListView: View {
                             .cornerRadius(12)
                             .shadow(color: .primarySinapse.opacity(0.3), radius: 8)
                         }
-                        .accessibleButton("Create room", hint: "Double tap to create a new room")
+                        .accessibilityLabel("Create room")
+                        .accessibilityHint("Double tap to create a new room")
+                        .accessibilityAddTraits(.isButton)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding()

@@ -39,6 +39,25 @@ frontend/iOS/*.xcodeproj/xcuserdata/
 frontend/iOS/*.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcuserstate
 
+# Xcode build products
+*.o
+*.d
+*.swiftdeps
+*.dia
+*.swiftmodule
+*.swiftdoc
+*.swiftsourceinfo
+*.hmap
+supplementaryOutputs*
+*.msgpack
+*.db
+PIFCache/
+ModuleCache/
+SDKStatCaches/
+DerivedData/
+Index.noindex/
+CompilationCache.noindex/
+
 # macOS
 .DS_Store
 .AppleDouble

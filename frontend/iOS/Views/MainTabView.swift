@@ -14,7 +14,7 @@ struct MainTabView: View {
                 .accessibilityLabel("Home tab")
                 .accessibilityHint("View your rooms")
             
-            SearchView()
+            RoomListView() // TODO: Add SearchView to Xcode project, then replace with SearchView()
                 .tabItem { 
                     Label("Search", systemImage: "magnifyingglass")
                 }

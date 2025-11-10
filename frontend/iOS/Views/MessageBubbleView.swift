@@ -6,6 +6,10 @@ import SwiftUI
 struct MessageBubbleView: View {
     let message: Message
     
+    private var currentUserId: UUID {
+        getCurrentUserId()
+    }
+    
     var body: some View {
         HStack(alignment: .bottom, spacing: 4) {
             VStack(alignment: .leading, spacing: 4) {
@@ -24,10 +28,11 @@ struct MessageBubbleView: View {
             .cornerRadius(12)
             
             // Read receipt indicator for own messages
-            if message.senderId == getCurrentUserId() {
-                ReadReceiptIndicator(message: message, currentUserId: getCurrentUserId())
-                    .padding(.leading, 4)
-            }
+            // TODO: Add ReadReceiptIndicator.swift to Xcode project, then uncomment:
+            // if message.senderId == getCurrentUserId() {
+            //     ReadReceiptIndicator(message: message, currentUserId: currentUserId)
+            //         .padding(EdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 0))
+            // }
         }
     }
     
@@ -86,7 +91,7 @@ struct MessageBubbleView: View {
         // Get user ID from stored auth token
         // In production, decode JWT to extract user ID
         // For now, return a placeholder - should be stored in AuthService
-        if let token = AuthTokenManager.shared.token {
+        if AuthTokenManager.shared.token != nil {
             // TODO: Decode JWT and extract user ID from claims
             // For now, use a placeholder UUID
             return UUID() // Placeholder - should extract from JWT
@@ -105,7 +110,8 @@ struct MessageBubbleView: View {
             timestamp: Date(),
             emotion: "neutral",
             renderedHTML: nil,
-            reactions: nil
+            reactions: nil,
+            seenAt: nil
         ))
         
         MessageBubbleView(message: Message(
@@ -116,7 +122,8 @@ struct MessageBubbleView: View {
             timestamp: Date(),
             emotion: "neutral",
             renderedHTML: "Message with <span class=\"mention\">@username</span>",
-            reactions: nil
+            reactions: nil,
+            seenAt: nil
         ))
     }
     .padding()

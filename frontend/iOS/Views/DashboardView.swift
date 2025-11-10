@@ -8,8 +8,9 @@ import OSLog
 struct DashboardView: View {
     @StateObject private var presenceViewModel = PresenceViewModel()
     @StateObject private var subscriptionManager = SubscriptionManager.shared
-    // TODO: Add EmotionPulseMonitor.swift to Xcode project
-    // @StateObject private var emotionMonitor = EmotionPulseMonitor.shared
+    // EmotionPulseMonitor from Services - will be available once added to Xcode project
+    @State private var emotionPulse: EmotionPulse = .neutral
+    @State private var pulseIntensity: Double = 0.5
     @StateObject private var webSocket = WebSocketManager.shared
     @State private var rooms: [Room] = []
     @State private var messageVelocity: Double = 0.0 // Messages per minute
@@ -20,8 +21,7 @@ struct DashboardView: View {
     @State private var isLoading: Bool = true
     @State private var showUpgradeAlert = false
     @State private var upgradeFeature: Feature?
-    // TODO: Add TapRateTracker to Xcode project
-    // @State private var tapRateTracker = TapRateTracker()
+    // TapRateTracker available but not actively used in this view
     
     private var dragGesture: some Gesture {
         DragGesture()
@@ -32,13 +32,16 @@ struct DashboardView: View {
                 let velocity = value.predictedEndLocation.y - value.location.y
                 
                 // Log swipe gesture telemetry
-                // TODO: Add logGesture method to UXTelemetryService
-                // UXTelemetryService.shared.logGesture(
-                //     type: "swipe",
-                //     velocity: velocity,
-                //     distance: value.translation.height,
-                //     componentId: "MetricsCard"
-                // )
+                UXTelemetryService.shared.logEvent(
+                    eventType: .uiClick,
+                    category: .clickstream,
+                    metadata: [
+                        "gestureType": "swipe",
+                        "velocity": velocity,
+                        "distance": value.translation.height
+                    ],
+                    componentId: "MetricsCard"
+                )
                 
                 // Auto-expand/collapse if velocity > 500
                 if abs(velocity) > 500 {
@@ -62,10 +65,9 @@ struct DashboardView: View {
         GeometryReader { geometry in
             ZStack {
                 // Background gradient with emotion pulse
-                // TODO: Re-enable when EmotionPulseMonitor is added to project
                 MoodGradient(mood: "neutral")
                     .ignoresSafeArea()
-                    // .animation(.easeInOut(duration: emotionMonitor.currentPulse.animationSpeed), value: emotionMonitor.currentPulse)
+                    .animation(.easeInOut(duration: emotionPulse.animationSpeed), value: emotionPulse)
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -86,8 +88,8 @@ struct DashboardView: View {
                                 messageVelocity: messageVelocity,
                                 activeParticipants: activeParticipants,
                                 presenceDistribution: presenceDistribution,
-                                emotionPulse: .neutral, // TODO: Re-enable when EmotionPulseMonitor is added
-                                pulseIntensity: 0.5, // TODO: Re-enable when EmotionPulseMonitor is added
+                                emotionPulse: emotionPulse,
+                                pulseIntensity: pulseIntensity,
                                 offset: $cardOffset,
                                 expanded: $cardExpanded,
                                 geometry: geometry
@@ -106,11 +108,15 @@ struct DashboardView: View {
                                     removal: .scale.combined(with: .opacity)
                                 ))
                                 .onAppear {
-                                    // TODO: Add logSystemHealthViewed method to UXTelemetryService
-                                    // UXTelemetryService.shared.logSystemHealthViewed(
-                                    //     component: "DashboardView",
-                                    //     status: webSocket.isConnected ? "connected" : "disconnected"
-                                    // )
+                                    UXTelemetryService.shared.logEvent(
+                                        eventType: .uiClick,
+                                        category: .clickstream,
+                                        metadata: [
+                                            "component": "DashboardView",
+                                            "status": webSocket.isConnected ? "connected" : "disconnected"
+                                        ],
+                                        componentId: "SystemHealthCards"
+                                    )
                                 }
                             
                             // Feature-gated advanced metrics
@@ -148,13 +154,13 @@ struct DashboardView: View {
             subscribeToUpdates()
         }
         .onAppear {
-            // Subscribe to emotion pulse updates
-            // TODO: Re-enable when EmotionPulseMonitor is added to project
-            // emotionMonitor.$currentPulse
-            //     .sink { _ in
-            //         // UI will reactively update via @Published properties
-            //     }
-            //     .store(in: &cancellables)
+            // Subscribe to emotion pulse updates from WebSocket
+            webSocket.emotionPulsePublisher
+                .sink { event in
+                    emotionPulse = event.pulse
+                    pulseIntensity = event.intensity
+                }
+                .store(in: &cancellables)
         }
         .alert("Upgrade Required", isPresented: $showUpgradeAlert) {
             Button("View Plans") {
@@ -222,16 +228,27 @@ struct DashboardView: View {
         isLoading = false
         
         // Log telemetry
-        // TODO: Add these methods to UXTelemetryService
-        // UXTelemetryService.shared.logRoomActivityViewed(
-        //     roomCount: rooms.count,
-        //     activeParticipants: activeParticipants
-        // )
+        UXTelemetryService.shared.logEvent(
+            eventType: .roomEntry,
+            category: .engagement,
+            metadata: [
+                "roomCount": rooms.count,
+                "activeParticipants": activeParticipants
+            ],
+            componentId: "DashboardView"
+        )
         
-        // if cardExpanded {
-        //     UXTelemetryService.shared.logPresenceDistributionViewed(distribution: presenceDistribution)
-        //     UXTelemetryService.shared.logMessageVelocityViewed(velocity: messageVelocity)
-        // }
+        if cardExpanded {
+            UXTelemetryService.shared.logEvent(
+                eventType: .presencePing,
+                category: .presence,
+                metadata: [
+                    "distribution": presenceDistribution,
+                    "messageVelocity": messageVelocity
+                ],
+                componentId: "DashboardView"
+            )
+        }
     }
     
     private func createDummyRoom(name: String) -> Room {
@@ -304,11 +321,15 @@ struct DashboardView: View {
         presenceDistribution = presenceViewModel.getPresenceDistribution()
         
         // Log telemetry for incremental update
-        // TODO: Add logRoomActivityViewed method to UXTelemetryService
-        // UXTelemetryService.shared.logRoomActivityViewed(
-        //     roomCount: rooms.count,
-        //     activeParticipants: activeParticipants
-        // )
+        UXTelemetryService.shared.logEvent(
+            eventType: .roomEntry,
+            category: .engagement,
+            metadata: [
+                "roomCount": rooms.count,
+                "activeParticipants": activeParticipants
+            ],
+            componentId: "DashboardView"
+        )
     }
     
 }
