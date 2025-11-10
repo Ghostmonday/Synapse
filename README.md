@@ -1,5 +1,9 @@
 # Sinapse
 
+![QA](https://github.com/Ghostmonday/Synapse/actions/workflows/qa.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-90%25-brightgreen)
+![Security](https://img.shields.io/badge/security-scan-passing-brightgreen)
+
 Real-time communication platform with AI-powered features, voice/video calls, and autonomous system capabilities.
 
 ## Architecture

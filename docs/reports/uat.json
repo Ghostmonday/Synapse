@@ -1,0 +1,5230 @@
+{
+  "timestamp": "2025-11-10T08:22:32.397Z",
+  "build": "local",
+  "personas": {
+    "whale": {
+      "persona": "Premium iPhone whale",
+      "simulations": [
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 817.1285836545827
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 777.5558210123831
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1234.2585103310917
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1270.9609869380552
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 841.1224978671537
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 814.2994046916638
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1214.3028722767963
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1006.9269094683636
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 934.7147502020887
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1018.2927222090705
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1367.323870985988
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 793.0452182793648
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 707.9512017301495
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1223.5580796957597
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1140.2653389170132
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1484.1220617369522
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 872.3019655794536
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1092.30077197045
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1158.0055355788734
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 524.1281878671132
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 609.5530209583301
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1081.3171133846772
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1022.1456719184727
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1045.69602227689
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1368.5616144354249
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1082.1008312863214
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1493.523419139608
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1367.4317970002758
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 599.2508102027402
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1401.8324021326503
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1376.1552729010928
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 627.7343175127696
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1011.9982731874494
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 733.345269682003
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1235.0937014097367
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 528.9328378635968
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 680.1362467951722
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 995.9166867395777
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1167.8343814741538
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 507.7871867559429
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 694.3301623582785
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 947.979087604632
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1465.6958305106727
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 595.0156139026573
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 557.4698541858579
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 906.3963608817794
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1299.2420588330106
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 912.0814509396948
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 653.6763821661848
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1479.3133324271535
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 896.0173076942197
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1176.5326308295826
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1240.4959769445495
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1144.0319899614951
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1173.9985463500173
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1307.9997827486263
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 909.9080401816391
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 888.9954645721044
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 786.5860845312588
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 779.4450559267934
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 641.7994601198601
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1268.5455055319749
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 767.6330171339089
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1433.9428486368793
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 534.5911888922155
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1197.013506200943
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 869.7883105088356
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 670.5313634479161
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1333.0103095060704
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1058.496126150791
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1040.3014428407873
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 868.3269315174507
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1432.430546695847
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1351.8846472342375
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 815.3888623682292
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 739.7524387938519
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1106.661072949957
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1249.338115434818
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1466.448364052348
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1164.9194598847093
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1467.4813755160176
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 986.4892115470341
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 756.1721371198241
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1100.4740674130453
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 833.0078802948392
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1470.7487753397613
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1466.8216453582497
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1213.9737841747778
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 818.4126266030386
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 686.9555308498786
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1173.4814652657324
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 644.8199827748595
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 876.6301677521435
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1173.7043547054168
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1306.8110894118208
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 522.4794615538857
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1318.0660597115743
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 545.4340925293499
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1252.305619787223
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1130.953702666329
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 584.7484765715753
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1056.5017665502037
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 583.6222542595826
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1017.2981693694387
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1077.3152990383037
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 977.4400403856177
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 832.110767587243
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 772.6991366521386
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1097.6738007703327
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1392.1133756838876
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 520.9019652079992
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1222.948756416332
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 539.1737146603764
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1205.9262733662881
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 831.1775333257224
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1385.1492958974775
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 515.5123379219516
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1351.310996946851
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1017.9711878380357
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 975.4587515974542
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 605.6896435716138
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 945.6378074597977
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 579.1243151145877
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1371.1109159873527
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1017.753686615501
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1315.552202698434
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1141.4041210240462
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 697.0117405317792
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1424.1903964921266
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 877.5240797519825
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1389.8186099987727
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1249.4656577390797
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 850.4592833697507
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1090.978841790081
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1028.5348485983084
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 584.7722259001865
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 538.2503887659436
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 769.3090451309213
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1046.9318210980039
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 968.4449863387434
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1426.2256248637136
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 953.8669142446533
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 845.3068321530875
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 971.8618439178229
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1043.9518552309278
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 811.004193330101
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1299.795362253656
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1246.0452374351485
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1234.5669776403406
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1365.2262659246603
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1055.203434931656
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 825.364290125832
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1040.6772953219474
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1012.0100937252157
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1082.4206045065775
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 764.9853613372268
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 804.6644332649296
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1203.634214940977
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1481.3290786075831
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1135.4109973093327
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1319.6293606376607
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1001.1994369947458
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1242.9805151383657
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 596.0448731963004
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1322.2613353838847
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 824.2914801092368
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 738.1140272979885
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 936.987354137297
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1313.0035554038905
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 576.8512005254722
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 638.3299584397523
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1144.874837776137
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1452.3109743516443
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 780.9940710257708
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1325.2137219276226
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1110.8640709191882
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 625.0387131036435
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1402.7406951104786
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1334.7978664639813
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1396.4356110342862
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 678.6954790546486
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1101.818820530721
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1356.535489745087
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 811.1830629649317
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1311.4601621250856
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 767.5753874151292
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 918.3666940816088
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1230.361688864332
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 548.6182059396933
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1237.9575352598638
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1032.2650004986276
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 571.0889374743439
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 681.6777172255684
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1086.3899751481167
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1299.6477616567195
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 712.0023220037142
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1295.8411654280808
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 804.3884041944259
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 978.310073514508
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 843.9548584204726
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 675.1821108081896
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 823.9261650964972
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 958.8998730401962
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1377.8714122862007
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1337.9584184055734
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 553.6800922331697
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 688.6311223497667
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1003.1209592563174
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 852.481408179321
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 904.5725314375619
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 567.5089470015068
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1092.1550676633733
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 833.3604110773992
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1061.6198542889474
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 917.6355894395676
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1296.8038052379893
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 880.4659477524375
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1132.38760326725
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 625.319545327833
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1264.5695817117148
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 535.269658272002
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1254.3001939498354
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 728.3769720902048
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 561.5589440893476
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1277.0249233295522
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 870.8616081605221
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1292.4450461558238
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 566.9420307681856
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1489.539835207875
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1318.2126641548045
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 610.1201088067269
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 891.3624310819002
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 516.5153515183462
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1060.352538065716
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 879.6584970184997
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 958.5882526806939
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1423.43162073653
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 913.5637006159891
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1367.2470034278826
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1124.6477614036585
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 907.7175864297735
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1452.1856062199163
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 547.0131090471302
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 807.3052297560523
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1278.1917931556984
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 588.7258576378575
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1252.4994553884717
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1068.8622830603908
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1294.8818425819513
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1485.376868533957
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1336.45480044538
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1168.0428790062488
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1121.4342626037333
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1151.6514805690376
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 628.531287206119
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 564.8577326454308
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 737.3716731581685
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1444.2210228894292
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 976.8745959041081
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1001.4169692805352
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 525.3065848646687
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1205.0072119998686
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 790.2977688076273
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1265.3809010102818
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 992.8211672894766
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 961.2077465107543
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 597.162542352885
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 973.6545897940625
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1342.3863200636204
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1342.5257390033985
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1469.053920398877
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1371.724374610867
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 503.2241555824488
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 744.7762928377674
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1185.2527409453257
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1350.2500831053894
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 938.6616478569874
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1311.541422626251
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1060.331547648615
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 615.9702920089284
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 638.1493465503333
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1323.859156018886
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 860.886565807477
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1147.2548199854314
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1279.0847734676472
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1318.0711273984518
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 852.9189295559729
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 715.0935454395099
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1202.0807999182452
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 523.2090388623467
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1134.146740296591
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 850.9994319284805
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1294.7368635561284
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1365.7469999436285
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 941.6084432174983
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 635.3265331943217
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 749.3230838412604
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 544.750643851929
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 821.5392440329035
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 604.2832364489162
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 692.4160100463997
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 700.2750504094042
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 844.4109588638305
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 940.5413947873495
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1443.5029344590514
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 878.515323775187
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 755.0385435920211
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 737.7961658749292
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 749.0158401502151
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1071.0460403632637
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 753.0236643883046
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1240.302516793141
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1493.5805977968103
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 579.3246963558732
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 833.1295773179204
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 649.1664656695743
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1174.0461946714
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1271.7736357444737
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1444.218398457711
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 945.8525171144278
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1096.0105364317874
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 590.0332044112924
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1295.6383629261582
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1257.6424125008803
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1244.5696483322613
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 885.1770067198765
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1457.7962624210352
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1464.8279239859166
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 621.695757448812
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1483.675980365281
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1337.2249100346112
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1326.5160738689203
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 568.6635703043225
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1086.4799312610153
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1417.1714827725273
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1400.101862530189
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1057.2199758673064
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 515.842856793847
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 779.2107943370438
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1099.905851262518
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 597.611078482804
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1455.1802463510435
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 810.4546673850034
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1163.2380457929498
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1330.7876236619363
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1028.1035787107812
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1405.2492745118852
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1463.0749086994206
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1202.522475111019
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1459.7943741350036
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 790.2919951799083
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1378.8255260259461
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 515.0502706889915
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 968.6438474795167
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1420.6862928374999
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 548.9047855846461
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1098.4649012107966
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 697.9721015471177
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1381.238914057737
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1460.082654518516
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 727.6521260005234
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 939.6960874948791
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 880.9269975955069
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1447.9312486700408
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1275.8963782655123
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1275.5067544700278
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 857.0503635473274
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1246.791177767297
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1366.503739452037
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1106.263895644512
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 512.2795779901521
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1021.8269583352745
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1087.929234988781
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1397.8253327560371
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1083.5116363552952
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 824.1971282208374
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 949.8702467981391
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1262.2978447117707
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1482.604725600348
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 610.0675166774209
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 699.0500491954922
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 912.7922450631054
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 563.8958423316673
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 839.5026075138086
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 552.261820322319
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1441.977909460545
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 901.8655732520808
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1195.9370888830013
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1474.3554709804864
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 970.9295252048472
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 682.107361409709
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1190.8234901409128
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 840.4409368097306
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1134.6923886025922
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 643.4272397964373
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1375.0820825924375
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Premium iPhone whale",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "purchase_premium",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 726.646895196199
+            },
+            {
+              "step": "join_voice_room",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1479.5412272596523
+            },
+            {
+              "step": "send_messages",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1086.901977804158
+            },
+            {
+              "step": "use_ai_features",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1146.856490903368
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        }
+      ],
+      "stats": {
+        "total": 100,
+        "completed": 100,
+        "droppedOff": 0,
+        "completionRate": "100.00%",
+        "dropOffRate": "0.00%"
+      }
+    },
+    "bounce": {
+      "persona": "Bounce-prone user",
+      "simulations": [
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 983.7906793393724
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1087.9891579054627
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 511.84401847899807
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1430.9049323491208
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1176.8080969869923
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 634.6526644413348
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1406.275238605214
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1127.0867350235399
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1175.9329945601212
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1096.7142782420524
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 889.3035852994482
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1158.4981381434786
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1243.1193161733072
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1498.2973096222886
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 791.5790820881216
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 584.6935913041777
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 753.4804216178236
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1013.7119662423468
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1108.319477781854
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 688.6417457304383
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1032.0429218591944
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 834.6125392850139
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 879.1396106603372
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1206.3798107727964
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 946.3488852992891
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 594.34946661554
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1466.2743647623734
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1348.3943456777533
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 994.8024597771498
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1420.6974710604818
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 608.7473710652373
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1218.8468295240345
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1317.90181049473
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 895.2793653865444
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1120.7637232648954
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1401.8852909518105
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1435.9308304061938
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1206.5794548459346
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1023.5150006241233
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1119.2381873453937
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1175.0879996166448
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 734.9164765579994
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1268.3912920571715
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1482.6030888691917
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 834.7595532418896
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1491.6632390173377
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 532.2526634986307
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 660.2410235246327
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 985.9851188133916
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1362.328329638998
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1236.7108157388416
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1116.387642801391
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1068.0827871102983
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 886.4973443366807
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 880.4734177122385
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1498.214735675554
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1349.771250242116
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1081.3959205481835
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 620.2763576451409
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 966.7071144048555
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 583.132652312599
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1016.5239517084768
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1077.4667511434848
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 502.37831213051265
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1457.8886655776466
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1170.702801218002
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1003.0892832287142
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 550.8423064245292
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 906.08084134413
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 753.2138846839466
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 792.4426998150859
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 732.0644648976908
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 504.9452097679878
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 911.5307435743828
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1416.6496549071483
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1499.0694871031878
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 859.5331714771522
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 817.4989076665131
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1264.7506278832043
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1086.7661804336408
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1368.1749309763504
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 919.3611099857815
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 988.2858184478516
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 744.0352578121838
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1303.3981415360363
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1404.7857073267833
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 537.0722387576707
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 950.4627700099843
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 878.253464767677
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 656.3832074195097
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 508.1224850721812
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 892.4472730032426
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1324.3393716103108
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 676.1035049095128
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1166.1779578440874
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1135.009065133025
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 718.9917256285448
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 592.7727401274293
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 968.1659410156135
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1238.8048683017264
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 886.469798899149
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 600.8929795545491
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1191.959347435392
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 954.4509000776306
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1270.5983905091207
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1225.9731832519024
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1073.071685430722
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 904.0969428085599
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1282.1023356492283
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1116.964560262751
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 578.9854312563815
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1249.7424950492164
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": false,
+              "duration": 1089.4061387259283
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1499.6074115572733
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 627.3135519070188
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.398Z",
+              "success": true,
+              "duration": 1241.0293210806244
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.398Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1415.89888130385
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 508.85052183860245
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 537.5998641488133
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 625.5670410502448
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 706.2133525039026
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 933.5346781808455
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 567.4747152093278
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 946.7440554468418
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1207.4096825730708
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 834.2943368501556
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 1348.7581651798077
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 663.1778668894408
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 1158.2564771914044
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1243.0467439494314
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1411.2320976263527
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1309.2358034453268
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 1198.9548771313066
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1465.3600949128934
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1035.7555229639486
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1425.739986146952
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1204.1639812577505
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 871.7822356950958
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 567.9850519327712
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1022.4681858343253
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 665.8750640546281
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1254.0497224961068
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 566.5902540945602
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 829.6118414191144
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 560.6197089452621
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 898.7097060086982
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 570.7847244964822
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 564.2674136089387
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1125.0895020782627
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 622.2013391907384
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1199.9109018086497
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 510.42617605797193
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 761.065193688182
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 741.2449184182374
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 856.8975751512269
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1163.8033989752973
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1318.30781878059
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1157.8622705529538
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1068.650477909475
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 765.1278043811188
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 867.3449443108633
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 1168.5377210442807
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1496.30669315859
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1446.5486400689626
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 759.4100487299855
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 841.5391479773843
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1377.7015493298638
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 804.5817340806823
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1026.3317778914586
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 686.2172446687526
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1375.1732614550938
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 670.9436043367534
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1217.6372681737917
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1405.4565031397324
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 539.4657175147024
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1049.9984759491408
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1276.5551772437839
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1205.4767278094341
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 837.4639843718039
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 930.4562403862815
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1087.1888421242068
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 693.2642103646665
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 753.4158977146437
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 702.0655820413839
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 535.7120117332595
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1431.3251761904407
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1031.8082913211447
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1027.4169922700412
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 928.4512638731967
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 722.5604659120495
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 771.9109803918573
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 762.3198170969447
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 824.0704745981989
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": false,
+              "duration": 660.6193107799161
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 854.8839990037137
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 998.3539619804274
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 678.314849788114
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 641.9154289141993
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        },
+        {
+          "persona": "Bounce-prone user",
+          "startTime": "2025-11-10T08:22:32.399Z",
+          "steps": [
+            {
+              "step": "view_pricing",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1450.6623828212396
+            },
+            {
+              "step": "bounce_at_payment",
+              "timestamp": "2025-11-10T08:22:32.399Z",
+              "success": true,
+              "duration": 1369.5741862151156
+            }
+          ],
+          "dropOff": null,
+          "completed": true
+        }
+      ],
+      "stats": {
+        "total": 100,
+        "completed": 100,
+        "droppedOff": 0,
+        "completionRate": "100.00%",
+        "dropOffRate": "0.00%"
+      }
+    }
+  }
+}

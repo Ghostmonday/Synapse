@@ -1,0 +1,42 @@
+========================================
+Sinapse QA Test Suite - Final Summary
+========================================
+Generated: 2025-11-10 08:22:32 UTC
+Total Duration: 63s
+
+Test Results:
+  unit_tests:               passed     (1s)
+  integration_tests:        passed     (0s)
+  ios_unit_tests:           passed     (1s)
+  e2e_tests:                passed     (0s)
+  ios_ui_tests:             passed     (62s)
+  ios_ui_tests:             passed     (62s)
+  ios_ui_tests:             passed     (61s)
+  load_tests:               skipped    (0s)
+  security_scan:            skipped    (0s)
+  uat_simulation:           passed     (0s)
+
+Summary:
+  Passed:  8
+  Failed:  0
+  Skipped: 2
+
+Coverage:
+  Lines: 0.00%
+  Status: ⚠️  Below threshold (<80%)
+
+Security Scan:
+  Status: ⚠️  ZAP report not found
+
+UAT Results:
+  Status: ✅ No problematic flags
+
+Report Files:
+  - unit-tests.xcresult
+  - e2e-tests.xcresult
+  - coverage/lcov.html
+  - zap.html
+  - uat.json
+  - final-summary.txt
+
+========================================

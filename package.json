@@ -50,16 +50,39 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.20",
+    "@types/jest": "^29.5.12",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.9.0",
+    "@types/supertest": "^6.0.2",
     "@types/ws": "^8.5.9",
+    "@supabase/supabase-js": "^2.45.4",
+    "jest": "^30.0.0",
+    "nyc": "^17.1.0",
+    "playwright": "^1.48.0",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5",
     "tsx": "^4.6.2",
     "typescript": "^5.5.0",
     "winston": "^3.18.3"
   },
+  "scripts": {
+    "dev": "tsx watch src/server/index.ts",
+    "dev:optimizer": "tsx watch src/optimizer/index.ts",
+    "build": "tsc",
+    "build:prod": "tsc && npm run clean:prod",
+    "clean:prod": "node scripts/clean-production.js",
+    "start": "node dist/server/index.js",
+    "validate": "node scripts/validate-openapi.ts",
+    "audit": "npm audit --production",
+    "audit:fix": "npm audit fix --production",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:e2e": "playwright test",
+    "coverage": "nyc report --reporter=lcov --reporter=text"
+  },
   "overrides": {
-    "livekit-server-sdk": "2.2.0",
-    "@supabase/supabase-js": "2.38.1"
+    "livekit-server-sdk": "2.2.0"
   }
 }
