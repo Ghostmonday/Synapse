@@ -47,10 +47,13 @@ struct SinapseApp: App {
                             // Start telemetry monitoring
                             SystemMonitor.shared.monitorTelemetry()
                         }
+                        .transition(.opacity)
                 } else {
                     OnboardingView()
+                        .transition(.opacity)
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: hasCompletedOnboarding)
             .onAppear {
                 darkMode = UIScreen.main.traitCollection.userInterfaceStyle == .dark
             }

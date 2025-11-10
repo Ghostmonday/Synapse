@@ -77,7 +77,7 @@ Sinapse/
      ```sql
      -- Run in order:
      -- 1. sql/migrations/2025-01-27-api-keys-vault.sql
-     -- 2. sql/migrations/2025-01-27-populate-only.sql
+     -- 2. sql/migrations/2025-01-27-populate-only.sql (template - replace placeholders)
      ```
 
 4. **Start development server:**
