@@ -7,11 +7,27 @@ import AWS from 'aws-sdk';
 import { create, findOne, deleteOne } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
 import { encodeVoiceHash, verifyVoiceHash, extractAudioBuffer } from './voice-security-service.js';
+import { getAwsKeys } from './api-keys-service.js';
 
-const s3Client = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-});
+// S3 client initialized lazily
+let s3Client: AWS.S3 | null = null;
+
+async function getS3Client(): Promise<AWS.S3> {
+  if (s3Client) return s3Client;
+  
+  const awsKeys = await getAwsKeys();
+  if (!awsKeys.accessKeyId || !awsKeys.secretAccessKey) {
+    throw new Error('AWS credentials not found in vault');
+  }
+  
+  s3Client = new AWS.S3({
+    accessKeyId: awsKeys.accessKeyId,
+    secretAccessKey: awsKeys.secretAccessKey,
+    region: awsKeys.region || 'us-east-1',
+  });
+  
+  return s3Client;
+}
 
 /**
  * Upload a file to S3 and store metadata in database
@@ -28,6 +44,7 @@ export async function uploadFileToStorage(
     enableVoiceHash?: boolean;
   }
 ): Promise<{ url: string; id: string | number }> {
+  const s3 = await getS3Client();
   try {
     if (!file) {
       throw new Error('No file provided');
@@ -47,14 +64,18 @@ export async function uploadFileToStorage(
     // Generate unique S3 key
     const s3Key = `${Date.now()}_${file.originalname}`;
     
+    // Get AWS bucket from vault
+    const awsKeys = await getAwsKeys();
+    const bucket = awsKeys.bucket || 'sinapse-files';
+    
     // Upload to S3
     const uploadParams = {
-      Bucket: process.env.AWS_S3_BUCKET || '',
+      Bucket: bucket,
       Key: s3Key,
       Body: fileBuffer
     };
     
-    const uploadResult = await s3Client.upload(uploadParams).promise(); // No timeout - can hang indefinitely
+    const uploadResult = await s3.upload(uploadParams).promise(); // No timeout - can hang indefinitely
     const fileUrl = (uploadResult as any).Location;
 
     // Store file metadata in database
@@ -130,10 +151,15 @@ export async function deleteFileById(fileId: string): Promise<void> {
     const s3Key = fileRecord.url.split('/').pop();
     
     if (s3Key) {
+      // Get AWS bucket from vault
+      const s3 = await getS3Client();
+      const awsKeys = await getAwsKeys();
+      const bucket = awsKeys.bucket || 'sinapse-files';
+      
       // Delete from S3
-      await s3Client
+      await s3
         .deleteObject({
-          Bucket: process.env.AWS_S3_BUCKET || '',
+          Bucket: bucket,
           Key: s3Key
         })
         .promise(); // Silent fail: S3 delete fails but DB delete proceeds = inconsistent state

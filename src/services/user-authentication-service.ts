@@ -8,16 +8,20 @@ import bcrypt from 'bcrypt';
 import { findOne, upsert, create } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
 import { verifyAppleTokenWithJWKS } from './apple-jwks-verifier.js';
+import { getJwtSecret, getLiveKitKeys } from './api-keys-service.js';
 
 // LiveKit token generation helper (optional - requires @livekit/server-sdk package)
 async function createLiveKitToken(userId: string, roomId?: string): Promise<string> {
   try {
     const livekitModule = await import('@livekit/server-sdk') as { TokenGenerator?: new (apiKey: string, apiSecret: string) => { createToken: (grants: unknown, options: unknown) => string } };
     const TokenGenerator = livekitModule.TokenGenerator;
-    if (TokenGenerator && process.env.LIVEKIT_API_KEY && process.env.LIVEKIT_API_SECRET) {
-      const tokenGenerator = new TokenGenerator(process.env.LIVEKIT_API_KEY, process.env.LIVEKIT_API_SECRET);
-      const room = roomId || 'default';
-      return tokenGenerator.createToken({ video: { roomJoin: true, room } }, { identity: userId });
+    if (TokenGenerator) {
+      const livekitKeys = await getLiveKitKeys();
+      if (livekitKeys.apiKey && livekitKeys.apiSecret) {
+        const tokenGenerator = new TokenGenerator(livekitKeys.apiKey, livekitKeys.apiSecret);
+        const room = roomId || 'default';
+        return tokenGenerator.createToken({ video: { roomJoin: true, room } }, { identity: userId });
+      }
     }
   } catch {
     logInfo('LiveKit SDK not available - video token generation disabled');
@@ -48,10 +52,10 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
       logInfo('User record update (non-critical):', upsertError instanceof Error ? upsertError.message : String(upsertError)); // Silent fail: user creation fails but JWT still issued
     }
 
-    // Generate application JWT token
-    const jwtSecret = process.env.JWT_SECRET;
+    // Generate application JWT token (from vault)
+    const jwtSecret = await getJwtSecret();
     if (!jwtSecret) {
-      throw new Error('JWT_SECRET environment variable is required');
+      throw new Error('JWT_SECRET not found in vault');
     }
 
     const applicationToken = jwt.sign(
@@ -112,9 +116,10 @@ export async function authenticateWithCredentials(
       throw new Error('Invalid username or password');
     }
 
-    const jwtSecret = process.env.JWT_SECRET;
+    // Get JWT secret from vault
+    const jwtSecret = await getJwtSecret();
     if (!jwtSecret) {
-      throw new Error('JWT_SECRET environment variable is required');
+      throw new Error('JWT_SECRET not found in vault');
     }
 
     const applicationToken = jwt.sign(

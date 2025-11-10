@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Security: Exit on error, undefined vars, pipe failures
+set -euo pipefail
+
 echo "🔐 Tailscale Authentication"
 echo "=========================="
 echo ""
@@ -18,8 +21,15 @@ if [ -z "$AUTH_KEY" ]; then
     exit 1
 fi
 
+# Validate auth key format (starts with 'tskey-')
+if [[ ! "$AUTH_KEY" =~ ^tskey- ]]; then
+    echo "❌ Invalid auth key format (should start with 'tskey-')"
+    exit 1
+fi
+
 echo ""
 echo "🔗 Authenticating Tailscale..."
+# Use --authkey with proper quoting to prevent injection
 sudo tailscale up --authkey="$AUTH_KEY"
 
 echo ""

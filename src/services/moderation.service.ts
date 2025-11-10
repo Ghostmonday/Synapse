@@ -10,6 +10,7 @@ import { logError, logWarning, logInfo } from '../shared/logger.js';
 import { supabase } from '../config/db.js';
 import { logModerationEvent } from './telemetry-service.js';
 import { sanitizePrompt, logPromptAudit } from '../utils/prompt-sanitizer.js';
+import { getDeepSeekKey } from './api-keys-service.js';
 
 /**
  * Scan message for toxicity using DeepSeek LLM
@@ -19,24 +20,27 @@ export async function scanForToxicity(
   content: string,
   roomId: string
 ): Promise<{ score: number; isToxic: boolean; suggestion: string }> {
-  if (!process.env.DEEPSEEK_API_KEY) {
-    logWarning('DeepSeek API key not configured - moderation disabled');
-    return { score: 0, isToxic: false, suggestion: '' };
-  }
+  try {
+    const deepseekKey = await getDeepSeekKey();
+    if (!deepseekKey) {
+      logWarning('DeepSeek API key not found in vault - moderation disabled');
+      return { score: 0, isToxic: false, suggestion: '' };
+    }
 
-  // Sanitize prompt before sending to LLM
-  const sanitizedContent = sanitizePrompt(content);
-  
-  // Log prompt audit
-  await logPromptAudit(roomId, sanitizedContent, 'moderation_scan', { roomId });
-  
-  const prompt = `Analyze this message for toxicity, hate speech, or spam: ${sanitizedContent}
+    // Sanitize prompt before sending to LLM
+    const sanitizedContent = sanitizePrompt(content);
+    
+    // Log prompt audit
+    await logPromptAudit(roomId, sanitizedContent, 'moderation_scan', { roomId });
+    
+    const prompt = `Analyze this message for toxicity, hate speech, or spam: ${sanitizedContent}
 Respond with JSON only: {"score": 0-1, "isToxic": true/false, "suggestion": "brief warning text"}`;
 
-  try {
     // Use Supabase Edge Function proxy instead of direct API call
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+    const { getSupabaseKeys } = await import('./api-keys-service.js');
+    const supabaseKeys = await getSupabaseKeys();
+    const supabaseUrl = supabaseKeys.url;
+    const supabaseAnonKey = process.env.SUPABASE_ANON_KEY; // Keep this in env for client-side access
     
     // Get JWT token for Supabase auth (from room context or system token)
     // For now, use anon key - in production, use service role or user JWT

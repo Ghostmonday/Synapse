@@ -6,29 +6,51 @@
 import { RoomServiceClient, AccessToken } from 'livekit-server-sdk';
 import { recordTelemetryEvent } from './telemetry-service.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { getLiveKitKeys } from './api-keys-service.js';
 import type { VoiceSession, VoiceStats } from '../types/message.types.js';
 
 export class LiveKitService {
   private roomService: RoomServiceClient;
   private performanceStats: Map<string, VoiceStats> = new Map();
+  private initialized: boolean = false;
+
+  async initialize() {
+    if (this.initialized) return;
+    
+    try {
+      const livekitKeys = await getLiveKitKeys();
+      const livekitHost = livekitKeys.host || livekitKeys.url;
+      const livekitApiKey = livekitKeys.apiKey;
+      const livekitApiSecret = livekitKeys.apiSecret;
+
+      if (!livekitHost || !livekitApiKey || !livekitApiSecret) {
+        logError('LiveKit configuration missing', new Error('LIVEKIT_HOST, LIVEKIT_API_KEY, and LIVEKIT_API_SECRET required in vault'));
+        throw new Error('LiveKit not configured');
+      }
+
+      this.roomService = new RoomServiceClient(livekitHost, livekitApiKey, livekitApiSecret);
+      this.initialized = true;
+    } catch (error) {
+      logError('Failed to initialize LiveKit service', error instanceof Error ? error : new Error(String(error)));
+      throw error;
+    }
+  }
 
   constructor() {
-    const livekitHost = process.env.LIVEKIT_HOST || process.env.LIVEKIT_URL;
-    const livekitApiKey = process.env.LIVEKIT_API_KEY;
-    const livekitApiSecret = process.env.LIVEKIT_API_SECRET;
+    // Initialize will be called async - use ensureInitialized() before operations
+  }
 
-    if (!livekitHost || !livekitApiKey || !livekitApiSecret) {
-      logError('LiveKit configuration missing', new Error('LIVEKIT_HOST, LIVEKIT_API_KEY, and LIVEKIT_API_SECRET required'));
-      throw new Error('LiveKit not configured');
+  private async ensureInitialized() {
+    if (!this.initialized) {
+      await this.initialize();
     }
-
-    this.roomService = new RoomServiceClient(livekitHost, livekitApiKey, livekitApiSecret);
   }
 
   /**
    * SIN-101: Create voice room
    */
   async createVoiceRoom(roomName: string, maxParticipants: number = 50): Promise<string> {
+    await this.ensureInitialized();
     try {
       if (!roomName || typeof roomName !== 'string') {
         throw new Error('Invalid roomName');
@@ -102,6 +124,7 @@ export class LiveKitService {
    * SIN-101: Get room session info
    */
   async getVoiceSession(roomName: string): Promise<VoiceSession | null> {
+    await this.ensureInitialized();
     try {
       if (!roomName || typeof roomName !== 'string') {
         throw new Error('Invalid roomName');
@@ -138,6 +161,7 @@ export class LiveKitService {
    * SIN-101: Disconnect participant
    */
   async disconnectParticipant(roomName: string, participantIdentity: string): Promise<void> {
+    await this.ensureInitialized();
     try {
       if (!roomName || typeof roomName !== 'string') {
         throw new Error('Invalid roomName');
@@ -165,6 +189,7 @@ export class LiveKitService {
    * SIN-104: Log voice performance stats
    */
   async logVoiceStats(roomName: string, stats: VoiceStats): Promise<void> {
+    await this.ensureInitialized();
     if (!roomName || typeof roomName !== 'string') {
       logError('Invalid roomName for stats', new Error('Invalid roomName'));
       return;
@@ -222,6 +247,7 @@ export class LiveKitService {
    * Cleanup empty rooms
    */
   async cleanupEmptyRooms(): Promise<void> {
+    await this.ensureInitialized();
     try {
       const rooms = await this.roomService.listRooms(); // No timeout - can hang if LiveKit API slow
       const now = Date.now();

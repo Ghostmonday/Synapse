@@ -126,24 +126,23 @@ router.post('/join', async (req, res) => {
 
     }
 
-    // Create LiveKit access token
+    // Create LiveKit access token (get keys from vault)
+    const { getLiveKitKeys } = await import('../../services/api-keys-service.js');
+    const livekitKeys = await getLiveKitKeys();
+    
+    if (!livekitKeys.apiKey || !livekitKeys.apiSecret) {
+      healingLogger.error('VideoJoinRoute', 'LiveKit credentials not found in vault');
+      return res.status(500).json({ error: 'Video service not configured' });
+    }
 
     const at = new AccessToken(
-
-      process.env.LIVEKIT_API_KEY!,
-
-      process.env.LIVEKIT_API_SECRET!,
-
+      livekitKeys.apiKey,
+      livekitKeys.apiSecret,
       {
-
         identity: userId,
-
         name: sanitizedUserName || userData.username,
-
         ttl: 2 * 60 * 60, // 2 hours
-
       }
-
     );
 
     at.addGrant({
@@ -166,7 +165,7 @@ router.post('/join', async (req, res) => {
 
     const token = at.toJwt();
 
-    const serverUrl = `wss://${process.env.LIVEKIT_HOST}`;
+    const serverUrl = `wss://${livekitKeys.host || livekitKeys.url?.replace('wss://', '')}`;
 
     healingLogger.info('VideoJoinRoute', `Video token generated for user ${userId} in room ${sanitizedRoomName}`);
 
@@ -221,15 +220,17 @@ router.get('/health', async (_req, res) => {
   try {
 
     // Test LiveKit connectivity by creating a test token
+    const { getLiveKitKeys } = await import('../../services/api-keys-service.js');
+    const livekitKeys = await getLiveKitKeys();
+    
+    if (!livekitKeys.apiKey || !livekitKeys.apiSecret) {
+      throw new Error('LiveKit credentials not found in vault');
+    }
 
     const at = new AccessToken(
-
-      process.env.LIVEKIT_API_KEY!,
-
-      process.env.LIVEKIT_API_SECRET!,
-
+      livekitKeys.apiKey,
+      livekitKeys.apiSecret,
       { identity: 'health-check', ttl: 60 }
-
     );
 
    

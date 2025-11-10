@@ -1,0 +1,75 @@
+Sinapse/
+├── .github/              # GitHub workflows
+├── .vscode/              # VS Code settings
+├── config/               # Configuration files
+│   ├── prometheus.yml   # Metrics config
+│   └── rules.yml        # Prometheus rules
+├── dist/                 # Compiled output (gitignored)
+├── frontend/             # iOS native app
+│   └── iOS/             # SwiftUI application
+│       ├── Assets.xcassets/
+│       ├── Components/
+│       ├── Coordinators/
+│       ├── Managers/
+│       ├── Models/
+│       ├── Services/
+│       ├── Views/
+│       └── ViewModels/
+├── infra/                # Infrastructure as Code
+│   └── aws/             # Terraform
+│       ├── main.tf
+│       ├── variables.tf
+│       ├── outputs.tf
+│       └── user_data.sh
+├── legacy/               # Archived files
+├── node_modules/         # Dependencies (gitignored)
+├── scripts/              # Operational scripts
+│   ├── dev/             # Development utilities
+│   │   ├── ios/        # iOS build scripts
+│   │   ├── seed.sh
+│   │   └── setup.sh
+│   ├── ops/             # Production operations
+│   │   ├── entrypoint.sh
+│   │   ├── repair_high_cpu.sh
+│   │   └── repair_high_latency.sh
+│   ├── clean-production.js
+│   ├── deploy.sh
+│   └── supabase-setup.sh
+├── specs/                # API specifications
+│   ├── api/             # OpenAPI specs
+│   └── proto/           # Protocol buffers
+├── sql/                  # Database migrations
+│   └── migrations/      # Versioned SQL
+├── src/                  # Backend source code
+│   ├── api/             # Generated types
+│   ├── autonomy/        # Autonomous system
+│   ├── components/      # Vue components
+│   ├── config/          # Configuration
+│   ├── functions/       # Utility functions
+│   ├── jobs/            # Cron jobs
+│   ├── llm-observer/    # LLM monitoring
+│   ├── middleware/      # Express middleware
+│   ├── optimizer/       # Optimization worker
+│   ├── routes/          # API routes
+│   ├── server/          # Express server
+│   ├── services/        # Business logic
+│   ├── shared/          # Shared utilities
+│   ├── telemetry/       # Telemetry
+│   ├── types/           # TypeScript types
+│   ├── utils/           # Utilities
+│   ├── workers/         # Background workers
+│   └── ws/              # WebSocket
+├── supabase/             # Supabase Edge Functions
+│   └── functions/      # Serverless functions
+│       ├── api-key-vault/
+│       ├── join-room/
+│       └── llm-proxy/
+├── .codecov.yml         # Code coverage config
+├── .env                 # Environment variables (gitignored)
+├── .gitignore
+├── Dockerfile
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+├── README.md            # This file
+└── tsconfig.json        # TypeScript config

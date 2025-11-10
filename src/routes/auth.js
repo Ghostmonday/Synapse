@@ -1,11 +1,10 @@
 /**
  * Authentication routes
- * Uses Supabase REST API
+ * Uses secure bcrypt password hashing via user-authentication-service
  */
 
 import { Router } from 'express';
-import jwt from 'jsonwebtoken';
-import { supabase } from '../config/db.js';
+import { authenticateWithCredentials } from '../services/user-authentication-service.js';
 import { logError } from '../shared/logger.js';
 
 const router = Router();
@@ -14,6 +13,8 @@ const router = Router();
  * POST /auth/login
  * Body: { username, password }
  * Returns: JWT token
+ * 
+ * SECURITY: Uses bcrypt password hashing - never compares plain text passwords
  */
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -23,28 +24,24 @@ router.post('/login', async (req, res) => {
   }
 
   try {
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('username', username)
-      .eq('password', password)
-      .single();
+    // Use secure authentication service with bcrypt password verification
+    const { jwt: token } = await authenticateWithCredentials(username, password);
 
-    if (error || !user) {
-      return res.status(401).json({ error: 'Invalid credentials' });
-    }
+    // Get user info for response (without password)
+    const { findOne } = await import('../shared/supabase-helpers.js');
+    const user = await findOne('users', { username }, ['id', 'username']);
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id },
-      process.env.JWT_SECRET || 'sinapse_secret_jwt_key',
-      { expiresIn: '1d' }
-    );
-
-    res.json({ status: 'ok', token, user: { id: user.id, username: user.username } });
+    res.json({ status: 'ok', token, user: { id: user?.id, username: user?.username } });
   } catch (e) {
     logError('Login error', e instanceof Error ? e : new Error(String(e)));
-    res.status(500).json({ error: e instanceof Error ? e.message : String(e) || 'Server error' });
+    const errorMessage = e instanceof Error ? e.message : String(e) || 'Server error';
+    
+    // Don't leak specific error details for security
+    if (errorMessage.includes('Invalid') || errorMessage.includes('credentials')) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

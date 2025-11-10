@@ -5,6 +5,7 @@
 
 import { AccessToken } from '@livekit/server-sdk';
 import { logError, logInfo } from '../shared/logger.js';
+import { getLiveKitKeys } from './api-keys-service.js';
 
 /**
  * Generate LiveKit token for a room
@@ -19,11 +20,12 @@ export async function generateLiveKitToken(
   role: 'admin' | 'guest' = 'guest'
 ): Promise<string> {
   try {
-    const apiKey = process.env.LIVEKIT_API_KEY;
-    const apiSecret = process.env.LIVEKIT_API_SECRET;
+    const livekitKeys = await getLiveKitKeys();
+    const apiKey = livekitKeys.apiKey;
+    const apiSecret = livekitKeys.apiSecret;
 
     if (!apiKey || !apiSecret) {
-      logError('LiveKit credentials not configured');
+      logError('LiveKit credentials not found in vault');
       return '';
     }
 

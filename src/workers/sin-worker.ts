@@ -1,16 +1,16 @@
 /**
  * Sin AI Worker
- * Cron job that scans empty rooms and activates Sin bot via Grok API
+ * Cron job that scans empty rooms and activates Sin bot via DeepSeek API
  * Runs every 5 minutes
  */
 
 import { supabase } from '../config/db.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { getDeepSeekKey } from '../services/api-keys-service.js';
 
-const GROK_API_URL = 'https://api.grok.com/v1/chat/completions';
-const GROK_API_KEY = process.env.GROK_API_KEY;
+const DEEPSEEK_API_URL = 'https://api.deepseek.com/v1/chat/completions';
 
-interface GrokMessage {
+interface DeepSeekMessage {
   role: 'system' | 'user' | 'assistant';
   content: string;
 }
@@ -18,7 +18,7 @@ interface GrokMessage {
 /**
  * Get last N messages from a room
  */
-async function getRoomMessages(roomId: string, limit: number = 20): Promise<GrokMessage[]> {
+async function getRoomMessages(roomId: string, limit: number = 20): Promise<DeepSeekMessage[]> {
   try {
     const { data: messages, error } = await supabase
       .from('messages')
@@ -31,7 +31,7 @@ async function getRoomMessages(roomId: string, limit: number = 20): Promise<Grok
       return [];
     }
 
-    // Convert to Grok format (reverse for chronological order)
+    // Convert to DeepSeek format (reverse for chronological order)
     return messages
       .reverse()
       .map((msg: any) => ({
@@ -45,28 +45,29 @@ async function getRoomMessages(roomId: string, limit: number = 20): Promise<Grok
 }
 
 /**
- * Call Grok API to generate Sin's response
+ * Call DeepSeek API to generate Sin's response
  */
-async function callGrokAPI(messages: GrokMessage[]): Promise<string> {
-  if (!GROK_API_KEY) {
-    logError('GROK_API_KEY not configured');
-    return '';
-  }
-
+async function callDeepSeekAPI(messages: DeepSeekMessage[]): Promise<string> {
   try {
-    const systemPrompt: GrokMessage = {
+    const deepseekKey = await getDeepSeekKey();
+    if (!deepseekKey) {
+      logError('DEEPSEEK_API_KEY not found in vault');
+      return '';
+    }
+
+    const systemPrompt: DeepSeekMessage = {
       role: 'system',
       content: 'You are Sin, a friendly guide. Welcome new users, explain rooms, crack jokes. Never say you\'re a bot unless asked.',
     };
 
-    const response = await fetch(GROK_API_URL, {
+    const response = await fetch(DEEPSEEK_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${GROK_API_KEY}`,
+        'Authorization': `Bearer ${deepseekKey}`,
       },
       body: JSON.stringify({
-        model: 'grok-beta',
+        model: 'deepseek-chat',
         messages: [systemPrompt, ...messages],
         stream: false,
         temperature: 0.7,
@@ -74,13 +75,13 @@ async function callGrokAPI(messages: GrokMessage[]): Promise<string> {
     });
 
     if (!response.ok) {
-      throw new Error(`Grok API error: ${response.statusText}`);
+      throw new Error(`DeepSeek API error: ${response.statusText}`);
     }
 
     const data = await response.json();
     return data.choices?.[0]?.message?.content || '';
   } catch (error) {
-    logError('Grok API call failed', error instanceof Error ? error : new Error(String(error)));
+    logError('DeepSeek API call failed', error instanceof Error ? error : new Error(String(error)));
     return '';
   }
 }
@@ -149,8 +150,8 @@ export async function scanAndActivateSin(): Promise<void> {
         // Get recent messages
         const messages = await getRoomMessages(room.id, 20);
 
-        // Generate Sin's response
-        const response = await callGrokAPI(messages);
+        // Generate Sin's response using DeepSeek
+        const response = await callDeepSeekAPI(messages);
 
         if (response) {
           // Post response every 10 seconds (streaming simulation)
