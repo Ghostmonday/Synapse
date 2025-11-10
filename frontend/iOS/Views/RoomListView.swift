@@ -27,12 +27,14 @@ struct RoomListView: View {
                             .tint(.primarySinapse)
                         
                         Text("Loading rooms...")
-                            .font(.headline)
+                            .font(.headline) // Dynamic Type support
                             .foregroundColor(.secondary)
+                            .accessibilityLabel("Loading rooms")
                         
                         Text("Connecting to your spaces")
-                            .font(.caption)
+                            .font(.caption) // Dynamic Type support
                             .foregroundColor(.secondary.opacity(0.7))
+                            .accessibilityLabel("Connecting to your spaces")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .transition(.opacity.combined(with: .scale))
@@ -68,7 +70,7 @@ struct RoomListView: View {
                                 Image(systemName: "plus.circle.fill")
                                 Text("Create Room")
                             }
-                            .font(.headline)
+                            .font(.headline) // Dynamic Type support
                             .foregroundColor(.white)
                             .padding(.horizontal, 24)
                             .padding(.vertical, 12)
@@ -82,6 +84,7 @@ struct RoomListView: View {
                             .cornerRadius(12)
                             .shadow(color: .primarySinapse.opacity(0.3), radius: 8)
                         }
+                        .accessibleButton("Create room", hint: "Double tap to create a new room")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding()

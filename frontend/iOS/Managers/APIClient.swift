@@ -33,6 +33,37 @@ class APIClient {
         static let messagingSend = "/messaging/send"
         static func messagingRoom(_ roomId: String) -> String { "/messaging/\(roomId)" }
         
+        // Search
+        static let search = "/api/search"
+        static let searchMessages = "/api/search/messages"
+        static let searchRooms = "/api/search/rooms"
+        
+        // Read Receipts
+        static let readReceiptsRead = "/api/read-receipts/read"
+        static let readReceiptsDelivered = "/api/read-receipts/delivered"
+        static func readReceiptsMessage(_ messageId: String) -> String { "/api/read-receipts/\(messageId)" }
+        
+        // Polls
+        static let pollsCreate = "/api/polls"
+        static func pollsVote(_ pollId: String) -> String { "/api/polls/\(pollId)/vote" }
+        static func pollsResults(_ pollId: String) -> String { "/api/polls/\(pollId)/results" }
+        static func pollsRoom(_ roomId: String) -> String { "/api/polls/room/\(roomId)" }
+        
+        // Pinned Items
+        static let pinnedItems = "/api/pinned"
+        static func pinnedItem(_ itemId: String) -> String { "/api/pinned/\(itemId)" }
+        
+        // Bot Invites
+        static let botInvitesCreate = "/api/bot-invites/create"
+        static func botInvitesRedeem(_ token: String) -> String { "/api/bot-invites/redeem/\(token)" }
+        
+        // Nicknames
+        static let nicknames = "/api/nicknames"
+        static func nicknameRoom(_ roomId: String) -> String { "/api/nicknames/room/\(roomId)" }
+        
+        // Bandwidth
+        static let bandwidthPreference = "/api/bandwidth/preference"
+        
         // Presence
         static let presenceStatus = "/presence/status"
         static let presenceUpdate = "/presence/update"

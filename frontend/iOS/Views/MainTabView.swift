@@ -11,18 +11,24 @@ struct MainTabView: View {
                     Label("Home", systemImage: "house.fill")
                 }
                 .tag(0)
+                .accessibilityLabel("Home tab")
+                .accessibilityHint("View your rooms")
             
-            RoomListView()
+            SearchView()
                 .tabItem { 
-                    Label("Rooms", systemImage: "door.left.hand.open")
+                    Label("Search", systemImage: "magnifyingglass")
                 }
                 .tag(1)
+                .accessibilityLabel("Search tab")
+                .accessibilityHint("Search messages, rooms, and users")
             
             ProfileView()
                 .tabItem { 
                     Label("Settings", systemImage: "gearshape.fill")
                 }
                 .tag(2)
+                .accessibilityLabel("Settings tab")
+                .accessibilityHint("View profile and settings")
         }
         .tint(Color("SinapseGold"))
     }

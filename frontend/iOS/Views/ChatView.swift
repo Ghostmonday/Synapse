@@ -47,6 +47,9 @@ struct ChatView: View {
                 HStack(spacing: 12) {
                     TextField("Message...", text: $input)
                         .textFieldStyle(.roundedBorder)
+                        .font(.body) // Dynamic Type support
+                        .accessibilityLabel("Message input")
+                        .accessibilityHint("Type your message here")
                     
                     Button("Send") {
                         sendMessage()
@@ -58,6 +61,7 @@ struct ChatView: View {
                     .buttonStyle(.borderedProminent)
                     .tint(Color("SinapseGold"))
                     .disabled(input.isEmpty)
+                    .accessibleButton("Send message", hint: input.isEmpty ? "Message cannot be empty" : "Double tap to send")
                     .overlay(
                         Circle()
                             .fill(Color("SinapseGlow"))

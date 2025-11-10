@@ -25,6 +25,7 @@ struct ChatInputView: View {
                 TextField("Type a message...", text: $input)
                     .focused($isFocused)
                     .textFieldStyle(.plain)
+                    .font(.body) // Dynamic Type support
                     .padding(12)
                     .background(Color(UIColor.systemGray6))
                     .cornerRadius(20)
@@ -34,6 +35,8 @@ struct ChatInputView: View {
                     .onSubmit {
                         handleSend()
                     }
+                    .accessibilityLabel("Message input")
+                    .accessibilityHint("Type your message or use slash commands")
                 
                 Button(action: handleSend) {
                     Image(systemName: "arrow.up.circle.fill")
@@ -41,6 +44,7 @@ struct ChatInputView: View {
                         .foregroundColor(Color("SinapseGold"))
                 }
                 .disabled(input.isEmpty)
+                .accessibleButton("Send message", hint: input.isEmpty ? "Enter a message first" : "Double tap to send")
                 .overlay(
                     Circle()
                         .fill(Color("SinapseGlow"))

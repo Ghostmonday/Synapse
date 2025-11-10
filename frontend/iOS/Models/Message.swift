@@ -9,6 +9,7 @@ struct Message: Codable, Identifiable {
     let emotion: String? /// UX: For resonance layers
     let renderedHTML: String? /// Rendered HTML/Markdown for mentions and formatting
     let reactions: [MessageReaction]? /// Emoji reactions
+    let seenAt: Date? /// Read receipt timestamp
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -19,6 +20,13 @@ struct Message: Codable, Identifiable {
         case emotion
         case renderedHTML = "rendered_html"
         case reactions
+        case seenAt = "seen_at"
+    }
+    
+    /// Check if message is from current user
+    var isOwn: Bool {
+        // TODO: Compare with actual current user ID from AuthService
+        return false // Placeholder
     }
 }
 

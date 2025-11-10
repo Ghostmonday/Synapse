@@ -7,20 +7,28 @@ struct MessageBubbleView: View {
     let message: Message
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            // Message content with AttributedString for HTML/Markdown rendering
-            if let rendered = message.renderedHTML, !rendered.isEmpty {
-                Text(parseHTML(rendered))
-                    .font(.body)
-            } else {
-                Text(message.content)
-                    .font(.body)
+        HStack(alignment: .bottom, spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
+                // Message content with AttributedString for HTML/Markdown rendering
+                if let rendered = message.renderedHTML, !rendered.isEmpty {
+                    Text(parseHTML(rendered))
+                        .font(.body)
+                } else {
+                    Text(message.content)
+                        .font(.body)
+                }
+            }
+            .padding(12)
+            .background(bubbleBackground)
+            .foregroundColor(message.senderId == getCurrentUserId() ? .black : .white)
+            .cornerRadius(12)
+            
+            // Read receipt indicator for own messages
+            if message.senderId == getCurrentUserId() {
+                ReadReceiptIndicator(message: message, currentUserId: getCurrentUserId())
+                    .padding(.leading, 4)
             }
         }
-        .padding(12)
-        .background(bubbleBackground)
-        .foregroundColor(message.senderId == getCurrentUserId() ? .black : .white)
-        .cornerRadius(12)
     }
     
     private var bubbleBackground: some View {
