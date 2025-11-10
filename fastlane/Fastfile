@@ -1,0 +1,15 @@
+# Fastlane configuration for QA testing
+# NOTE: This is temporary QA infrastructure - can be removed after testing
+
+platform :ios do
+  lane :qa do
+    scan(
+      scheme: "Sinapse",
+      devices: ["iPhone 15"],
+      code_coverage: true,
+      clean: true
+    )
+    sh "./scripts/qa/run-all.sh"
+  end
+end
+

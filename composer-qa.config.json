@@ -1,0 +1,11 @@
+{
+  "personas": [
+    "Pro subscriber — simulate_purchase and refund flow (sandbox)",
+    "Casual user — joins voice room, sends message, leaves",
+    "Accessibility user — VoiceOver on, tests navigation"
+  ],
+  "targets": ["backend", "frontend/iOS"],
+  "output": "reports/uat.json",
+  "issueIntegration": "github"
+}
+

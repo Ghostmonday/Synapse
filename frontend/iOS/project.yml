@@ -53,3 +53,58 @@ targets:
               - UISceneConfigurationName: Default Configuration
                 UISceneDelegateClassName: $(PRODUCT_MODULE_NAME).SceneDelegate
 
+  SinapseTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Tests
+    dependencies:
+      - target: Sinapse
+    frameworks:
+      - Foundation
+      - XCTest
+      - SwiftUI
+      - Combine
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.sinapse.app.tests
+      SWIFT_VERSION: "6.0"
+      CODE_SIGN_STYLE: Automatic
+      TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Sinapse.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Sinapse"
+      BUNDLE_LOADER: "$(TEST_HOST)"
+
+  SinapseUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: UITests
+    dependencies:
+      - target: Sinapse
+    frameworks:
+      - Foundation
+      - XCTest
+      - XCTestUI
+      - SwiftUI
+      - UIKit
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.sinapse.app.uitests
+      SWIFT_VERSION: "6.0"
+      CODE_SIGN_STYLE: Automatic
+      TEST_TARGET_NAME: Sinapse
+
+schemes:
+  Sinapse:
+    build:
+      targets:
+        Sinapse: all
+    test:
+      targets:
+        - SinapseTests
+        - SinapseUITests
+      gatherCoverageData: true
+      commandLineArguments: {}
+      environmentVariables: {}
+    run:
+      config: Debug
+

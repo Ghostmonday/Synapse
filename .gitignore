@@ -84,3 +84,9 @@ coverage/
 # Test results
 test-results/
 *.test_result
+
+# QA Reports (temporary - can be removed)
+reports/*.json
+reports/*.html
+reports/*.xcresult
+!reports/.gitkeep
