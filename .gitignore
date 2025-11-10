@@ -68,3 +68,19 @@ CompilationCache.noindex/
 *.swo
 *~
 *.un~
+
+# Asset duplicates and malformed paths
+**/    */
+
+# Large binary files (if not needed)
+*.ipa
+*.dSYM.zip
+
+# Coverage reports
+*.gcda
+*.gcno
+coverage/
+
+# Test results
+test-results/
+*.test_result
