@@ -103,12 +103,23 @@ Sinapse/
 - Voice/video calls (LiveKit)
 - Presence indicators
 - Message reactions
+- Emotion pulse monitoring
+- Real-time telemetry
 
 ### AI Features
 - DeepSeek integration (moderation, optimization)
 - Autonomous system (healing loop, policy guard)
 - LLM parameter management
 - AI safeguards
+- Emotional state monitoring
+
+### iOS App
+- Modern SwiftUI interface with golden synapse theme
+- Animated launch screen
+- Dashboard with real-time metrics
+- Telemetry and analytics integration
+- Accessibility support
+- Dark mode support
 
 ### Data Management
 - Encrypted API key vault
@@ -261,6 +272,21 @@ terraform apply
 ## License
 
 See `legacy/LICENSE` for license information.
+
+## Recent Updates
+
+### iOS App Improvements (Latest)
+- **Modern Launch Screen**: Redesigned onboarding with animated golden glow effects
+- **Telemetry Integration**: Enabled emotion pulse monitoring and UX telemetry logging
+- **Build Cleanup**: Removed build artifacts from git tracking for cleaner repository
+- **Accessibility**: Fixed accessibility issues across chat and room views
+- **Code Quality**: Resolved naming conflicts and improved code organization
+
+### Previous Updates
+- Backend support for lazy loading messages with `since` parameter
+- Complete UI/UX roadmap implementation (Search, Read Receipts, File Upload, Polls, etc.)
+- Dark mode support and performance optimizations
+- Database vault system for secure API key storage
 
 ## Support
 
