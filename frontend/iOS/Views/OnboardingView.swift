@@ -1,6 +1,10 @@
 import SwiftUI
 import AuthenticationServices
 
+#if canImport(GoogleSignIn)
+import GoogleSignIn
+#endif
+
 struct OnboardingView: View {
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @State private var showContent = false
@@ -88,8 +92,10 @@ struct OnboardingView: View {
                 HStack(spacing: 12) {
                     // Sign In With Apple button
                     Button(action: {
-                        Task {
-                            await appleAuth.signIn()
+                        let helper = appleAuth
+                        Task { @MainActor in
+                            await helper.signIn()
+                            // Dismiss to HomeView - no prompts, no emails
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 hasCompletedOnboarding = true
                             }
@@ -97,7 +103,7 @@ struct OnboardingView: View {
                     }) {
                         HStack {
                             Image(systemName: "applelogo")
-                            Text("Sign In With Apple")
+                            Text("Sign in with Apple")
                                 .foregroundColor(.white)
                         }
                         .padding()
@@ -111,25 +117,30 @@ struct OnboardingView: View {
                     
                     // Sign In With Google button
                     Button(action: {
-                        Task {
+                        let helper = googleAuth
+                        Task { @MainActor in
                             do {
-                                let (idToken, email) = try await googleAuth.signIn()
-                                _ = try await AuthService.loginWithGoogle(idToken: idToken, email: email)
-                                // Auth successful - route to HomeView
+                                _ = try await helper.signIn()
+                                // Dismiss to HomeView - no prompts, no emails
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                     hasCompletedOnboarding = true
                                 }
                             } catch {
-                                print("Google Sign In error: \(error)")
+                                print("Google failed: \(error)")
                             }
                         }
                     }) {
                         HStack {
-                            // Google G icon - using SF Symbols alternative
+                            #if canImport(GoogleSignIn)
+                            Image("google_g")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 20, height: 20)
+                            #else
                             Text("G")
                                 .font(.system(size: 18, weight: .bold))
-                                .foregroundColor(.white)
-                            Text("Sign In With Google")
+                            #endif
+                            Text("Sign in with Google")
                                 .foregroundColor(.white)
                         }
                         .padding()
@@ -137,7 +148,6 @@ struct OnboardingView: View {
                         .cornerRadius(8)
                     }
                     .frame(maxWidth: .infinity)
-                    .disabled(!googleAuth.isAvailable)
                     .accessibilityLabel("Sign In With Google")
                     .accessibilityHint("Double tap to sign in with your Google account")
                 }
@@ -204,7 +214,7 @@ struct OnboardingView: View {
             }
         }
         .onChange(of: isAuthenticated) { authenticated in
-            // Snap off instantly when auth state changes
+            // Snap off instantly when auth state changes - no prompts, no emails
             if authenticated {
                 withAnimation(.easeOut(duration: 0.2)) {
                     hasCompletedOnboarding = true
