@@ -15,7 +15,7 @@ struct HomeView: View {
                             haptic.impactOccurred()
                             showRoomConfig(room)
                         }
-                        .tint(.gray)
+                        .tint(SynapseColors.secondary)
                     }
             }
             .refreshable {
@@ -28,7 +28,8 @@ struct HomeView: View {
                         haptic.impactOccurred()
                         // TODO: Show create room
                     }) {
-                        Image(systemName: "plus")
+                        Image(systemName: SynapseColors.logoImage)
+                            .foregroundColor(SynapseColors.primary)
                     }
                 }
             }
