@@ -6,35 +6,82 @@
 import apn from 'apn';
 import { supabase } from '../config/db.js';
 import { logError, logInfo } from '../shared/logger.js';
+import { getApiKey } from './api-keys-service.js';
 
 // Initialize APNs provider
 let apnProvider: apn.Provider | null = null;
+let apnProviderPromise: Promise<apn.Provider | null> | null = null;
 
-function getAPNProvider(): apn.Provider | null {
+async function getAPNProvider(): Promise<apn.Provider | null> {
+  // Return cached provider if available
   if (apnProvider) {
     return apnProvider;
   }
 
-  const apnKey = process.env.APN_KEY;
-  const apnKeyId = process.env.APN_KEY_ID;
-  const apnTeamId = process.env.APN_TEAM_ID;
-  const apnBundleId = process.env.APN_BUNDLE_ID;
-
-  if (!apnKey || !apnKeyId || !apnTeamId || !apnBundleId) {
-    logError('APNs configuration missing', new Error('APNs not configured'));
-    return null;
+  // If initialization is in progress, wait for it
+  if (apnProviderPromise) {
+    return await apnProviderPromise;
   }
 
+  // Start initialization
+  apnProviderPromise = initializeAPNProvider();
+  const provider = await apnProviderPromise;
+  apnProviderPromise = null; // Clear promise after completion
+  
+  return provider;
+}
+
+async function initializeAPNProvider(): Promise<apn.Provider | null> {
   try {
+    // Retrieve APN keys from vault
+    const [apnKey, apnKeyId, apnTeamId, apnBundleId] = await Promise.all([
+      getApiKey('APN_KEY').catch(() => process.env.APN_KEY || null),
+      getApiKey('APN_KEY_ID').catch(() => process.env.APN_KEY_ID || null),
+      getApiKey('APN_TEAM_ID').catch(() => process.env.APN_TEAM_ID || null),
+      getApiKey('APN_BUNDLE_ID').catch(() => process.env.APN_BUNDLE_ID || 'com.sinapse.app')
+    ]);
+
+    if (!apnKey || !apnKeyId || !apnTeamId) {
+      logError('APNs configuration missing', new Error('APNs not configured - missing required keys'));
+      return null;
+    }
+
+    // APN key can be either:
+    // 1. File path to .p8 file (if starts with / or ./)
+    // 2. Key content as string (if contains BEGIN PRIVATE KEY)
+    // 3. Base64 encoded key content
+    
+    let keyContent: string | Buffer = apnKey;
+    
+    // If it's a file path, read the file
+    if (apnKey.startsWith('/') || apnKey.startsWith('./') || apnKey.endsWith('.p8')) {
+      try {
+        const fs = await import('fs/promises');
+        keyContent = await fs.readFile(apnKey, 'utf8');
+      } catch (fileError: any) {
+        logError('Failed to read APN key file', fileError);
+        // Fallback: try using the string as-is (might be key content)
+      }
+    } else if (!apnKey.includes('BEGIN PRIVATE KEY') && !apnKey.includes('BEGIN RSA PRIVATE KEY')) {
+      // Might be base64 encoded, try decoding
+      try {
+        keyContent = Buffer.from(apnKey, 'base64').toString('utf8');
+      } catch {
+        // Not base64, use as-is
+        keyContent = apnKey;
+      }
+    }
+
     apnProvider = new apn.Provider({
       token: {
-        key: apnKey,
+        key: keyContent,
         keyId: apnKeyId,
         teamId: apnTeamId
       },
       production: process.env.NODE_ENV === 'production'
     });
 
+    logInfo('APNs provider initialized successfully');
     return apnProvider;
   } catch (error: any) {
     logError('Failed to initialize APNs provider', error);
@@ -118,14 +165,18 @@ async function sendAPNNotification(
   body: string,
   data?: Record<string, any>
 ) {
-  const provider = getAPNProvider();
+  const provider = await getAPNProvider();
   if (!provider) {
+    logError('APNs provider not available', new Error('Cannot send notification'));
     return;
   }
 
+  // Get bundle ID from vault or env
+  const bundleId = await getApiKey('APN_BUNDLE_ID').catch(() => process.env.APN_BUNDLE_ID || 'com.sinapse.app');
+  
   const notification = new apn.Notification();
   notification.alert = { title, body };
-  notification.topic = process.env.APN_BUNDLE_ID || 'com.sinapse.app';
+  notification.topic = bundleId;
   notification.payload = data || {};
   notification.sound = 'default';
   notification.badge = 1;
