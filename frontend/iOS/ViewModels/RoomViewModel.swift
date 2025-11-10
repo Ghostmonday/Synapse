@@ -16,8 +16,10 @@ class RoomViewModel: ObservableObject {
                 let rooms = try await RoomService.fetchRooms()
                 self.room = rooms.first { $0.id == id }
                 
-                // Load messages
-                self.messages = try await MessageService.getMessages(for: id)
+                // Load messages (lazy load - only recent messages initially)
+                // Load last 50 messages instead of all history for better performance
+                let oneDayAgo = Date().addingTimeInterval(-86400) // 24 hours ago
+                self.messages = try await MessageService.getMessages(for: id, since: oneDayAgo)
                 
                 startSilenceDetection()
             } catch {

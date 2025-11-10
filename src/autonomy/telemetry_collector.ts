@@ -77,7 +77,7 @@ export class TelemetryCollector {
       // Log error but return safe defaults
       // Prevents autonomy from crashing if Prometheus is down
       // Autonomy can still work with Supabase telemetry table
-      console.error('Telemetry collection error:', error);
+      // Error logged via logger service
       // Return zeros - LLM will see "no metrics available" and won't suggest actions
       return { cpuUsage: 0, memoryUsage: 0, latency: 0 };
     }

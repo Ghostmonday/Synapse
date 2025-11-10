@@ -5,6 +5,7 @@ import SwiftUI
 struct SinapseApp: App {
     @StateObject private var presenceViewModel = PresenceViewModel()
     @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @State private var darkMode = false
     
     init() {
         // Global tint - golden synapse theme
@@ -31,23 +32,30 @@ struct SinapseApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if hasCompletedOnboarding {
-                MainTabView()
-                    .environmentObject(presenceViewModel)
-                    .task {
-                        // Restore IAP on launch
-                        await SubscriptionManager.shared.restorePurchases()
-                        // Preload services
-                        Task.detached {
-                            await RoomService.preload()
-                            await AIService.preload()
+            Group {
+                if hasCompletedOnboarding {
+                    MainTabView()
+                        .environmentObject(presenceViewModel)
+                        .task {
+                            // Restore IAP on launch
+                            await SubscriptionManager.shared.restorePurchases()
+                            // Preload services
+                            Task.detached {
+                                await RoomService.preload()
+                                await AIService.preload()
+                            }
+                            // Start telemetry monitoring
+                            SystemMonitor.shared.monitorTelemetry()
                         }
-                        // Start telemetry monitoring
-                        SystemMonitor.shared.monitorTelemetry()
-                    }
-            } else {
-                OnboardingView()
+                } else {
+                    OnboardingView()
+                }
             }
+            .onAppear {
+                darkMode = UIScreen.main.traitCollection.userInterfaceStyle == .dark
+            }
+            .accentColor(darkMode ? .white : .black)
+            .preferredColorScheme(darkMode ? .dark : .light)
         }
     }
 }

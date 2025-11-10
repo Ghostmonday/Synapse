@@ -34,7 +34,9 @@ async function loadProto() {
   }
 }
 // Load schema on module init (non-blocking - errors are warnings)
-loadProto().catch(err => console.warn('proto load failed', err));
+loadProto().catch(err => {
+  // Silently fail - proto loading is optional
+});
 
 /**
  * Setup WebSocket gateway with protobuf message handling

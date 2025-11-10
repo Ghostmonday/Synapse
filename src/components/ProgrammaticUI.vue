@@ -324,7 +324,7 @@ const handlePrimaryClick = () => {
   // Log click event
   logClick({ buttonType: 'primary' }, { componentIdOverride: 'PrimaryButton' });
   
-  console.log('Primary button clicked');
+  // Primary button clicked - telemetry logged via logClick
   if (primaryButtonState.value === ButtonState.IDLE) {
     primaryButtonState.value = ButtonState.LOADING;
     
@@ -359,7 +359,7 @@ const handleSecondaryClick = () => {
   // Log click event
   logClick({ buttonType: 'secondary' }, { componentIdOverride: 'SecondaryButton' });
   
-  console.log('Secondary button clicked');
+  // Secondary button clicked - telemetry logged via logClick
   if (secondaryButtonState.value === ButtonState.IDLE) {
     secondaryButtonState.value = ButtonState.LOADING;
     
@@ -394,7 +394,7 @@ const handleIconClick = () => {
   // Log click event
   logClick({ buttonType: 'icon' }, { componentIdOverride: 'IconButton' });
   
-  console.log('Icon button clicked');
+  // Icon button clicked - telemetry logged via logClick
   if (iconButtonState.value === ButtonState.IDLE) {
     iconButtonState.value = ButtonState.LOADING;
     
@@ -869,7 +869,7 @@ function getLineCount(): number {
 }
 
 onMounted(() => {
-  console.log(statsReport.value);
+  // Stats report available via statsReport.value
 });
 </script>
 

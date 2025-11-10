@@ -16,7 +16,9 @@ export function handlePresence(ws: WebSocket, envelope: any) {
   // Update user presence to 'online' in Redis
   // This is used to show "User is online" status in UI
   // .catch() prevents presence update failures from crashing WebSocket handler
-  updatePresence(senderId, 'online').catch(console.error); // Silent fail: presence update lost, user shows offline
+  updatePresence(senderId, 'online').catch(() => {
+    // Silent fail: presence update lost, user shows offline
+  });
   
   // Send acknowledgment back to client
   // Confirms presence update was received

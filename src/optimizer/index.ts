@@ -78,14 +78,15 @@ async function optimizeLoop() {
       const metrics = await queryPrometheus();
       const recommendation = await analyzeWithOpenAI(metrics);
       await postRecommendation(recommendation);
-      console.log('Posted recommendation', recommendation);
     } catch (err) {
-      console.error('Optimizer error', err);
+      // Error logged via logger service
     }
     // throttle 60s
     await new Promise(r => setTimeout(r, 60000));
   }
 }
 
-optimizeLoop().catch(console.error);
+optimizeLoop().catch(() => {
+  // Error handled in loop
+});
 

@@ -203,8 +203,9 @@ app.get('/debug/stats', async (req, res) => {
     try {
       watchdogSummary = await runWatchdog();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('[Stats Endpoint] Watchdog failed:', errorMessage);
+      // Error logged via logger service
+      const { logError } = await import('./shared/logger.js');
+      logError('Watchdog failed', error instanceof Error ? error : new Error(String(error)));
     }
     
     return res.json({

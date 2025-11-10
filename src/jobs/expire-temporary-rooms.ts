@@ -55,11 +55,11 @@ export default async function expireRooms(): Promise<void> {
 if (import.meta.url === `file://${process.argv[1]}`) {
   expireRooms()
     .then(() => {
-      console.log('Room expiry job completed successfully');
+      logInfo('Room expiry job completed successfully');
       process.exit(0);
     })
     .catch((error) => {
-      console.error('Room expiry job failed:', error);
+      logError('Room expiry job failed', error);
       process.exit(1);
     });
 }
