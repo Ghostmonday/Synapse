@@ -7,6 +7,6 @@ enum SynapseColors {
     static let background = Color("SinapseDeep")
     static let accent = Color("SinapseGoldDark")
     static let glow = Color("SinapseGlow")
-    static let logoImage = "brain.head.profile"
+    static let logoImage = "SplashBackground"
 }
 

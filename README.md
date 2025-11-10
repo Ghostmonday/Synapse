@@ -27,8 +27,7 @@ Sinapse/
 ├── infra/                 # Infrastructure as Code
 │   └── aws/              # Terraform configurations
 ├── config/                # Configuration files
-├── specs/                 # API specifications
-└── legacy/                # Archived documentation/files
+└── specs/                 # API specifications
 ```
 
 ## Tech Stack
@@ -273,7 +272,7 @@ terraform apply
 
 ## License
 
-See `legacy/LICENSE` for license information.
+MIT License - See repository root for details.
 
 ## Recent Updates
 
@@ -299,5 +298,5 @@ See `legacy/LICENSE` for license information.
 
 ## Support
 
-For issues and questions, check `legacy/` for archived documentation.
+For issues and questions, check the repository documentation.
 

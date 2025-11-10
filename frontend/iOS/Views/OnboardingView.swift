@@ -53,28 +53,14 @@ struct OnboardingView: View {
                 
                 // App Icon/Logo area
                 VStack(spacing: 16) {
-                    // Sinapse icon placeholder - replace with actual app icon
-                    ZStack {
-                        Circle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        Color("SinapseGold"),
-                                        Color("SinapseGoldDark")
-                                    ],
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
-                                )
-                            )
-                            .frame(width: 120, height: 120)
-                            .shadow(color: Color("SinapseGold").opacity(0.5), radius: 20)
-                        
-                        Image(systemName: "brain.head.profile")
-                            .font(.system(size: 60, weight: .light))
-                            .foregroundColor(.black)
-                    }
-                    .scaleEffect(showContent ? 1.0 : 0.8)
-                    .opacity(showContent ? 1.0 : 0.0)
+                    // Actual logo from assets
+                    Image(SynapseColors.logoImage)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .shadow(color: SynapseColors.glow.opacity(0.5), radius: 20)
+                        .scaleEffect(showContent ? 1.0 : 0.8)
+                        .opacity(showContent ? 1.0 : 0.0)
                     
                     // App name with glow effect
                     Text("Sinapse")
@@ -144,11 +130,11 @@ struct OnboardingView: View {
                 return
             }
             
-            // Otherwise show content with minimal delay
-            withAnimation(.easeOut(duration: 0.6).delay(0.1)) {
+            // Show content instantly - no delays
+            withAnimation(.easeOut(duration: 0.6)) {
                 showContent = true
             }
-            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true).delay(0.3)) {
+            withAnimation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true)) {
                 pulseAnimation = true
             }
         }

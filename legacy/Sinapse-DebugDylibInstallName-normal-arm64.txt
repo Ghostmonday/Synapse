@@ -1,1 +1,0 @@
-@rpath/Sinapse.debug.dylib
