@@ -21,6 +21,8 @@ secrets/
 *.zip
 *.tar.gz
 *.tgz
+artifacts/
+cache/
 
 # Archive and temporary files
 docs/archive/
