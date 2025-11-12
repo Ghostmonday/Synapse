@@ -34,6 +34,7 @@ logs/
 
 # iOS build artifacts
 frontend/iOS/build/
+frontend/iOS/.swiftpm/
 frontend/iOS/*.xcworkspace/xcuserdata/
 frontend/iOS/*.xcodeproj/xcuserdata/
 frontend/iOS/*.xcodeproj/project.xcworkspace/xcuserdata/
