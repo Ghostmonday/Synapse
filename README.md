@@ -219,6 +219,31 @@ All other keys (Apple, LiveKit, JWT, AI, AWS) are stored in the database vault.
 - `npm start` - Run production server
 - `npm run validate` - Validate OpenAPI spec
 
+## Feature Tag Glossary
+
+This codebase uses structured tags in comments to map code → features → contracts → validation gates. This enables:
+- **Grok AI** to understand feature boundaries and dependencies
+- **Developers** to quickly find related code
+- **Automated tooling** to generate documentation and validate gates
+
+**See**: [`TAGS.md`](./TAGS.md) for complete tag definitions and [`MAP.md`](./MAP.md) for feature → module mapping.
+
+### Quick Reference
+
+- **Feature Tags**: `[FEATURE: Paywalls]`, `[FEATURE: Telemetry]`, `[FEATURE: VoiceToCode]`, etc.
+- **Gate Tags**: `[GATE]`, `[SEC]`, `[PRIVACY]`, `[PERF]`, `[RELIAB]`
+- **Domain Tags**: `[API]`, `[EVENT]`, `[DB]`, `[CHAIN]`, `[LLM]`, `[VOICE]`, `[UI]`
+
+**Example**:
+```swift
+// [FEATURE: Paywalls] [GATE] [SEC]
+// PURPOSE: Verify subscription tier before allowing premium feature access
+// GATES: [GATE] unit:test_subscription_gate; integration:paywall_flow
+func checkSubscriptionAccess() -> Bool { ... }
+```
+
+All source files include module headers and function-level anchors. See any annotated file for the pattern.
+
 ## Development
 
 ### Adding a New Route

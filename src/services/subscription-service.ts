@@ -1,6 +1,12 @@
 /**
- * Subscription Service
- * Manages user subscription tiers and limits
+ * Module: subscription-service
+ * Purpose: Manage user subscription tiers, enforce limits, and sync with iOS StoreKit purchases.
+ * Related: [FEATURE: Paywalls] [DB] [API] [GATE] [SEC]
+ * Public APIs: getUserSubscription(), getSubscriptionLimits(), updateSubscription()
+ * Events: [EVENT] subscription_updated (via updateSubscription)
+ * DB/State: table:users, column:subscription (enum: free|pro|team)
+ * Gates: [GATE] unit:subscription-service.test.ts; integration:IAP flow; tier enforcement
+ * Owner: [OWNER:backend]
  */
 
 import { findOne, updateOne } from '../shared/supabase-helpers.js';
@@ -40,6 +46,11 @@ const TIER_LIMITS: Record<SubscriptionTier, SubscriptionLimits> = {
   }
 };
 
+// [FEATURE: Paywalls] [DB] [GATE]
+// PURPOSE: Get user's current subscription tier from database
+// INPUTS: userId (string)
+// OUTPUTS: SubscriptionTier enum (defaults to FREE on error)
+// GATES: [GATE] unit:test_get_user_subscription; error handling; default fallback
 export async function getUserSubscription(userId: string): Promise<SubscriptionTier> {
   try {
     const user = await findOne<{ subscription: string }>('users', { id: userId });
@@ -53,11 +64,22 @@ export async function getUserSubscription(userId: string): Promise<SubscriptionT
   }
 }
 
+// [FEATURE: Paywalls] [GATE]
+// PURPOSE: Get subscription limits for a user based on their tier
+// INPUTS: userId (string)
+// OUTPUTS: SubscriptionLimits object with aiMessages, maxRooms, storageMB, voiceCallMinutes
+// GATES: [GATE] unit:test_get_subscription_limits; tier mapping validation
 export async function getSubscriptionLimits(userId: string): Promise<SubscriptionLimits> {
   const tier = await getUserSubscription(userId);
   return TIER_LIMITS[tier];
 }
 
+// [FEATURE: Paywalls] [DB] [EVENT] [SEC] [GATE]
+// PURPOSE: Update user subscription tier in database (called after IAP verification)
+// INPUTS: userId (string), tier (SubscriptionTier)
+// OUTPUTS: void (throws on error)
+// EMITS: [EVENT] subscription_updated (implicit via DB update)
+// GATES: [GATE] unit:test_update_subscription; integration:IAP verification flow; RBAC check
 export async function updateSubscription(userId: string, tier: SubscriptionTier): Promise<void> {
   try {
     await updateOne('users', userId, { subscription: tier });
@@ -66,4 +88,12 @@ export async function updateSubscription(userId: string, tier: SubscriptionTier)
     throw error;
   }
 }
+
+// === GATE CHECKLIST ===
+// - Unit tests: subscription-service.test.ts coverage >= 90% [GATE] [RELIAB]
+// - Integration: IAP verification → updateSubscription flow [GATE] [FEATURE: Paywalls]
+// - Security: RBAC check before updateSubscription (caller responsibility) [SEC] [GATE]
+// - Database: users.subscription column validation [DB] [GATE]
+// - Error handling: Default to FREE tier on errors [GATE] [RELIAB]
+// - Telemetry: subscription_updated event emission [EVENT] [FEATURE: Telemetry]
 
