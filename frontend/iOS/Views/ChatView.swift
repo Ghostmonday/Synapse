@@ -4,9 +4,11 @@ import SwiftUI
 struct ChatView: View {
     let room: Room?
     @StateObject private var viewModel = RoomViewModel()
+    @StateObject private var subManager = SubscriptionManager.shared
     @State private var input: String = ""
     @State private var showFlaggedToast = false
     @State private var flaggedSuggestion: String = ""
+    @State private var showPaywall = false
     @State private var haptic = UIImpactFeedbackGenerator(style: .light)
     
     init(room: Room? = nil) {
@@ -52,6 +54,11 @@ struct ChatView: View {
                         .accessibilityHint("Type your message here")
                     
                     Button("Send") {
+                        // Check entitlement before sending AI message
+                        if !subManager.hasEntitlement(for: "pro_monthly") && !subManager.hasEntitlement(for: "pro_annual") {
+                            showPaywall = true
+                            return
+                        }
                         sendMessage()
                         haptic.impactOccurred()
                         withAnimation(.easeOut(duration: 0.4)) {
@@ -77,6 +84,9 @@ struct ChatView: View {
             }
             .navigationTitle(room?.name ?? "Chat")
             .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $showPaywall) {
+                SubscriptionView()
+            }
         }
         .task {
             if let roomId = room?.id {

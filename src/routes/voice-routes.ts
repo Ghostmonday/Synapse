@@ -9,6 +9,7 @@ import { authMiddleware } from '../server/middleware/auth.js';
 import { logError } from '../shared/logger.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 import { getLiveKitKeys } from '../services/api-keys-service.js';
+import { checkQuota, incrementUsage } from '../services/usageMeter.js';
 
 const router = Router();
 
@@ -32,9 +33,25 @@ router.post('/rooms/:room_name/join', async (req: AuthenticatedRequest, res: Res
       return res.status(400).json({ error: 'Invalid room_name' });
     }
 
+    // Check voice minutes quota (free tier: 30 minutes/month)
+    const VOICE_MINUTES_LIMIT = 30;
+    const withinQuota = await checkQuota(userId, 'voice_minutes', VOICE_MINUTES_LIMIT);
+    if (!withinQuota) {
+      return res.status(403).json({
+        error: 'Voice minutes limit reached',
+        upgrade_url: '/subscription/upgrade',
+        limit: VOICE_MINUTES_LIMIT,
+        message: `You've reached your monthly voice minutes limit. Upgrade to Pro for unlimited voice calls.`
+      });
+    }
+
     // Create or get voice room
     const voiceRoomName = `voice_${room_name}`;
     await liveKitService.createVoiceRoom(voiceRoomName);
+    
+    // Note: Voice minutes will be incremented when call ends (tracked client-side or via webhook)
+    // For now, increment by 1 minute on join (will be updated with actual duration later)
+    await incrementUsage(userId, 'voice_minutes', 1);
 
     // Generate participant token
     const token = await liveKitService.generateParticipantToken( // Silent fail: token generation can throw, no retry

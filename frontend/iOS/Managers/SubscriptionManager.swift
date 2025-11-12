@@ -9,6 +9,7 @@
  * Owner: [OWNER:ios-team]
  */
 import StoreKit
+import SwiftUI
 import Foundation
 
 /// StoreKit 2 subscription manager with multi-tier support
@@ -17,9 +18,13 @@ import Foundation
 class SubscriptionManager: ObservableObject {
     static let shared = SubscriptionManager()
     
+    @Published var products: [Product] = []
+    @Published var entitlements: Set<String> = []
     @Published var currentTier: SubscriptionTier = .starter
     @Published var isPro: Bool = false // Legacy support
     @Published var subscriptionStatus: Product.SubscriptionInfo.Status?
+    
+    private var updatesTask: Task<Void, Never>?
     
     private let productIds: [SubscriptionTier: String] = [
         .starter: "com.sinapse.starter.monthly",
@@ -27,10 +32,96 @@ class SubscriptionManager: ObservableObject {
         .enterprise: "com.sinapse.enterprise.monthly"
     ]
     
-    private init() {
-        Task {
-            await checkSubscriptionStatus()
+    // Product IDs for StoreKit (matching spec)
+    private let storeKitProductIDs = ["pro_monthly", "pro_annual"]
+    
+    init() {
+        updatesTask = Task { await listenForTransactions() }
+        Task { await loadProducts() }
+        Task { await checkSubscriptionStatus() }
+    }
+    
+    /// Load products from StoreKit
+    func loadProducts() async {
+        do {
+            products = try await Product.products(for: storeKitProductIDs)
+            print("[SubscriptionManager] ✅ Loaded \(products.count) products")
+        } catch {
+            print("[SubscriptionManager] ❌ Error loading products: \(error)")
         }
+    }
+    
+    /// Purchase a product
+    func purchase(_ product: Product) async throws {
+        let result = try await product.purchase()
+        
+        switch result {
+        case .success(let verification):
+            if case .verified(let transaction) = verification {
+                await updateEntitlements()
+                await transaction.finish()
+                print("[SubscriptionManager] ✅ Purchase successful: \(product.id)")
+                
+                // Log telemetry event (via UXTelemetryService)
+                Task {
+                    await UXTelemetryService.shared.logEvent(
+                        eventType: .uiClick,
+                        category: .clickstream,
+                        metadata: [
+                            "event": "purchase_success",
+                            "product_id": product.id,
+                            "transaction_id": String(transaction.id),
+                            "componentId": "SubscriptionManager"
+                        ]
+                    )
+                }
+            } else {
+                print("[SubscriptionManager] ⚠️ Transaction unverified")
+            }
+        case .userCancelled:
+            print("[SubscriptionManager] ⚠️ User cancelled purchase")
+        case .pending:
+            print("[SubscriptionManager] ⏳ Purchase pending")
+        @unknown default:
+            break
+        }
+    }
+    
+    /// Listen for transaction updates (for renewals, cancellations, etc.)
+    private func listenForTransactions() async {
+        for await verification in Transaction.updates {
+            if case .verified(let transaction) = verification {
+                await updateEntitlements()
+                await transaction.finish()
+                print("[SubscriptionManager] ✅ Processed transaction update: \(transaction.productID)")
+            }
+        }
+    }
+    
+    /// Update entitlements from current transactions
+    private func updateEntitlements() async {
+        entitlements.removeAll()
+        
+        for await result in Transaction.currentEntitlements {
+            if case .verified(let transaction) = result {
+                entitlements.insert(transaction.productID)
+                print("[SubscriptionManager] ✅ Active entitlement: \(transaction.productID)")
+            }
+        }
+        
+        // Update tier based on entitlements
+        if entitlements.contains("pro_monthly") || entitlements.contains("pro_annual") {
+            currentTier = .professional
+            isPro = true
+        } else {
+            currentTier = .starter
+            isPro = false
+        }
+    }
+    
+    /// Check if user has entitlement for a product ID
+    func hasEntitlement(for productID: String) -> Bool {
+        return entitlements.contains(productID)
     }
     
     // [FEATURE: Paywalls] [API] [SEC] [GATE]
@@ -106,6 +197,7 @@ class SubscriptionManager: ObservableObject {
     /// Restore purchases on launch
     func restorePurchases() async {
         try? await AppStore.sync()
+        await updateEntitlements()
         await checkSubscriptionStatus()
     }
     

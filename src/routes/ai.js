@@ -6,6 +6,7 @@ import { Router } from 'express';
 import { logError } from '../shared/logger.js';
 import { authMiddleware } from '../server/middleware/auth.js';
 import { checkUsageLimit, trackUsage } from '../services/usage-service.js';
+import { checkQuota, incrementUsage } from '../services/usageMeter.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const router = Router();
@@ -23,20 +24,23 @@ router.post('/chat', authMiddleware, async (req: AuthenticatedRequest, res) => {
       return res.status(400).json({ error: 'message and roomId are required' });
     }
 
-    // Check AI message limit
-    const limitCheck = await checkUsageLimit(userId, 'aiMessages');
-    if (!limitCheck.allowed) {
+    // Check AI calls quota using new metering system
+    const AI_CALLS_LIMIT = 100; // Free tier limit
+    const withinQuota = await checkQuota(userId, 'ai_calls', AI_CALLS_LIMIT);
+    if (!withinQuota) {
       return res.status(403).json({
-        error: 'AI message limit reached',
+        error: 'AI call limit reached',
         upgrade_url: '/subscription/upgrade',
-        limit: limitCheck.limit,
-        used: limitCheck.used,
-        message: `You've used ${limitCheck.used} of ${limitCheck.limit} AI messages this month. Upgrade to Pro for unlimited AI messages.`
+        limit: AI_CALLS_LIMIT,
+        message: `You've reached your monthly AI call limit. Upgrade to Pro for unlimited AI calls.`
       });
     }
 
-    // Track usage BEFORE processing
+    // Track usage BEFORE processing (legacy system)
     await trackUsage(userId, 'ai_message', 1, { roomId });
+    
+    // Increment usage using new metering system
+    await incrementUsage(userId, 'ai_calls', 1);
 
     // Integrate with DeepSeek API for AI responses
     const { getDeepSeekKey } = await import('../services/api-keys-service.js');

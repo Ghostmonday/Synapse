@@ -9,11 +9,42 @@ struct VoiceRoomView: View {
     let token: String
     
     @StateObject private var roomManager = LiveKitRoomManager()
+    @StateObject private var subManager = SubscriptionManager.shared
     @State private var isPushToTalk: Bool = false
     @State private var latency: Int = 0
     @State private var isPTTActive: Bool = false
+    @State private var showPaywall = false
     
     var body: some View {
+        Group {
+            // Check entitlement before showing voice room
+            if !subManager.hasEntitlement(for: "pro_monthly") && !subManager.hasEntitlement(for: "pro_annual") {
+                VStack(spacing: 20) {
+                    Text("Voice Rooms Require Pro")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("SinapseGold"))
+                    
+                    Text("Upgrade to Pro to access voice rooms")
+                        .foregroundColor(.secondary)
+                    
+                    Button("View Plans") {
+                        showPaywall = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(Color("SinapseGold"))
+                }
+                .padding()
+                .sheet(isPresented: $showPaywall) {
+                    SubscriptionView()
+                }
+            } else {
+                voiceRoomContent
+            }
+        }
+    }
+    
+    private var voiceRoomContent: some View {
         VStack(spacing: 20) {
             // Connection status
             if roomManager.isConnected {

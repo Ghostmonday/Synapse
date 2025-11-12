@@ -6,6 +6,7 @@
 import { AccessToken } from '@livekit/server-sdk';
 import { logError, logInfo } from '../shared/logger.js';
 import { getLiveKitKeys } from './api-keys-service.js';
+import { hasEntitlement } from './entitlements.js';
 
 /**
  * Generate LiveKit token for a room
@@ -13,12 +14,20 @@ import { getLiveKitKeys } from './api-keys-service.js';
  * @param roomId - Room ID (used as room name)
  * @param role - Participant role: 'admin' or 'guest'
  * @returns JWT token string
+ * @throws Error if user doesn't have voice entitlement
  */
 export async function generateLiveKitToken(
   userId: string,
   roomId: string,
   role: 'admin' | 'guest' = 'guest'
 ): Promise<string> {
+  // Check if user has voice entitlement (pro_monthly or pro_annual)
+  const hasVoiceAccess = await hasEntitlement(userId, 'pro_monthly') || 
+                         await hasEntitlement(userId, 'pro_annual');
+  
+  if (!hasVoiceAccess) {
+    throw new Error('Voice access requires Pro subscription. Please upgrade.');
+  }
   try {
     const livekitKeys = await getLiveKitKeys();
     const apiKey = livekitKeys.apiKey;

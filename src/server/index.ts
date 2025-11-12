@@ -25,6 +25,7 @@ import adminRoutes from '../routes/admin-routes.js';
 import voiceRoutes from '../routes/voice-routes.js';
 import aiopsRoutes from './routes/aiops.js';
 import subscriptionRoutes from '../routes/subscription-routes.js';
+import entitlementsRoutes from '../routes/entitlements-routes.js';
 import assistantsRoutes from '../routes/assistants-routes.js';
 import botsRoutes from '../routes/bots-routes.js';
 import healthRoutes from '../routes/health-routes.js';
@@ -114,6 +115,9 @@ app.use('/telemetry', telemetryRoutes);
 app.use('/admin', adminRoutes);
 app.use('/voice', voiceRoutes);
 app.use('/subscription', subscriptionRoutes);
+app.use('/entitlements', entitlementsRoutes);
+import { appStoreWebhook } from '../services/webhooks.js';
+app.post('/appstore-webhook', appStoreWebhook);
 app.use('/api', adminRoutes); // Also mount admin routes at /api for health and demo-seed
 app.use('/api/aiops', aiopsRoutes);
 app.use('/api/assistants', assistantsRoutes);
