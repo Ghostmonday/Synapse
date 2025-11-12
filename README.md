@@ -18,7 +18,8 @@ Sinapse/
 ├── frontend/              # iOS native app
 │   └── iOS/              # SwiftUI application
 ├── sql/                   # Database migrations
-│   └── migrations/       # Versioned SQL scripts
+│   ├── migrations/       # Versioned SQL scripts
+│   └── archive/         # Legacy SQL files
 ├── supabase/              # Supabase Edge Functions
 │   └── functions/        # Serverless functions
 ├── scripts/               # Operational scripts
@@ -27,6 +28,9 @@ Sinapse/
 ├── infra/                 # Infrastructure as Code
 │   └── aws/              # Terraform configurations
 ├── config/                # Configuration files
+├── docs/                  # Documentation
+│   ├── reports/         # Audit reports and summaries
+│   └── threat_model.md  # Security documentation
 └── specs/                 # API specifications
 ```
 

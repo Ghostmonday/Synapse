@@ -23,6 +23,9 @@ secrets/
 *.tgz
 artifacts/
 cache/
+contracts/out/
+contracts/cache/
+contracts/lib/
 
 # Archive and temporary files
 docs/archive/
