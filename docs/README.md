@@ -18,6 +18,6 @@ This directory contains all project documentation organized by category.
 ## Root Documentation
 
 - `README.md` - Main project README (in root)
-- `MAP.md` - Project map and architecture overview
-- `TAGS.md` - Tag system documentation
+- `docs-root/MAP.md` - Project map and architecture overview
+- `docs-root/TAGS.md` - Tag system documentation
 

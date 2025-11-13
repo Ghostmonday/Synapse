@@ -1,9 +1,0 @@
-{
-  "pattern": "high emotional volatility",
-  "threshold": 0.3,
-  "action": "flag_for_ux_review",
-  "target": "User experience flow",
-  "priority": "medium",
-  "description": "Detects high variance in user sentiment scores across messages, suggesting an inconsistent or frustrating UX."
-}
-

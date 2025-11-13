@@ -6,7 +6,7 @@
 import { Router } from 'express';
 import { supabase } from '../config/db.js';
 import { logError } from '../shared/logger.js';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { getUserSubscription, SubscriptionTier } from '../services/subscription-service.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 

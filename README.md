@@ -240,7 +240,7 @@ This codebase uses structured tags in comments to map code → features → vali
 - **Developers** to quickly find related code
 - **Automated tooling** to generate documentation and validate gates
 
-**See**: [`TAGS.md`](./TAGS.md) for complete tag definitions and [`MAP.md`](./MAP.md) for feature → module mapping.
+**See**: [`docs-root/TAGS.md`](./docs-root/TAGS.md) for complete tag definitions and [`docs-root/MAP.md`](./docs-root/MAP.md) for feature → module mapping.
 
 ### Quick Reference
 

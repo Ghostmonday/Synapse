@@ -4,6 +4,17 @@ import { logAudit } from '../shared/logger.js';
 
 const redis = getRedisClient();
 
+// User presence (online/offline status)
+export async function getPresence(userId: string) {
+  const status = await redis.get(`presence:${userId}`);
+  return { status: status || 'offline' };
+}
+
+export async function updatePresence(userId: string, status: string) {
+  await redis.set(`presence:${userId}`, status, 'EX', 3600); // expire in 1 hour
+  await redis.publish('presence_updates', JSON.stringify({ userId, status, ts: Date.now() }));
+}
+
 export async function updateRoomPresence(roomId: string, userId: string, status: string): Promise<void> {
   await redis.hset(`presence:${roomId}`, userId, status);
   await supabase.from('presence_logs').insert({ user_id: userId, room_id: roomId, status });

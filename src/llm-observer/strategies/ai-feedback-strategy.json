@@ -1,9 +1,0 @@
-{
-  "pattern": "low AI suggestion acceptance rate",
-  "threshold": 0.5,
-  "action": "review_ai_suggestion_quality",
-  "target": "AI suggestion engine",
-  "priority": "high",
-  "description": "Detects when users reject AI suggestions more than 50% of the time, indicating poor suggestion quality or relevance."
-}
-

@@ -1,9 +1,0 @@
-{
-  "pattern": "high funnel dropoff rate",
-  "threshold": 0.4,
-  "action": "optimize_onboarding_flow",
-  "target": "User onboarding funnel",
-  "priority": "high",
-  "description": "Detects when more than 40% of users drop off before completing key funnel checkpoints, indicating onboarding friction."
-}
-

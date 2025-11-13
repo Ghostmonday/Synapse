@@ -5,7 +5,7 @@
 
 import { Router, Response, NextFunction } from 'express';
 import { liveKitService } from '../services/livekit-service.js';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { logError } from '../shared/logger.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 import { getLiveKitKeys } from '../services/api-keys-service.js';

@@ -4,7 +4,7 @@
  */
 
 import { Router } from 'express';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { getEntitlements, updateSubscription } from '../services/entitlements.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 

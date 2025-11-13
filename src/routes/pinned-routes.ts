@@ -3,7 +3,7 @@
  */
 
 import { Router } from 'express';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 import { pinRoom, unpinRoom, getPinnedRooms, isRoomPinned } from '../services/pinned-items-service.js';
 import { logError } from '../shared/logger.js';

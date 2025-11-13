@@ -1,9 +1,0 @@
-{
-  "pattern": "presence latency between real-world and system status",
-  "threshold": 5000,
-  "action": "repair_presence_accuracy",
-  "target": "src/services/presence-service.ts",
-  "priority": "medium",
-  "autonomyRole": "LLM repairs presence accuracy"
-}
-

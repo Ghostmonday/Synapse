@@ -21,7 +21,10 @@ router.use(rateLimit({ max: 5, windowMs: 15 * 60 * 1000 }));
 router.post('/apple', async (req, res, next) => {
   try {
     telemetryHook('auth_apple_start');
-    const result = await authenticationService.verifyAppleSignInToken(req.body.token);
+    const result = await authenticationService.verifyAppleSignInToken(
+      req.body.token,
+      req.body.ageVerified
+    );
     telemetryHook('auth_apple_end');
     res.json(result);
   } catch (error) {
@@ -54,13 +57,13 @@ router.post('/login', async (req, res, next) => {
 router.post('/register', async (req, res, next) => {
   try {
     telemetryHook('auth_register_start');
-    const { username, password } = req.body;
+    const { username, password, ageVerified } = req.body;
     
     if (!username || !password) {
       return res.status(400).json({ error: 'Username and password are required' });
     }
 
-    const result = await authenticationService.registerUser(username, password);
+    const result = await authenticationService.registerUser(username, password, ageVerified);
     telemetryHook('auth_register_end');
     res.json(result);
   } catch (error) {

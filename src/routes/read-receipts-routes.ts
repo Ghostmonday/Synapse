@@ -4,7 +4,7 @@
  */
 
 import { Router } from 'express';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 import { markRead, markDelivered, markMultipleRead, getReadReceipts, getRoomReadStatus } from '../services/read-receipts-service.js';
 import { logError } from '../shared/logger.js';

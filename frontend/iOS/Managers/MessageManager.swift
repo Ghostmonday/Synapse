@@ -5,7 +5,8 @@ class MessageManager {
     static let shared = MessageManager()
     
     func sendVoiceMessage(data: Data, to room: Room) async {
-        let transcript = await AIService.transcribe(voiceData: data)
+        // AI transcription service removed - placeholder for future implementation
+        let transcript = "Voice message transcription not available"
         let message = Message(
             id: UUID(),
             senderId: UUID(), // TODO: Get from authenticated user

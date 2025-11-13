@@ -32,9 +32,10 @@ class AuthService {
         }
     }
     
-    static func loginWithApple(token: String) async throws -> User {
+    static func loginWithApple(token: String, ageVerified: Bool) async throws -> User {
         struct AppleAuthRequest: Codable {
             let token: String
+            let ageVerified: Bool
         }
         
         struct AppleAuthResponse: Codable {
@@ -43,7 +44,7 @@ class AuthService {
             let user: User?
         }
         
-        let request = AppleAuthRequest(token: token)
+        let request = AppleAuthRequest(token: token, ageVerified: ageVerified)
         let response: AppleAuthResponse = try await APIClient.shared.request(
             endpoint: APIClient.Endpoint.authApple,
             method: "POST",
@@ -59,10 +60,11 @@ class AuthService {
         }
     }
     
-    static func loginWithGoogle(idToken: String, email: String?) async throws -> User {
+    static func loginWithGoogle(idToken: String, email: String?, ageVerified: Bool) async throws -> User {
         struct GoogleAuthRequest: Codable {
             let idToken: String
             let email: String?
+            let ageVerified: Bool
         }
         
         struct GoogleAuthResponse: Codable {
@@ -71,7 +73,7 @@ class AuthService {
             let user: User?
         }
         
-        let request = GoogleAuthRequest(idToken: idToken, email: email)
+        let request = GoogleAuthRequest(idToken: idToken, email: email, ageVerified: ageVerified)
         let response: GoogleAuthResponse = try await APIClient.shared.request(
             endpoint: APIClient.Endpoint.authGoogle,
             method: "POST",

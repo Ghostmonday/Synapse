@@ -42,7 +42,6 @@ struct SinapseApp: App {
                             // Preload services
                             Task.detached {
                                 await RoomService.preload()
-                                await AIService.preload()
                             }
                             // Start telemetry monitoring
                             SystemMonitor.shared.monitorTelemetry()

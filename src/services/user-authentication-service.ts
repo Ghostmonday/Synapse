@@ -33,7 +33,7 @@ async function createLiveKitToken(userId: string, roomId?: string): Promise<stri
  * Verify Apple ID token using Apple's JWKS and create user session
  * Returns JWT token and LiveKit room token
  */
-export async function verifyAppleSignInToken(token: string): Promise<{ jwt: string; livekitToken: string }> {
+export async function verifyAppleSignInToken(token: string, ageVerified?: boolean): Promise<{ jwt: string; livekitToken: string }> {
   try {
     if (!token) {
       throw new Error('Apple authentication token is required');
@@ -44,9 +44,13 @@ export async function verifyAppleSignInToken(token: string): Promise<{ jwt: stri
     
     const appleUserId = payload.sub;
 
-    // Create or update user record
+    // Create or update user record with age verification
     try {
-      await upsert('users', { id: appleUserId }, 'id'); // Race: concurrent sign-ins can conflict
+      const userData: Record<string, unknown> = { id: appleUserId };
+      if (ageVerified !== undefined) {
+        userData.age_verified = ageVerified;
+      }
+      await upsert('users', userData, 'id'); // Race: concurrent sign-ins can conflict
     } catch (upsertError: unknown) {
       // Non-critical: user might already exist
       logInfo('User record update (non-critical):', upsertError instanceof Error ? upsertError.message : String(upsertError)); // Silent fail: user creation fails but JWT still issued
@@ -141,7 +145,8 @@ export async function authenticateWithCredentials(
  */
 export async function registerUser(
   username: string,
-  password: string
+  password: string,
+  ageVerified?: boolean
 ): Promise<{ jwt: string }> {
   try {
     // Check if user already exists
@@ -154,11 +159,15 @@ export async function registerUser(
     const password_hash = await bcrypt.hash(password, 10);
 
     // Create user
-    const user = await create('users', {
+    const userData: Record<string, unknown> = {
       username,
       password_hash,
       subscription: 'free'
-    });
+    };
+    if (ageVerified !== undefined) {
+      userData.age_verified = ageVerified;
+    }
+    const user = await create('users', userData);
 
     // Get JWT secret from vault
     const jwtSecret = await getJwtSecret();

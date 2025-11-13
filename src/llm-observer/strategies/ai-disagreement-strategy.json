@@ -1,9 +1,0 @@
-{
-  "pattern": "user rejects AI suggestion (undo/edit)",
-  "threshold": 0.4,
-  "action": "self_tune_recommendation_style",
-  "target": "src/services/ai-automation.ts",
-  "priority": "medium",
-  "autonomyRole": "LLM self-tunes recommendation style"
-}
-

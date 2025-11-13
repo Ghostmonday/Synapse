@@ -12,7 +12,7 @@ class AppleAuthHelper: NSObject, ASAuthorizationControllerDelegate, ASAuthorizat
         isAvailable = true
     }
     
-    func signIn() async {
+    func signIn(ageVerified: Bool) async {
         let provider = ASAuthorizationAppleIDProvider()
         let request = provider.createRequest()
         request.requestedScopes = [.fullName, .email]
@@ -20,6 +20,9 @@ class AppleAuthHelper: NSObject, ASAuthorizationControllerDelegate, ASAuthorizat
         let controller = ASAuthorizationController(authorizationRequests: [request])
         controller.delegate = self
         controller.presentationContextProvider = self
+        
+        // Store ageVerified for use in delegate
+        self.ageVerified = ageVerified
         
         do {
             _ = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<ASAuthorization, Error>) in
@@ -30,6 +33,8 @@ class AppleAuthHelper: NSObject, ASAuthorizationControllerDelegate, ASAuthorizat
             print("Apple Sign-In error: \(error)")
         }
     }
+    
+    private var ageVerified: Bool = false
     
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return UIApplication.shared.connectedScenes
@@ -44,7 +49,7 @@ class AppleAuthHelper: NSObject, ASAuthorizationControllerDelegate, ASAuthorizat
                 do {
                     if let identityToken = credential.identityToken {
                         let tokenString = identityToken.base64EncodedString()
-                        _ = try await AuthService.loginWithApple(token: tokenString)
+                        _ = try await AuthService.loginWithApple(token: tokenString, ageVerified: ageVerified)
                     }
                 } catch {
                     print("Apple Sign-In backend error: \(error)")

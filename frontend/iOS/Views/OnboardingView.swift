@@ -11,6 +11,7 @@ struct OnboardingView: View {
     @State private var pulseAnimation = false
     @State private var appleAuth = AppleAuthHelper()
     @State private var googleAuth = GoogleAuthHelper()
+    @State private var ageVerified = false
     
     // Check auth state - if already logged in, skip onboarding instantly
     private var isAuthenticated: Bool {
@@ -98,13 +99,31 @@ struct OnboardingView: View {
                 
                 Spacer()
                 
+                // Age verification checkbox
+                HStack(spacing: 12) {
+                    Button(action: {
+                        ageVerified.toggle()
+                    }) {
+                        Image(systemName: ageVerified ? "checkmark.square.fill" : "square")
+                            .foregroundColor(ageVerified ? Color("SinapseGold") : .white.opacity(0.6))
+                            .font(.system(size: 20))
+                    }
+                    Text("I confirm I'm 18+")
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.8))
+                }
+                .padding(.horizontal, 40)
+                .padding(.bottom, 8)
+                .offset(y: showContent ? 0 : 30)
+                .opacity(showContent ? 1.0 : 0.0)
+                
                 // Auth buttons row
                 HStack(spacing: 12) {
                     // Sign In With Apple button
                     Button(action: {
                         let helper = appleAuth
                         Task { @MainActor in
-                            await helper.signIn()
+                            await helper.signIn(ageVerified: ageVerified)
                             // Dismiss to HomeView - no prompts, no emails
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 hasCompletedOnboarding = true
@@ -130,7 +149,7 @@ struct OnboardingView: View {
                         let helper = googleAuth
                         Task { @MainActor in
                             do {
-                                _ = try await helper.signIn()
+                                _ = try await helper.signIn(ageVerified: ageVerified)
                                 // Dismiss to HomeView - no prompts, no emails
                                 withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                     hasCompletedOnboarding = true

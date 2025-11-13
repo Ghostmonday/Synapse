@@ -1,9 +1,0 @@
-{
-  "pattern": "message sentiment changes before/after sending",
-  "threshold": 0.5,
-  "action": "suggest_tone_adjustment",
-  "target": "src/components/MessageComposer.vue",
-  "priority": "low",
-  "autonomyRole": "LLM suggests tone adjustment"
-}
-

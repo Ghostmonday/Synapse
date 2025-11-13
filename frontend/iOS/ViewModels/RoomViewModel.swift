@@ -34,10 +34,10 @@ class RoomViewModel: ObservableObject {
             guard let self = self else { return }
             Task { @MainActor in
                 self.isSilent = true
-                // UX: Re-engage with empathy
-                if let roomId = self.room?.id.uuidString {
-                    _ = try? await AIService.reply(with: "Still here? Let's vibe.", roomId: roomId)
-                }
+                // UX: Re-engage with empathy (AI service removed)
+                // if let roomId = self.room?.id.uuidString {
+                //     _ = try? await AIService.reply(with: "Still here? Let's vibe.", roomId: roomId)
+                // }
             }
         }
     }

@@ -1,9 +1,0 @@
-{
-  "pattern": "high perceived vs actual load time gap",
-  "threshold": 1000,
-  "action": "add_loading_feedback",
-  "target": "UI loading states",
-  "priority": "medium",
-  "description": "Detects when users perceive load times to be >1s longer than actual, suggesting missing loading feedback or progress indicators."
-}
-

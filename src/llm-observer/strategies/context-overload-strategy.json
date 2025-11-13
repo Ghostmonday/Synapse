@@ -1,9 +1,0 @@
-{
-  "pattern": "too many active threads/DMs",
-  "threshold": 10,
-  "action": "offer_cleanup_or_pinning",
-  "target": "src/components/ThreadManager.vue",
-  "priority": "low",
-  "autonomyRole": "LLM offers cleanup or pinning"
-}
-

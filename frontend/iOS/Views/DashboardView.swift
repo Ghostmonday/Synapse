@@ -10,7 +10,7 @@ import OSLog
 struct DashboardView: View {
     @StateObject private var presenceViewModel = PresenceViewModel()
     @StateObject private var subscriptionManager = SubscriptionManager.shared
-    // EmotionPulseMonitor from Services - will be available once added to Xcode project
+    // EmotionPulseMonitor removed - using local state instead
     @State private var emotionPulse: EmotionPulse = .neutral
     @State private var pulseIntensity: Double = 0.5
     @StateObject private var webSocket = WebSocketManager.shared
@@ -23,7 +23,7 @@ struct DashboardView: View {
     @State private var isLoading: Bool = true
     @State private var showUpgradeAlert = false
     @State private var upgradeFeature: Feature?
-    // TapRateTracker available but not actively used in this view
+    // TapRateTracker available in Telemetry.swift
     
     private var dragGesture: some Gesture {
         DragGesture()

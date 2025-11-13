@@ -1,6 +1,6 @@
 import express from 'express';
 import { supabase } from '../config/db.js';
-import { authMiddleware as authenticate } from '../server/middleware/auth.js';
+import { authMiddleware as authenticate } from '../middleware/auth.js';
 import { broadcastToRoom } from '../ws/utils.js';
 
 const router = express.Router();

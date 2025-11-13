@@ -6,7 +6,7 @@ import GoogleSignIn
 
 @MainActor
 class GoogleAuthHelper {
-    func signIn() async throws -> GIDGoogleUser {
+    func signIn(ageVerified: Bool) async throws -> GIDGoogleUser {
         guard let clientID = Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String else {
             throw NSError(domain: "GoogleAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "GIDClientID not found in Info.plist"])
         }
@@ -25,7 +25,7 @@ class GoogleAuthHelper {
         Task {
             do {
                 if let idToken = user.idToken?.tokenString {
-                    _ = try await AuthService.loginWithGoogle(idToken: idToken, email: user.profile?.email)
+                    _ = try await AuthService.loginWithGoogle(idToken: idToken, email: user.profile?.email, ageVerified: ageVerified)
                 }
             } catch {
                 print("Google Sign-In backend error: \(error)")
@@ -37,7 +37,7 @@ class GoogleAuthHelper {
 }
 #else
 class GoogleAuthHelper {
-    func signIn() async throws -> Any {
+    func signIn(ageVerified: Bool) async throws -> Any {
         throw NSError(domain: "GoogleAuth", code: -1, userInfo: [NSLocalizedDescriptionKey: "GoogleSignIn SDK not available"])
     }
 }

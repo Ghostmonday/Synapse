@@ -6,7 +6,7 @@
  */
 
 import { WebSocket } from 'ws';
-import { updatePresence } from '../../server/services/presence.js';
+import { updatePresence } from '../../services/presence-service.js';
 
 export function handlePresence(ws: WebSocket, envelope: any) {
   // Extract sender ID (handle both naming conventions for compatibility)

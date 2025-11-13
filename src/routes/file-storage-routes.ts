@@ -8,7 +8,7 @@ import multer from 'multer';
 import * as fileStorageService from '../services/file-storage-service.js';
 import { telemetryHook } from '../telemetry/index.js';
 import { fileUploadSecurity } from '../middleware/file-upload-security.js';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024 } }); // 10MB max (enforced by middleware)

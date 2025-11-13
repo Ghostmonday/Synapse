@@ -6,7 +6,8 @@
 
 import { Router, Response, NextFunction } from 'express';
 import { createRoom, joinRoom, getRoom } from '../services/room-service.js';
-import { authMiddleware } from '../server/middleware/auth.js';
+import { authMiddleware } from '../middleware/auth.js';
+import { ageVerificationMiddleware } from '../middleware/age-verification.js';
 import { logError } from '../shared/logger.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
 
@@ -18,7 +19,7 @@ const router = Router();
  * Body: { name: string }
  * Requires: Authentication
  */
-router.post('/chat-rooms', authMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.post('/chat-rooms', authMiddleware, ageVerificationMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -54,10 +55,11 @@ router.post('/chat-rooms', authMiddleware, async (req: AuthenticatedRequest, res
 
 /**
  * POST /chat-rooms/:id/join
- * Join a room
+ * Join a room - Returns Agora token for video/audio streams
  * Requires: Authentication
+ * Response: { token: string, channelName: string, uid: number, members: RoomMember[] }
  */
-router.post('/chat-rooms/:id/join', authMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+router.post('/chat-rooms/:id/join', authMiddleware, ageVerificationMiddleware, async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.userId;
     if (!userId) {
@@ -66,9 +68,52 @@ router.post('/chat-rooms/:id/join', authMiddleware, async (req: AuthenticatedReq
 
     const roomId = req.params.id;
 
-    const result = await joinRoom(roomId, userId);
+    // Import Agora service
+    const {
+      generateAgoraToken,
+      addRoomMember,
+      getRoomMembers,
+      getRoomState,
+    } = await import('../services/agora-service.js');
 
-    res.json(result);
+    // Get room state
+    const roomState = await getRoomState(roomId);
+    if (!roomState) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+
+    // Generate unique UID for Agora (use hash of userId for consistency)
+    const uid = Math.abs(parseInt(userId.replace(/-/g, '').substring(0, 8), 16)) % 2147483647;
+
+    // Add user to room
+    const joinResult = await addRoomMember(roomId, userId, uid);
+    if (!joinResult.success) {
+      return res.status(400).json({ error: joinResult.error || 'Failed to join room' });
+    }
+
+    // Generate Agora token
+    const token = generateAgoraToken(roomId, uid);
+    
+    // Get current members
+    const members = await getRoomMembers(roomId);
+
+    res.json({
+      success: true,
+      token,
+      channelName: roomId,
+      uid,
+      members: members.map(m => ({
+        userId: m.userId,
+        uid: m.uid,
+        isMuted: m.isMuted,
+        isVideoEnabled: m.isVideoEnabled,
+      })),
+      roomState: {
+        capacity: roomState.capacity,
+        voiceOnly: roomState.voiceOnly,
+        memberCount: members.length,
+      },
+    });
   } catch (error) {
     if (error instanceof Error) {
       if (error.message === 'Room not found') {
@@ -76,6 +121,9 @@ router.post('/chat-rooms/:id/join', authMiddleware, async (req: AuthenticatedReq
       }
       if (error.message.includes('private')) {
         return res.status(403).json({ error: error.message });
+      }
+      if (error.message.includes('Agora credentials')) {
+        return res.status(500).json({ error: 'Video service not configured' });
       }
     }
     logError('Join room error', error instanceof Error ? error : new Error(String(error)));
