@@ -27,6 +27,13 @@ contracts/out/
 contracts/cache/
 contracts/lib/
 
+# Log files (including in dependencies)
+**/*.log
+**/*.log.json
+**/*.log.txt
+audit.log
+*.log
+
 # Archive and temporary files
 docs/archive/
 
@@ -90,3 +97,33 @@ coverage/
 # Test results
 test-results/
 *.test_result
+
+# TurboRepo
+.turbo/
+
+# Package manager locks (keep package-lock.json, but ignore others)
+yarn.lock
+pnpm-lock.yaml
+
+# IDE
+*.code-workspace
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+*.backup
+*~
+*.swp
+*.swo
+*.un~
