@@ -6,8 +6,13 @@
 import { Router } from 'express';
 import { authenticateWithCredentials } from '../services/user-authentication-service.js';
 import { logError } from '../shared/logger.js';
+import { rateLimit } from '../middleware/rate-limiter.js';
 
 const router = Router();
+
+// SECURITY: Apply strict rate limiting to authentication endpoints
+// Prevents brute force attacks - 5 attempts per 15 minutes per IP
+router.use(rateLimit({ max: 5, windowMs: 15 * 60 * 1000 }));
 
 /**
  * POST /auth/login

@@ -62,6 +62,7 @@ const wss = new WebSocketServer({ server });
 client.collectDefaultMetrics();
 
 // CORS configuration - locked to synapse.app and localhost:3000
+// SECURITY: Never use wildcard (*) with credentials: true
 const allowedOrigins = [
   'https://sinapse.app',
   'http://localhost:3000',
@@ -69,11 +70,16 @@ const allowedOrigins = [
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
+  // SECURITY: Only set CORS headers if origin is in allowed list
+  // Never use '*' with credentials: true (prevents credential leakage)
   if (origin && allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Headers', 'authorization, content-type');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else if (origin) {
+    // Log unauthorized origin attempts for security monitoring
+    logInfo(`Blocked CORS request from unauthorized origin: ${origin}`);
   }
   
   if (req.method === 'OPTIONS') {
