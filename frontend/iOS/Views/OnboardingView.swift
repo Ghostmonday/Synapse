@@ -58,6 +58,16 @@ struct OnboardingView: View {
             VStack(spacing: 32) {
                 Spacer()
                 
+                // Welcome Hero Image
+                Image("WelcomeHero")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 300)
+                    .clipped()
+                    .opacity(showContent ? 1.0 : 0.0)
+                    .scaleEffect(showContent ? 1.0 : 0.9)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: showContent)
+                
                 // App Icon/Logo area
                 VStack(spacing: 16) {
                     // Actual logo from assets

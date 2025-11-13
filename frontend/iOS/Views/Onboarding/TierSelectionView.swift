@@ -20,34 +20,37 @@ struct TierSelectionView: View {
             }
             .padding(.top, 40)
             
-            // Tier cards
+            // Tier cards with images
             VStack(spacing: 16) {
-                TierCard(
+                TierSelectionCard(
                     tier: .starter,
                     title: "Free",
                     price: "$0",
                     features: ["Create chat", "Basic features"],
-                    isSelected: selectedTier == .starter
+                    isSelected: selectedTier == .starter,
+                    imageName: "TierCardStarter"
                 ) {
                     selectTier(.starter)
                 }
                 
-                TierCard(
+                TierSelectionCard(
                     tier: .professional,
                     title: "Pro",
                     price: "$5/mo",
                     features: ["Temp rooms", "24hr expiry", "Faster bots"],
-                    isSelected: selectedTier == .professional
+                    isSelected: selectedTier == .professional,
+                    imageName: "TierCardPro"
                 ) {
                     selectTier(.professional)
                 }
                 
-                TierCard(
+                TierSelectionCard(
                     tier: .enterprise,
                     title: "Enterprise",
                     price: "$19/mo",
                     features: ["Full control", "AI mod", "No limits", "Self-host"],
-                    isSelected: selectedTier == .enterprise
+                    isSelected: selectedTier == .enterprise,
+                    imageName: "TierCardEnterprise"
                 ) {
                     selectTier(.enterprise)
                 }
@@ -93,22 +96,40 @@ struct TierSelectionView: View {
     }
 }
 
-struct TierCard: View {
+struct TierSelectionCard: View {
     let tier: SubscriptionTier
     let title: String
     let price: String
     let features: [String]
     let isSelected: Bool
+    let imageName: String?
     let action: () -> Void
+    
+    init(tier: SubscriptionTier, title: String, price: String, features: [String], isSelected: Bool, imageName: String? = nil, action: @escaping () -> Void) {
+        self.tier = tier
+        self.title = title
+        self.price = price
+        self.features = features
+        self.isSelected = isSelected
+        self.imageName = imageName
+        self.action = action
+    }
     
     var body: some View {
         Button(action: action) {
             HStack(alignment: .top, spacing: 16) {
-                // Icon
-                Image(systemName: tier.icon)
-                    .font(.title2)
-                    .foregroundColor(isSelected ? .white : tierColor)
-                    .frame(width: 40)
+                // Icon or Image
+                if let imageName = imageName {
+                    Image(imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 60, height: 60)
+                } else {
+                    Image(systemName: tier.icon)
+                        .font(.title2)
+                        .foregroundColor(isSelected ? .white : tierColor)
+                        .frame(width: 40)
+                }
                 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {

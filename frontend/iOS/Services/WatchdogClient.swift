@@ -2,6 +2,7 @@ import Foundation
 
 /// Watchdog Client
 /// Fetches recommendations from the backend watchdog API
+@MainActor
 class WatchdogClient {
     private let baseURL: String
     

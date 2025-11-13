@@ -224,13 +224,13 @@ struct VoiceRoomView: View {
     
     private func startLatencyMonitoring() {
         Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
-            let rtt = self.roomManager.getRoundTripTime()
-            self.latency = rtt
-            
-            // Log latency telemetry
             Task { @MainActor in
+                let rtt = self.roomManager.getRoundTripTime()
+                self.latency = rtt
+                
+                // Log latency telemetry
                 do {
-                    let baseURL = await APIClient.baseURL
+                    let baseURL = APIClient.baseURL
                     guard let url = URL(string: "\(baseURL)/api/voice/log-latency") else { return }
                     
                     var request = URLRequest(url: url)

@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import SwiftUI
 
 /// Autonomy Executor
 /// Pulls telemetry from watchdog, generates SwiftUI views from pattern templates,

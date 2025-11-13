@@ -122,7 +122,7 @@ struct AutonomousFormExample: View {
 #Preview {
     NavigationView {
         AutonomousFormExample()
-            .environmentObject(AutonomyCoordinator())
+            .environment(\.autonomyCoordinator, AutonomyCoordinator())
     }
 }
 

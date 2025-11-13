@@ -1,13 +1,14 @@
 /**
  * Design System - Empty State Component
  * 
- * Consistent empty states with validation-aware messaging.
+ * Consistent empty states with SF Symbols (no image assets needed).
+ * Updated to use SwiftUI-generated icons instead of raster images.
  */
 
 import SwiftUI
 
 struct DSEmptyState: View {
-    let icon: String
+    let type: EmptyStateType
     let title: String
     let message: String
     let action: EmptyStateAction?
@@ -18,13 +19,36 @@ struct DSEmptyState: View {
         let handler: () -> Void
     }
     
+    enum EmptyStateType {
+        case rooms
+        case messages
+        case search
+        case error
+        
+        var systemImage: String {
+            switch self {
+            case .rooms: return "door.left.hand.open"
+            case .messages: return "message"
+            case .search: return "magnifyingglass"
+            case .error: return "exclamationmark.triangle"
+            }
+        }
+        
+        var size: CGFloat {
+            switch self {
+            case .rooms, .messages, .search: return 64
+            case .error: return 48
+            }
+        }
+    }
+    
     init(
-        icon: String,
+        type: EmptyStateType,
         title: String,
         message: String,
         action: EmptyStateAction? = nil
     ) {
-        self.icon = icon
+        self.type = type
         self.title = title
         self.message = message
         self.action = action
@@ -32,8 +56,8 @@ struct DSEmptyState: View {
     
     var body: some View {
         VStack(spacing: DSSpacing.base) {
-            Image(systemName: icon)
-                .font(.system(size: 64))
+            Image(systemName: type.systemImage)
+                .font(.system(size: type.size))
                 .foregroundStyle(
                     LinearGradient(
                         colors: [.ds(.brandPrimary), .ds(.brandAccent)],
@@ -57,7 +81,7 @@ struct DSEmptyState: View {
             }
             
             if let action = action {
-                DSPrimaryButton(action.title, icon: action.icon) {
+                DSPrimaryButton(action.title, icon: action.icon, size: .medium) {
                     action.handler()
                 }
                 .padding(.horizontal, DSSpacing.xl)
@@ -73,12 +97,12 @@ struct DSEmptyState: View {
 extension DSEmptyState {
     static func rooms(action: @escaping () -> Void) -> DSEmptyState {
         DSEmptyState(
-            icon: "door.left.hand.open",
+            type: .rooms,
             title: "No rooms yet",
             message: "Create a room to start a conversation",
             action: EmptyStateAction(
                 title: "Create Room",
-                icon: DSIcon.plus,
+                icon: "plus.circle.fill",
                 handler: action
             )
         )
@@ -86,7 +110,7 @@ extension DSEmptyState {
     
     static func messages() -> DSEmptyState {
         DSEmptyState(
-            icon: "message",
+            type: .messages,
             title: "Say hi",
             message: "Messages appear here"
         )
@@ -94,16 +118,16 @@ extension DSEmptyState {
     
     static func search() -> DSEmptyState {
         DSEmptyState(
-            icon: DSIcon.search,
+            type: .search,
             title: "Try searching",
             message: "Search for a room name, user, or keyword"
         )
     }
     
-    static func validationError(_ error: String) -> DSEmptyState {
+    static func error(_ error: String) -> DSEmptyState {
         DSEmptyState(
-            icon: DSIcon.warning,
-            title: "Validation Error",
+            type: .error,
+            title: "Something went wrong",
             message: error
         )
     }

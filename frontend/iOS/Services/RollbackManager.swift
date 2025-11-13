@@ -108,15 +108,17 @@ class RollbackManager {
         markCheckpointRolledBack(checkpoint)
         
         // Log rollback
-        UXTelemetryService.logEvent(
-            eventType: .aiEditUndone,
-            category: .aiFeedback,
-            metadata: [
-                "checkpointId": checkpoint.id,
-                "componentId": checkpoint.componentId,
-                "reason": "rollback"
-            ]
-        )
+        Task { @MainActor in
+            UXTelemetryService.shared.logEvent(
+                eventType: .aiEditUndone,
+                category: .aiFeedback,
+                metadata: [
+                    "checkpointId": checkpoint.id,
+                    "componentId": checkpoint.componentId,
+                    "reason": "rollback"
+                ]
+            )
+        }
     }
     
     private func markCheckpointStable(_ checkpoint: RollbackCheckpoint) {

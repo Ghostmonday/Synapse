@@ -13,6 +13,13 @@ struct PaywallView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
+                // Paywall Hero Image
+                Image("PaywallHero")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 200)
+                    .padding(.horizontal)
+                
                 // Header
                 VStack(spacing: 8) {
                     Text("Upgrade to Pro")
@@ -23,7 +30,7 @@ struct PaywallView: View {
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
-                .padding(.top, 40)
+                .padding(.top, 20)
                 
                 // Products list
                 if subManager.products.isEmpty {

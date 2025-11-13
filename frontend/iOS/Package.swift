@@ -6,8 +6,7 @@ import PackageDescription
 let package = Package(
     name: "SinapseiOS",
     platforms: [
-        .iOS(.v17),
-        .macOS(.v12)
+        .iOS(.v17)
     ],
     products: [
         .library(

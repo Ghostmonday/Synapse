@@ -14,8 +14,13 @@ class EmotionalCurveMonitor: ObservableObject {
     private var sentimentHistory: [Double] = []
     private let historyLimit = 20
     
-    init(watchdogClient: WatchdogClient = WatchdogClient()) {
-        self.watchdogClient = watchdogClient
+    init(watchdogClient: WatchdogClient? = nil) {
+        // Initialize WatchdogClient on MainActor
+        if let client = watchdogClient {
+            self.watchdogClient = client
+        } else {
+            self.watchdogClient = WatchdogClient()
+        }
     }
     
     /// Start monitoring emotional curves
@@ -104,7 +109,9 @@ class EmotionalCurveMonitor: ObservableObject {
     }
     
     deinit {
-        stopMonitoring()
+        // Invalidate timer directly - deinit cannot be @MainActor
+        monitoringTimer?.invalidate()
+        monitoringTimer = nil
     }
 }
 
