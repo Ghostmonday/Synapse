@@ -4,9 +4,19 @@ Real-time communication platform with AI-powered features, voice/video calls, an
 
 ## Architecture
 
+**Monorepo Structure (TurboRepo):**
 ```
 Sinapse/
-├── src/                    # Backend source code
+├── apps/                   # Applications
+│   ├── api/               # Node.js/TypeScript backend API
+│   ├── web/               # Web frontend (Next.js/Vite - ready)
+│   └── mobile/            # Mobile app (iOS SwiftUI)
+├── packages/               # Shared packages
+│   ├── core/              # Shared types, utils, config, validation
+│   ├── livekit/           # LiveKit wrappers
+│   ├── supabase/          # Supabase client + types
+│   └── ai-mod/            # DeepSeek/AI logic
+├── src/                    # Legacy backend (migrating to apps/api)
 │   ├── server/            # Express API server
 │   ├── routes/            # API route handlers
 │   ├── services/          # Business logic services
@@ -15,23 +25,23 @@ Sinapse/
 │   ├── autonomy/          # Autonomous system components
 │   ├── telemetry/         # Telemetry collection
 │   └── workers/           # Background workers
-├── frontend/              # iOS native app
-│   └── iOS/              # SwiftUI application
-├── sql/                   # Database migrations
-│   ├── migrations/       # Versioned SQL scripts
-│   └── archive/         # Legacy SQL files
-├── supabase/              # Supabase Edge Functions
-│   └── functions/        # Serverless functions
-├── scripts/               # Operational scripts
-│   ├── dev/              # Development utilities
-│   └── ops/              # Production operations
-├── infra/                 # Infrastructure as Code
-│   └── aws/              # Terraform configurations
-├── config/                # Configuration files
-├── docs/                  # Documentation
-│   ├── reports/         # Audit reports and summaries
-│   └── threat_model.md  # Security documentation
-└── specs/                 # API specifications
+├── frontend/               # iOS native app
+│   └── iOS/               # SwiftUI application
+├── sql/                    # Database migrations
+│   ├── migrations/        # Versioned SQL scripts
+│   └── archive/           # Legacy SQL files
+├── supabase/               # Supabase Edge Functions
+│   └── functions/         # Serverless functions
+├── scripts/                # Operational scripts
+│   ├── dev/               # Development utilities
+│   └── ops/               # Production operations
+├── infra/                  # Infrastructure as Code
+│   └── aws/               # Terraform configurations
+├── config/                 # Configuration files
+├── docs/                   # Documentation
+│   ├── reports/           # Audit reports and summaries
+│   └── threat_model.md    # Security documentation
+└── specs/                  # API specifications
 ```
 
 ## Tech Stack
