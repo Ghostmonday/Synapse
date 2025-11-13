@@ -89,17 +89,33 @@ app.use((req, res, next) => {
   next();
 });
 
-// Security middleware
+// Security middleware - Helmet with strict CSP
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"],
+      styleSrc: ["'self'", "'unsafe-inline'"], // 'unsafe-inline' needed for some UI frameworks
+      scriptSrc: ["'self'"], // No inline scripts - XSS protection
+      imgSrc: ["'self'", "data:", "https:"], // Allow images from HTTPS sources
+      connectSrc: ["'self'", "wss:", "ws:"], // WebSocket connections
+      fontSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"], // Block plugins
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"], // Block iframes
+      baseUri: ["'self'"],
+      formAction: ["'self'"],
+      upgradeInsecureRequests: [], // Upgrade HTTP to HTTPS
     },
   },
   crossOriginEmbedderPolicy: false, // Allow WebSocket connections
+  hsts: {
+    maxAge: 31536000, // 1 year
+    includeSubDomains: true,
+    preload: true,
+  },
+  noSniff: true, // Prevent MIME type sniffing
+  xssFilter: true, // Enable XSS filter
+  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
 }));
 
 // Rate limiting - IP-based DDoS protection
