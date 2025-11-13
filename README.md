@@ -235,7 +235,7 @@ All other keys (Apple, LiveKit, JWT, AI, AWS) are stored in the database vault.
 
 ## Feature Tag Glossary
 
-This codebase uses structured tags in comments to map code → features → contracts → validation gates. This enables:
+This codebase uses structured tags in comments to map code → features → validation gates. This enables:
 - **Grok AI** to understand feature boundaries and dependencies
 - **Developers** to quickly find related code
 - **Automated tooling** to generate documentation and validate gates

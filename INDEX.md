@@ -22,7 +22,6 @@
 
 ### Development Guides
 - **[sql/README.md](./sql/README.md)** - Database schema and migrations
-- **[contracts/README.md](./contracts/README.md)** - Smart contracts documentation
 - **[docs/ASSET_PLACEMENT_GUIDE.md](./docs/ASSET_PLACEMENT_GUIDE.md)** - Asset management guide
 
 ## 📁 Directory Quick Links

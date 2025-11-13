@@ -1,6 +1,6 @@
 # Codebase Feature Map
 
-**Purpose**: Quick reference for mapping code → features → contracts → validation gates.  
+**Purpose**: Quick reference for mapping code → features → validation gates.  
 **For**: Grok AI, developers, and automated tooling.
 
 ## Where to Start

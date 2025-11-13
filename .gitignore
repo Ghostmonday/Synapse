@@ -23,9 +23,6 @@ secrets/
 *.tgz
 artifacts/
 cache/
-contracts/out/
-contracts/cache/
-contracts/lib/
 
 # Log files (including in dependencies)
 **/*.log

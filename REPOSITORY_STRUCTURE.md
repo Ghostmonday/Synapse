@@ -15,8 +15,6 @@ Synapse/
 ├── package-lock.json            # Dependency lock file
 ├── turbo.json                   # TurboRepo configuration
 ├── tsconfig.json                # TypeScript configuration
-├── hardhat.config.cjs           # Hardhat (Solidity) configuration
-├── foundry.toml                 # Foundry configuration
 ├── docker-compose.yml           # Docker Compose configuration
 ├── Dockerfile                   # Docker image definition
 └── .gitignore                   # Git ignore patterns
@@ -329,31 +327,6 @@ docs/
 │   ├── POST_DESIGN_SYSTEM_LAUNCH_FAILURE_INVESTIGATION.md
 │   └── UI_UX_AUDIT_REPORT.md
 └── implementation/             # Implementation docs
-```
-
-## 🔒 Contracts (`contracts/`)
-
-```
-contracts/
-├── foundry.toml                # Foundry configuration
-├── foundry.lock                # Dependency lock
-├── README.md
-├── src/                        # Solidity source (5 files)
-│   ├── Base.sol
-│   ├── ContributionTracker.sol
-│   ├── Counter.sol
-│   ├── EquityDistributor.sol
-│   └── NDA.sol
-├── test/                       # Tests (2 files)
-│   ├── ContributionTracker.t.sol
-│   └── Counter.t.sol
-├── script/                     # Scripts (1 file)
-│   └── Counter.s.sol
-├── lib/                        # Dependencies
-│   ├── forge-std/
-│   ├── openzeppelin-contracts/
-│   └── openzeppelin-contracts-upgradeable/
-└── out/                        # Build output
 ```
 
 ## 📋 Specifications (`specs/`)
