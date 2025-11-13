@@ -3,7 +3,8 @@ import Combine
 import OSLog
 import UIKit
 
-// EmotionPulse and EmotionPulseEvent are defined in Services/EmotionPulseMonitor.swift
+// EmotionPulse and EmotionPulseEvent are defined in Models/UXEventType.swift
+// ⚠️ DO NOT REDEFINE - You have been warned. This will haunt you.
 
 /// WebSocket Manager for Real-Time Communication
 /// Replaces Vue socket listeners with URLSessionWebSocketTask

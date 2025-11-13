@@ -2,68 +2,8 @@ import Foundation
 import Combine
 import SwiftUI
 
-/// Emotion pulse types from Redis
-enum EmotionPulse: String, Codable {
-    case calm = "calm"
-    case excited = "excited"
-    case anxious = "anxious"
-    case neutral = "neutral"
-    case joyful = "joyful"
-    
-    var color: Color {
-        switch self {
-        case .calm: return Color(hex: "#4A90E2")
-        case .excited: return Color(hex: "#FF9500")
-        case .anxious: return Color(hex: "#D32F2F")
-        case .neutral: return Color.primarySinapse
-        case .joyful: return Color(hex: "#00C853")
-        }
-    }
-    
-    var animationSpeed: Double {
-        switch self {
-        case .calm: return 0.5
-        case .excited: return 2.0
-        case .anxious: return 1.5
-        case .neutral: return 1.0
-        case .joyful: return 1.8
-        }
-    }
-}
-
-/// Emotion pulse event from Redis
-struct EmotionPulseEvent: Codable {
-    let pulse: EmotionPulse
-    let intensity: Double // 0.0 to 1.0
-    let timestamp: Date
-    let userId: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case pulse, intensity, timestamp, userId
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let pulseString = try container.decode(String.self, forKey: .pulse)
-        pulse = EmotionPulse(rawValue: pulseString) ?? .neutral
-        intensity = try container.decode(Double.self, forKey: .intensity)
-        
-        let timestampString = try container.decode(String.self, forKey: .timestamp)
-        let formatter = ISO8601DateFormatter()
-        timestamp = formatter.date(from: timestampString) ?? Date()
-        
-        userId = try container.decodeIfPresent(String.self, forKey: .userId)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(pulse.rawValue, forKey: .pulse)
-        try container.encode(intensity, forKey: .intensity)
-        let formatter = ISO8601DateFormatter()
-        try container.encode(formatter.string(from: timestamp), forKey: .timestamp)
-        try container.encodeIfPresent(userId, forKey: .userId)
-    }
-}
+// EmotionPulse and EmotionPulseEvent are defined in Models/UXEventType.swift
+// ⚠️ DO NOT REDEFINE - You have been warned. This will haunt you.
 
 /// Monitor for emotion pulse events from Redis via WebSocket
 @MainActor

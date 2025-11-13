@@ -1,4 +1,6 @@
 import SwiftUI
+// EmotionPulse and EmotionPulseEvent are defined in Models/UXEventType.swift
+// ⚠️ DO NOT REDEFINE - You have been warned. This will haunt you.
 import Combine
 import OSLog
 
@@ -67,7 +69,7 @@ struct DashboardView: View {
                 // Background gradient with emotion pulse
                 MoodGradient(mood: "neutral")
                     .ignoresSafeArea()
-                    .animation(.easeInOut(duration: emotionPulse.animationSpeed), value: emotionPulse)
+                    .animation(.easeInOut(duration: animationSpeedForEmotionPulse(emotionPulse)), value: emotionPulse)
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -336,9 +338,8 @@ struct DashboardView: View {
 func colorForEmotionPulse(_ pulse: EmotionPulse) -> Color {
     switch pulse {
     case .neutral: return .gray
-    case .happy: return .yellow
-    case .sad: return .blue
-    case .angry: return .red
+    case .joyful: return .yellow
+    case .anxious: return .blue
     case .excited: return .orange
     case .calm: return .green
     }
@@ -346,12 +347,11 @@ func colorForEmotionPulse(_ pulse: EmotionPulse) -> Color {
 
 func animationSpeedForEmotionPulse(_ pulse: EmotionPulse) -> Double {
     switch pulse {
-    case .neutral: return 2.0
-    case .happy: return 1.5
-    case .sad: return 3.0
-    case .angry: return 1.0
-    case .excited: return 0.8
-    case .calm: return 2.5
+    case .neutral: return 1.0
+    case .joyful: return 1.8
+    case .anxious: return 1.5
+    case .excited: return 2.0
+    case .calm: return 0.5
     }
 }
 

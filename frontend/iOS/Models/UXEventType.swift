@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 
 /// UX Event Categories
 /// Used for filtering and querying telemetry by functional area
@@ -200,6 +201,78 @@ struct AnyCodable: Codable {
         default:
             try container.encodeNil()
         }
+    }
+}
+
+// MARK: - Emotion Pulse Types
+// ⚠️ CENTRALIZED DEFINITIONS - DO NOT DUPLICATE ANYWHERE ELSE ⚠️
+// If you redefine EmotionPulse or EmotionPulseEvent in any other file,
+// you will be haunted by compilation errors forever. This is the ONLY place.
+
+/// Emotion pulse types from Redis
+/// Represents the emotional state of a user or room
+public enum EmotionPulse: String, Codable {
+    case calm = "calm"
+    case excited = "excited"
+    case anxious = "anxious"
+    case neutral = "neutral"
+    case joyful = "joyful"
+    
+    /// Animation speed multiplier for UI animations
+    public var animationSpeed: Double {
+        switch self {
+        case .calm: return 0.5
+        case .excited: return 2.0
+        case .anxious: return 1.5
+        case .neutral: return 1.0
+        case .joyful: return 1.8
+        }
+    }
+    
+    /// Color representation for UI
+    public var color: Color {
+        switch self {
+        case .calm: return Color(red: 0.29, green: 0.56, blue: 0.89) // #4A90E2
+        case .excited: return Color(red: 1.0, green: 0.58, blue: 0.0) // #FF9500
+        case .anxious: return Color(red: 0.83, green: 0.18, blue: 0.18) // #D32F2F
+        case .neutral: return Color.primary
+        case .joyful: return Color(red: 0.0, green: 0.78, blue: 0.33) // #00C853
+        }
+    }
+}
+
+/// Emotion pulse event from Redis
+/// Represents a single emotion pulse event with intensity and metadata
+public struct EmotionPulseEvent: Codable {
+    public let pulse: EmotionPulse
+    public let intensity: Double // 0.0 to 1.0
+    public let timestamp: Date
+    public let userId: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case pulse, intensity, timestamp, userId
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let pulseString = try container.decode(String.self, forKey: .pulse)
+        pulse = EmotionPulse(rawValue: pulseString) ?? .neutral
+        intensity = try container.decode(Double.self, forKey: .intensity)
+        
+        let timestampString = try container.decode(String.self, forKey: .timestamp)
+        let formatter = ISO8601DateFormatter()
+        timestamp = formatter.date(from: timestampString) ?? Date()
+        
+        userId = try container.decodeIfPresent(String.self, forKey: .userId)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(pulse.rawValue, forKey: .pulse)
+        try container.encode(intensity, forKey: .intensity)
+        let formatter = ISO8601DateFormatter()
+        try container.encode(formatter.string(from: timestamp), forKey: .timestamp)
+        try container.encodeIfPresent(userId, forKey: .userId)
     }
 }
 
