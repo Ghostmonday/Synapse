@@ -2,46 +2,51 @@
 
 Real-time communication platform with AI-powered features, voice/video calls, and autonomous system capabilities.
 
+## Quick Start
+
+### Prerequisites
+- Node.js 20+
+- PostgreSQL (via Supabase)
+- Redis
+- Xcode 15+ (for iOS development)
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.template .env
+# Edit .env with your credentials
+
+# Set up database (run in Supabase SQL Editor)
+# 1. sql/migrations/2025-01-27-api-keys-vault.sql
+# 2. sql/migrations/2025-01-28-add-age-verification.sql
+# 3. Other migrations as needed
+
+# Start development server
+npm run dev
+```
+
 ## Architecture
 
-**Monorepo Structure (TurboRepo):**
+**Monorepo Structure:**
 ```
 Sinapse/
-├── apps/                   # Applications
-│   ├── api/               # Node.js/TypeScript backend API
-│   ├── web/               # Web frontend (Next.js/Vite - ready)
-│   └── mobile/            # Mobile app (iOS SwiftUI)
-├── packages/               # Shared packages
-│   ├── core/              # Shared types, utils, config, validation
-│   ├── livekit/           # LiveKit wrappers
-│   ├── supabase/          # Supabase client + types
-│   └── ai-mod/            # DeepSeek/AI logic
-├── src/                    # Legacy backend (migrating to apps/api)
-│   ├── server/            # Express API server
+├── src/                    # Backend API (Express + TypeScript)
+│   ├── server/            # Server entry point
 │   ├── routes/            # API route handlers
-│   ├── services/          # Business logic services
-│   ├── middleware/        # Request middleware
+│   ├── services/          # Business logic
+│   ├── middleware/        # Auth, validation, rate limiting
 │   ├── ws/                # WebSocket gateway
-│   ├── autonomy/          # Autonomous system components
-│   ├── telemetry/         # Telemetry collection
 │   └── workers/           # Background workers
-├── frontend/               # iOS native app
-│   └── iOS/               # SwiftUI application
-├── sql/                    # Database migrations
-│   ├── migrations/        # Versioned SQL scripts
-│   └── archive/           # Legacy SQL files
-├── supabase/               # Supabase Edge Functions
-│   └── functions/         # Serverless functions
-├── scripts/                # Operational scripts
-│   ├── dev/               # Development utilities
-│   └── ops/               # Production operations
-├── infra/                  # Infrastructure as Code
-│   └── aws/               # Terraform configurations
-├── config/                 # Configuration files
-├── docs/                   # Documentation
-│   ├── reports/           # Audit reports and summaries
-│   └── threat_model.md    # Security documentation
-└── specs/                  # API specifications
+├── frontend/iOS/          # iOS SwiftUI application
+├── sql/migrations/        # Database migrations
+├── supabase/functions/    # Supabase Edge Functions
+├── scripts/               # Development & operations scripts
+├── infra/aws/             # Terraform infrastructure
+└── docs/                  # Documentation
 ```
 
 ## Tech Stack
@@ -49,7 +54,7 @@ Sinapse/
 **Backend:**
 - Node.js + TypeScript
 - Express.js (HTTP API)
-- WebSocket (real-time)
+- WebSocket (real-time messaging)
 - Supabase (PostgreSQL + Auth)
 - LiveKit (voice/video)
 - Redis (pub/sub, caching)
@@ -63,212 +68,155 @@ Sinapse/
 - Terraform
 - Docker
 
-## Quick Start
-
-### Prerequisites
-
-- Node.js 20+
-- PostgreSQL (via Supabase)
-- Redis
-- Xcode 15+ (for iOS)
-
-### Installation
-
-1. **Clone and install dependencies:**
-   ```bash
-   npm install
-   ```
-
-2. **Configure environment:**
-   ```bash
-   cp .env.template .env
-   # Edit .env with your credentials
-   ```
-
-3. **Set up database:**
-   - Run migrations in Supabase SQL Editor:
-     ```sql
-     -- Run in order:
-     -- 1. sql/migrations/2025-01-27-api-keys-vault.sql
-     -- 2. sql/migrations/2025-01-27-populate-only.sql (template - replace placeholders)
-     ```
-
-4. **Start development server:**
-   ```bash
-   npm run dev
-   ```
-
-5. **Build for production:**
-   ```bash
-   npm run build:prod
-   npm start
-   ```
-
 ## Key Features
 
-### Authentication
-- Apple Sign-In integration (inline flow, no redirects)
-- Google Sign-In integration (FirebaseUI-Auth, inline flow)
-- JWT-based session management
-- Secure credential storage (database vault)
-- Instant auth-bound onboarding - routes to HomeView after successful sign-in
+### Authentication & Security
+- **Apple Sign-In** - Inline flow, no redirects
+- **Google Sign-In** - FirebaseUI-Auth integration
+- **JWT-based sessions** - Secure token management
+- **Age Verification** - 18+ gate for room access (required checkbox on signup)
+- **API Key Vault** - Encrypted credential storage in database
+- **Rate Limiting** - Request throttling on all endpoints
+- **Content Moderation** - AI-powered filtering
 
 ### Real-Time Communication
-- WebSocket messaging
-- Voice/video calls (LiveKit)
-- Presence indicators
-- Message reactions
-- Emotion pulse monitoring
-- Real-time telemetry
+- **WebSocket messaging** - Instant message delivery
+- **Voice/Video calls** - LiveKit integration
+- **Presence indicators** - Online/offline status
+- **Message reactions** - Emoji reactions
+- **Read receipts** - Message read tracking
+- **Threads** - Conversation threading
+- **Search** - Full-text search across messages and rooms
 
-### AI Features
-- DeepSeek integration (moderation, optimization)
-- Autonomous system (healing loop, policy guard)
-- LLM parameter management
-- AI safeguards
-- Emotional state monitoring
+### Rooms & Messaging
+- **Room creation** - Public and private rooms
+- **Age-gated access** - 18+ verification required
+- **Message queuing** - Reliable message delivery
+- **File uploads** - Secure file storage (AWS S3)
+- **Pinned messages** - Important message pinning
+- **Nicknames** - Custom room nicknames
 
 ### iOS App
-- Modern SwiftUI interface with golden synapse theme
-- Instant app launch with auth-bound onboarding
-- Apple & Google Sign-In buttons (black buttons with white icons)
-- Animated launch screen with smooth transitions
-- Dashboard with real-time metrics
-- Telemetry and analytics integration
-- Accessibility support
-- Dark mode support
-- Zero artificial delays - feels instant and responsive
-- Inline authentication flow - no redirects or extra screens
+- **SwiftUI interface** - Modern golden synapse theme
+- **Instant launch** - Auth-bound onboarding, zero delays
+- **Dark mode** - Full dark mode support
+- **Accessibility** - VoiceOver and accessibility features
+- **Telemetry** - UX analytics and performance monitoring
 
-### Data Management
-- Encrypted API key vault
-- File storage (AWS S3)
-- Telemetry collection
-- Usage analytics
+### AI Features
+- **DeepSeek integration** - Moderation and optimization
+- **Autonomous systems** - Self-healing capabilities
+- **LLM parameter management** - Dynamic AI configuration
 
 ## Project Structure
 
 ### Backend (`src/`)
 
-**Server (`src/server/`)**
-- `index.ts` - Main Express server
-- `middleware/` - Auth, rate limiting, validation
-- `routes/` - Server-specific routes
-- `services/` - Server utilities
-
-**Routes (`src/routes/`)**
-- `auth.js` - Authentication endpoints
+**Routes (`src/routes/`)** - API endpoints
+- `user-authentication-routes.ts` - Auth (Apple, Google, register, login)
+- `room-routes.ts` - Room creation/joining (age-gated)
 - `message-routes.ts` - Messaging API
-- `room-routes.ts` - Room management
-- `voice-routes.ts` - Voice/video calls
-- `subscription-routes.ts` - IAP handling
+- `agora-routes.ts` - Voice/video room management
+- `search-routes.ts` - Full-text search
+- `subscription-routes.ts` - In-app purchases
+- `file-storage-routes.ts` - File uploads
+- `reactions-routes.ts` - Message reactions
+- `threads-routes.ts` - Conversation threading
+- `read-receipts-routes.ts` - Read receipt tracking
 
-**Services (`src/services/`)**
-- `api-keys-service.ts` - Key vault access
-- `user-authentication-service.ts` - Auth logic
-- `livekit-service.ts` - Voice/video management
+**Services (`src/services/`)** - Business logic
+- `user-authentication-service.ts` - Authentication logic
+- `room-service.ts` - Room management
 - `message-service.ts` - Message handling
-- `telemetry-service.ts` - Metrics collection
+- `presence-service.ts` - User presence tracking
+- `subscription-service.ts` - Subscription management
+- `search-service.ts` - Search functionality
 
-**Middleware (`src/middleware/`)**
+**Middleware (`src/middleware/`)** - Request processing
 - `auth.ts` - JWT verification
+- `age-verification.ts` - 18+ age gate
 - `rate-limiter.ts` - Request throttling
 - `moderation.ts` - Content filtering
 - `subscription-gate.ts` - Feature gating
+- `input-validation.ts` - Input sanitization
 
-**WebSocket (`src/ws/`)**
+**WebSocket (`src/ws/`)** - Real-time gateway
 - `gateway.ts` - WebSocket server
 - `handlers/` - Message handlers
 
-**Autonomy (`src/autonomy/`)**
-- `healing-loop.ts` - Self-healing system
-- `policy_guard.ts` - Policy enforcement
-- `llm_reasoner.ts` - AI reasoning
-
 ### Frontend (`frontend/iOS/`)
 
-**Views**
-- `Views/` - SwiftUI views
-- `ViewModels/` - View models
-- `Components/` - Reusable components
+**Views** - SwiftUI screens
+- `OnboardingView.swift` - Sign-in with age verification
+- `HomeView.swift` - Main dashboard
+- `ChatView.swift` - Messaging interface
+- `RoomListView.swift` - Room browser
 
-**Managers**
+**Managers** - Business logic
 - `APIClient.swift` - API communication
 - `LiveKitRoomManager.swift` - Voice/video
 - `MessageManager.swift` - Messaging
-- `SubscriptionManager.swift` - IAP
+- `SubscriptionManager.swift` - IAP handling
 
-**Services**
-- `Services/` - Business logic
-- `Telemetry/` - Analytics
+**Services** - Backend integration
+- `AuthService.swift` - Authentication
+- `RoomService.swift` - Room operations
+- `MessageService.swift` - Message operations
 
 ### Database (`sql/migrations/`)
 
-- `2025-01-27-api-keys-vault.sql` - Key vault system
-- `2025-01-27-populate-only.sql` - Initial data
+Key migrations:
+- `2025-01-27-api-keys-vault.sql` - Encrypted API key storage
+- `2025-01-28-add-age-verification.sql` - Age verification column
 - Additional migrations for schema updates
-
-### Supabase Functions (`supabase/functions/`)
-
-- `api-key-vault/` - Key retrieval
-- `join-room/` - Room joining logic
-- `llm-proxy/` - LLM API proxy
 
 ## Environment Variables
 
 Required in `.env`:
 ```env
+# Supabase
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Redis
+REDIS_URL=redis://localhost:6379
+
+# JWT
+JWT_SECRET=your_jwt_secret
 ```
 
-All other keys (Apple, LiveKit, JWT, AI, AWS) are stored in the database vault.
+**Note:** API keys (Apple, Google, LiveKit, AWS, AI) are stored in the encrypted database vault, not in `.env`.
 
 ## Scripts
 
-- `npm run dev` - Start development server
-- `npm run dev:optimizer` - Start optimizer worker
-- `npm run build` - Compile TypeScript
-- `npm run build:prod` - Production build
-- `npm start` - Run production server
-- `npm run validate` - Validate OpenAPI spec
-
-## Feature Tag Glossary
-
-This codebase uses structured tags in comments to map code → features → validation gates. This enables:
-- **Grok AI** to understand feature boundaries and dependencies
-- **Developers** to quickly find related code
-- **Automated tooling** to generate documentation and validate gates
-
-**See**: [`docs-root/TAGS.md`](./docs-root/TAGS.md) for complete tag definitions and [`docs-root/MAP.md`](./docs-root/MAP.md) for feature → module mapping.
-
-### Quick Reference
-
-- **Feature Tags**: `[FEATURE: Paywalls]`, `[FEATURE: Telemetry]`, `[FEATURE: VoiceToCode]`, etc.
-- **Gate Tags**: `[GATE]`, `[SEC]`, `[PRIVACY]`, `[PERF]`, `[RELIAB]`
-- **Domain Tags**: `[API]`, `[EVENT]`, `[DB]`, `[CHAIN]`, `[LLM]`, `[VOICE]`, `[UI]`
-
-**Example**:
-```swift
-// [FEATURE: Paywalls] [GATE] [SEC]
-// PURPOSE: Verify subscription tier before allowing premium feature access
-// GATES: [GATE] unit:test_subscription_gate; integration:paywall_flow
-func checkSubscriptionAccess() -> Bool { ... }
+```bash
+npm run dev          # Start development server
+npm run build        # Compile TypeScript
+npm run typecheck    # Type check without building
+npm run lint         # Run linter
+npm run test         # Run tests
+npm run validate     # Type check + lint
 ```
-
-All source files include module headers and function-level anchors. See any annotated file for the pattern.
 
 ## Development
 
 ### Adding a New Route
 
-1. Create route file in `src/routes/`
-2. Import and register in `src/server/index.ts`
-3. Add middleware as needed
+1. Create route file in `src/routes/` (e.g., `my-feature-routes.ts`)
+2. Import and register in `src/server/index.ts`:
+   ```typescript
+   import myFeatureRoutes from './routes/my-feature-routes.js';
+   app.use('/api/my-feature', myFeatureRoutes);
+   ```
+3. Add middleware as needed (auth, rate limiting, etc.)
 
 ### Adding a New Service
 
-1. Create service file in `src/services/`
+1. Create service file in `src/services/` (e.g., `my-service.ts`)
 2. Export functions/types
 3. Import where needed
 
@@ -276,32 +224,45 @@ All source files include module headers and function-level anchors. See any anno
 
 1. Create SQL file in `sql/migrations/`
 2. Use format: `YYYY-MM-DD-description.sql`
-3. Run in Supabase SQL Editor
+3. Include `BEGIN;` and `COMMIT;` for transactions
+4. Run in Supabase SQL Editor
+
+### Age Verification
+
+The age verification gate requires:
+- Users to check "I confirm I'm 18+" during signup
+- `age_verified` column in `users` table (via migration)
+- Middleware on room-related endpoints
+- iOS checkbox in `OnboardingView.swift`
 
 ## Security
 
-- API keys stored in encrypted database vault
-- JWT authentication required
-- Rate limiting on all endpoints
-- Content moderation (AI-powered)
-- Input validation and sanitization
-- Row-level security (RLS) in Supabase
+- **API keys** - Stored in encrypted database vault
+- **JWT authentication** - Required for all protected endpoints
+- **Rate limiting** - Prevents abuse
+- **Content moderation** - AI-powered filtering
+- **Input validation** - Sanitization on all inputs
+- **Row-level security** - RLS policies in Supabase
+- **Age verification** - 18+ gate for room access
 
 ## Deployment
 
 ### Backend
 
 ```bash
-npm run build:prod
+npm run build
 # Deploy dist/ to your server
+# Ensure environment variables are set
+# Run database migrations
 ```
 
 ### iOS
 
 ```bash
 cd frontend/iOS
-# Build in Xcode
+# Open Sinapse.xcodeproj in Xcode
 # Archive and export IPA
+# Or use: xcodegen generate (if using XcodeGen)
 ```
 
 ### Infrastructure
@@ -313,40 +274,38 @@ terraform plan
 terraform apply
 ```
 
-## License
-
-MIT License - See repository root for details.
-
 ## Recent Updates
 
-### Authentication (Latest)
-- **Google Sign-In**: Added Google Sign-In using GoogleSignIn SDK with inline flow
-- **Apple Sign-In**: Enhanced Apple Sign-In with proper token handling and backend integration
-- **Unified Auth Flow**: Both Apple and Google auth route directly to HomeView after successful sign-in
-- **No Redirects**: Inline authentication flow - no redirects or extra screens
-- **Backend Integration**: AuthService.loginWithGoogle() and AuthService.loginWithApple() handle backend communication
+### Age Verification (2025-01-28)
+- Added 18+ age verification gate for room access
+- Database migration for `age_verified` column
+- Middleware protection on room endpoints
+- iOS signup checkbox integration
 
-### Performance Optimizations
-- **Instant App Launch**: Removed all artificial delays - app feels instant and responsive
-- **Auth-Bound Onboarding**: OnboardingView now binds to auth state for instant transition when logged in
-- **Zero Loading Delays**: Removed 0.3s-0.5s artificial delays in RoomListView, DashboardView, HomeView, and PricingSheet
-- **Faster Animations**: Reduced animation delays from 0.2s to 0.1s for snappier feel
-- **Legacy Cleanup**: Removed old LaunchView.swift and legacy/LICENSE file
+### Codebase Cleanup (2025-01-28)
+- Removed legacy Vue components
+- Consolidated middleware and services
+- Standardized file extensions (.js → .ts)
+- Improved file organization
 
-### iOS App Improvements
-- **Modern Launch Screen**: Redesigned onboarding with animated golden glow effects
-- **Telemetry Integration**: Enabled emotion pulse monitoring and UX telemetry logging
-- **Build Cleanup**: Removed build artifacts from git tracking for cleaner repository
-- **Accessibility**: Fixed accessibility issues across chat and room views
-- **Code Quality**: Resolved naming conflicts and improved code organization
+### Authentication (Previous)
+- Google Sign-In with inline flow
+- Apple Sign-In integration
+- Unified auth flow routing to HomeView
+- Zero redirects, instant transitions
 
-### Previous Updates
-- Backend support for lazy loading messages with `since` parameter
-- Complete UI/UX roadmap implementation (Search, Read Receipts, File Upload, Polls, etc.)
-- Dark mode support and performance optimizations
-- Database vault system for secure API key storage
+## Documentation
+
+- **Architecture**: See `docs/` for detailed documentation
+- **API Spec**: `specs/api/openapi.yaml`
+- **Threat Model**: `docs/threat_model.md`
+- **Legacy Audit**: `LEGACY_AUDIT_REPORT.md`
+- **File Organization**: `FILE_ORGANIZATION_SUMMARY.md`
+
+## License
+
+MIT License
 
 ## Support
 
-For issues and questions, check the repository documentation.
-
+For issues and questions, check the repository documentation or open an issue.
