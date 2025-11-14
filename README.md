@@ -17,8 +17,8 @@ Real-time communication platform with AI-powered features, voice/video calls, an
 npm install
 
 # Configure environment
-cp .env.template .env
-# Edit .env with your credentials
+# Create .env file with required variables (see Environment Variables section)
+# Copy from .env.example if available, or create manually
 
 # Set up database (run in Supabase SQL Editor)
 # 1. sql/migrations/2025-01-27-api-keys-vault.sql
@@ -274,33 +274,50 @@ terraform plan
 terraform apply
 ```
 
-## Recent Updates
+## Development Guidelines
 
-### Age Verification (2025-01-28)
-- Added 18+ age verification gate for room access
-- Database migration for `age_verified` column
-- Middleware protection on room endpoints
-- iOS signup checkbox integration
+### Code Style
+- TypeScript strict mode enabled
+- Use async/await (no callbacks)
+- Services handle business logic, routes handle HTTP
+- Middleware for cross-cutting concerns (auth, validation, rate limiting)
 
-### Codebase Cleanup (2025-01-28)
-- Removed legacy Vue components
-- Consolidated middleware and services
-- Standardized file extensions (.js → .ts)
-- Improved file organization
+### Testing
+- Unit tests: `npm test`
+- Type checking: `npm run typecheck`
+- Linting: `npm run lint`
 
-### Authentication (Previous)
-- Google Sign-In with inline flow
-- Apple Sign-In integration
-- Unified auth flow routing to HomeView
-- Zero redirects, instant transitions
+### Database Migrations
+- Create migration files in `sql/migrations/` with format: `YYYY-MM-DD-description.sql`
+- Always wrap in `BEGIN;` / `COMMIT;` transactions
+- Test migrations in development before production
+- Run migrations via Supabase SQL Editor or CLI
+
+### Adding Features
+1. Create service in `src/services/`
+2. Create route in `src/routes/`
+3. Register route in `src/server/index.ts`
+4. Add middleware as needed (auth, rate limiting, validation)
+5. Update OpenAPI spec if adding new endpoints
+6. Add database migrations if schema changes needed
 
 ## Documentation
 
-- **Architecture**: See `docs/` for detailed documentation
-- **API Spec**: `specs/api/openapi.yaml`
-- **Threat Model**: `docs/threat_model.md`
-- **Legacy Audit**: `LEGACY_AUDIT_REPORT.md`
-- **File Organization**: `FILE_ORGANIZATION_SUMMARY.md`
+- **API Specification**: `specs/api/openapi.yaml` - OpenAPI 3.0 specification
+- **Threat Model**: `docs/threat_model.md` - Security threat analysis
+- **Database Schema**: `sql/` - Schema definitions and migrations
+
+## Security
+
+- **API keys** - Stored in encrypted database vault (not in `.env`)
+- **JWT authentication** - Required for all protected endpoints
+- **Rate limiting** - Prevents abuse (IP-based and user-based)
+- **Content moderation** - AI-powered filtering with toxicity scoring
+- **Input validation** - Sanitization on all inputs
+- **Row-level security** - RLS policies in Supabase
+- **Age verification** - 18+ gate for room access
+- **CORS** - Restricted to allowed origins only
+- **Helmet** - Security headers (CSP, HSTS, XSS protection)
 
 ## License
 
