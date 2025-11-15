@@ -124,3 +124,6 @@ Desktop.ini
 *.swp
 *.swo
 *.un~
+
+# Cursor IDE settings
+.cursor/
