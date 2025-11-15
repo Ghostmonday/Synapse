@@ -7,6 +7,7 @@ import { Response, NextFunction } from 'express';
 import { getRedisClient } from '../config/db.js';
 import { logWarning } from '../shared/logger.js';
 import { AuthenticatedRequest } from '../types/auth.types.js';
+import { getUserSubscription, SubscriptionTier } from '../services/subscription-service.js';
 import * as Sentry from '@sentry/node';
 
 const redis = getRedisClient();
@@ -139,19 +140,45 @@ export function strictRateLimit(max: number, windowMs: number = 60000) {
 
 /**
  * Per-user rate limiter (requires authentication)
+ * Caches user subscription tier in Redis to avoid DB hits
  */
 export function userRateLimit(max: number, windowMs: number = 60000) {
-  return rateLimit({
-    max,
-    windowMs,
-    keyGenerator: (req: AuthenticatedRequest) => {
+  return async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
       const userId = req.user?.userId;
       if (!userId) {
         throw new Error('User rate limit requires authentication');
       }
-      return `user:${userId}`;
-    },
-  });
+      
+      // Check Redis cache for user tier (1min TTL)
+      const cacheKey = `user_rate:${userId}`;
+      const cachedTier = await redis.hget('user_rate', userId);
+      
+      let tier: SubscriptionTier;
+      if (cachedTier) {
+        tier = cachedTier as SubscriptionTier;
+      } else {
+        // Cache miss - fetch from DB and cache
+        tier = await getUserSubscription(userId);
+        await redis.hset('user_rate', userId, tier);
+        await redis.expire('user_rate', 60); // 1 minute TTL
+      }
+      
+      // Map tier to max rate (free: max, pro/team: higher limits)
+      const tierMax = tier === SubscriptionTier.FREE ? max : max * 2;
+      
+      // Use tier-specific rate limit
+      return rateLimit({
+        max: tierMax,
+        windowMs,
+        keyGenerator: () => `user:${userId}`,
+      })(req, res, next);
+    } catch (error: unknown) {
+      const err = error instanceof Error ? error : new Error(String(error));
+      logWarning('User rate limit error, allowing request', err);
+      next(); // Fail open
+    }
+  };
 }
 
 /**

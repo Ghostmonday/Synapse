@@ -7,7 +7,10 @@ import { RoomServiceClient, AccessToken } from 'livekit-server-sdk';
 import { recordTelemetryEvent } from './telemetry-service.js';
 import { logError, logInfo } from '../shared/logger.js';
 import { getLiveKitKeys } from './api-keys-service.js';
+import { getRedisClient } from '../config/db.js';
 import type { VoiceSession, VoiceStats } from '../types/message.types.js';
+
+const redis = getRedisClient();
 
 export class LiveKitService {
   private roomService: RoomServiceClient;
@@ -83,6 +86,7 @@ export class LiveKitService {
 
   /**
    * SIN-101: Generate participant token
+   * Caches tokens in Redis for 5 minutes to reduce auth overhead and fix iOS reconnect stutter
    */
   async generateParticipantToken(
     roomName: string,
@@ -97,6 +101,19 @@ export class LiveKitService {
 
     if (!participantIdentity || typeof participantIdentity !== 'string') {
       throw new Error('Invalid participantIdentity');
+    }
+
+    // Check Redis cache for valid token (<5min old)
+    const cacheKey = `user:livekit:token:${participantIdentity}:${roomName}`;
+    try {
+      const cached = await redis.get(cacheKey);
+      if (cached) {
+        // Token exists and is valid (Redis TTL ensures <5min)
+        return cached;
+      }
+    } catch (cacheError) {
+      // Cache miss or error - proceed to generate new token
+      logInfo('LiveKit token cache miss or error, generating new token', cacheError);
     }
 
     const livekitKeys = await getLiveKitKeys();
@@ -120,7 +137,17 @@ export class LiveKitService {
       canPublishData: true,
     });
 
-    return Promise.resolve(token.toJwt()); // Silent fail: JWT encoding can throw if secret invalid, no error handling
+    const jwtToken = token.toJwt();
+    
+    // Cache token for 5 minutes (300 seconds)
+    try {
+      await redis.setex(cacheKey, 300, jwtToken);
+    } catch (cacheError) {
+      // Cache write failed - log but don't fail token generation
+      logInfo('Failed to cache LiveKit token', cacheError);
+    }
+
+    return jwtToken;
   }
 
   /**

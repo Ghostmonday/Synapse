@@ -46,27 +46,48 @@ loadProto().catch(err => {
  */
 export function setupWebSocketGateway(wss: WebSocketServer) {
   // Listen for new WebSocket connections
-  wss.on('connection', (ws: WebSocket & { alive?: number }) => {
+  wss.on('connection', (ws: WebSocket & { alive?: number; pingTimeout?: NodeJS.Timeout }) => {
     // Mark connection as alive
     ws.alive = Date.now();
     
-    // Ping-pong health check every 30 seconds
-    const pingInterval = setInterval(() => {
-      if (ws.readyState === ws.OPEN) {
-        // Check if last pong was more than 1 minute ago
-        if (ws.alive && Date.now() - ws.alive > 60000) {
-          // Stale connection - close it
-          ws.terminate();
-          clearInterval(pingInterval);
-          return;
-        }
-        
-        // Send ping
-        ws.ping();
-      } else {
-        clearInterval(pingInterval);
+    // Ping-pong health check with debounce and jitter (29-31s)
+    // Prevents queue storms under load by randomizing ping intervals
+    const schedulePing = () => {
+      // Clear any existing timeout
+      if (ws.pingTimeout) {
+        clearTimeout(ws.pingTimeout);
       }
-    }, 30000); // Every 30 seconds
+      
+      // Calculate jitter: base 30s + random -1s to +1s (29-31s range)
+      const baseInterval = 30000; // 30 seconds
+      const jitter = (Math.random() * 2000) - 1000; // -1000ms to +1000ms
+      const interval = baseInterval + jitter;
+      
+      // Debounce: wrap ping in setTimeout with 5ms debounce
+      ws.pingTimeout = setTimeout(() => {
+        if (ws.readyState === ws.OPEN) {
+          // Check if last pong was more than 1 minute ago
+          if (ws.alive && Date.now() - ws.alive > 60000) {
+            // Stale connection - close it
+            ws.terminate();
+            return;
+          }
+          
+          // Send ping with 5ms debounce
+          setTimeout(() => {
+            if (ws.readyState === ws.OPEN) {
+              ws.ping();
+            }
+          }, 5);
+          
+          // Schedule next ping
+          schedulePing();
+        }
+      }, interval);
+    };
+    
+    // Start ping cycle
+    schedulePing();
     
     // Handle pong response
     ws.on('pong', () => {
@@ -129,13 +150,17 @@ export function setupWebSocketGateway(wss: WebSocketServer) {
     
     // Clean up when connection closes
     ws.on('close', () => {
-      clearInterval(pingInterval);
+      if (ws.pingTimeout) {
+        clearTimeout(ws.pingTimeout);
+      }
       unregisterWebSocket(ws);
     });
     
     // Clean up on error
     ws.on('error', () => {
-      clearInterval(pingInterval);
+      if (ws.pingTimeout) {
+        clearTimeout(ws.pingTimeout);
+      }
       unregisterWebSocket(ws);
     });
   });

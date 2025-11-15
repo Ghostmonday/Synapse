@@ -14,11 +14,17 @@ import { redactUXTelemetryEvent, redactUXTelemetryBatch } from './ux-telemetry-r
 
 /**
  * Insert a single UX telemetry event
+ * Samples 10% of events to reduce DB writes while maintaining signal quality
  */
 export async function insertUXTelemetryEvent(
   event: UXTelemetryEvent
 ): Promise<{ success: boolean; error?: string }> {
   try {
+    // Sample 10% of events (90% reduction in DB writes)
+    if (Math.random() >= 0.1) {
+      return { success: true }; // Sampled out - return success without DB write
+    }
+    
     // Redact PII (server-side safety net)
     const { event: redactedEvent, stats } = redactUXTelemetryEvent(event);
     
@@ -58,6 +64,7 @@ export async function insertUXTelemetryEvent(
 
 /**
  * Insert a batch of UX telemetry events
+ * Samples 10% of events to reduce DB writes while maintaining signal quality
  */
 export async function insertUXTelemetryBatch(
   events: UXTelemetryEvent[]
@@ -68,8 +75,20 @@ export async function insertUXTelemetryBatch(
   errors: string[];
 }> {
   try {
+    // Sample 10% of events (90% reduction in DB writes)
+    const sampledEvents = events.filter(() => Math.random() < 0.1);
+    
+    if (sampledEvents.length === 0) {
+      return {
+        success: true,
+        inserted: 0,
+        failed: 0,
+        errors: [],
+      };
+    }
+    
     // Redact PII from batch
-    const { events: redactedEvents, stats } = redactUXTelemetryBatch(events);
+    const { events: redactedEvents, stats } = redactUXTelemetryBatch(sampledEvents);
     
     if (stats.wasModified) {
       logInfo(
@@ -112,9 +131,9 @@ export async function insertUXTelemetryBatch(
     }
     
     const inserted = data?.length || 0;
-    const failed = events.length - inserted;
+    const failed = sampledEvents.length - inserted;
     
-    logInfo(`[UX Telemetry] Batch inserted: ${inserted} events, ${failed} failed`);
+    logInfo(`[UX Telemetry] Batch inserted: ${inserted} events (sampled from ${events.length}), ${failed} failed`);
     
     return {
       success: failed === 0,
@@ -128,7 +147,7 @@ export async function insertUXTelemetryBatch(
     return {
       success: false,
       inserted: 0,
-      failed: events.length,
+      failed: sampledEvents.length,
       errors: [errorObj.message || 'Unknown error'],
     };
   }

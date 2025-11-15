@@ -4,10 +4,12 @@
  */
 
 import https from 'https';
+import crypto from 'crypto';
 import { updateSubscription, SubscriptionTier } from './subscription-service.js';
-import { create } from '../shared/supabase-helpers.js';
+import { create, findOne } from '../shared/supabase-helpers.js';
 import { logError, logInfo } from '../shared/logger.js';
 import { getAppleSharedSecret } from './api-keys-service.js';
+import { supabase } from '../config/db.js';
 
 interface AppleReceiptResponse {
   status: number;
@@ -24,6 +26,21 @@ export async function verifyAppleReceipt(
   receiptData: string,
   userId: string
 ): Promise<{ verified: boolean; tier?: SubscriptionTier }> {
+  // Compute receipt hash for deduplication
+  const receiptHash = crypto.createHash('sha256').update(receiptData).digest('hex');
+  
+  // Check if receipt was already processed (deduplication)
+  try {
+    const existing = await findOne('iap_receipts', { receipt_hash: receiptHash });
+    if (existing && existing.verified) {
+      logInfo('Apple IAP', `Duplicate receipt detected for user ${userId}, returning cached result`);
+      return { verified: true, tier: existing.product_id === 'com.sinapse.pro.monthly' ? SubscriptionTier.PRO : undefined };
+    }
+  } catch (dedupeError) {
+    // If receipt_hash column doesn't exist yet, continue processing
+    logInfo('Apple IAP', 'Receipt hash check failed (column may not exist), proceeding with verification');
+  }
+  
   const isProduction = process.env.NODE_ENV === 'production';
   const verifyURL = isProduction
     ? 'https://buy.itunes.apple.com/verifyReceipt'
@@ -60,10 +77,11 @@ export async function verifyAppleReceipt(
                 // Update subscription
                 await updateSubscription(userId, SubscriptionTier.PRO);
 
-                // Store receipt
+                // Store receipt with hash for deduplication
                 await create('iap_receipts', {
                   user_id: userId,
                   receipt_data: receiptData,
+                  receipt_hash: receiptHash, // Store hash for duplicate detection
                   verified: true,
                   transaction_id: result.receipt.in_app[0].transaction_id,
                   product_id: productId
